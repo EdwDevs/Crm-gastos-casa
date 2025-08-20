@@ -270,6 +270,7 @@
             padding: 20px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
             overflow-x: auto;
+            margin-bottom: 30px;
         }
         
         table {
@@ -390,12 +391,6 @@
             display: none;
         }
         
-        /* Charts */
-        .chart-container {
-            height: 300px;
-            margin-top: 20px;
-        }
-        
         /* Summary Cards */
         .summary-cards {
             display: grid;
@@ -425,6 +420,46 @@
         .summary-card p {
             color: var(--gray);
             font-size: 0.9rem;
+        }
+        
+        /* Status */
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .status-connected {
+            background: rgba(76, 201, 240, 0.2);
+            color: var(--success);
+        }
+        
+        .status-disconnected {
+            background: rgba(247, 37, 133, 0.2);
+            color: var(--danger);
+        }
+        
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid var(--primary);
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -458,26 +493,31 @@
             </div>
         </div>
         
+        <!-- Connection Status -->
+        <div id="connection-status" class="status status-disconnected">
+            <i class="fas fa-exclamation-circle"></i> Inicializando Firebase...
+        </div>
+        
         <!-- Summary Cards -->
         <div class="summary-cards">
             <div class="summary-card">
                 <i class="fas fa-wallet text-primary"></i>
-                <h3>$4,850,000</h3>
+                <h3 id="total-income">$0</h3>
                 <p>Ingresos Mensuales</p>
             </div>
             <div class="summary-card">
                 <i class="fas fa-shopping-cart text-danger"></i>
-                <h3>$3,200,000</h3>
+                <h3 id="total-expense">$0</h3>
                 <p>Gastos Mensuales</p>
             </div>
             <div class="summary-card">
                 <i class="fas fa-piggy-bank text-success"></i>
-                <h3>$1,650,000</h3>
+                <h3 id="total-savings">$0</h3>
                 <p>Ahorro Mensual</p>
             </div>
             <div class="summary-card">
                 <i class="fas fa-credit-card text-warning"></i>
-                <h3>$850,000</h3>
+                <h3 id="total-debt">$0</h3>
                 <p>Deudas Pendientes</p>
             </div>
         </div>
@@ -491,7 +531,7 @@
                         <i class="fas fa-arrow-down"></i>
                     </div>
                 </div>
-                <div class="card-value">$4,850,000</div>
+                <div class="card-value" id="income-value">$0</div>
                 <div class="card-footer">+12% respecto al mes anterior</div>
             </div>
             
@@ -502,7 +542,7 @@
                         <i class="fas fa-arrow-up"></i>
                     </div>
                 </div>
-                <div class="card-value">$3,200,000</div>
+                <div class="card-value" id="expense-value">$0</div>
                 <div class="card-footer">+5% respecto al mes anterior</div>
             </div>
             
@@ -513,7 +553,7 @@
                         <i class="fas fa-balance-scale"></i>
                     </div>
                 </div>
-                <div class="card-value">$1,650,000</div>
+                <div class="card-value" id="balance-value">$0</div>
                 <div class="card-footer">Ahorro mensual</div>
             </div>
         </div>
@@ -594,7 +634,11 @@
         <!-- Transacciones Recientes -->
         <div class="table-container">
             <h3 class="section-title">Transacciones Recientes</h3>
-            <table>
+            <div id="loading-transactions" class="loading">
+                <div class="spinner"></div>
+                <p>Cargando transacciones...</p>
+            </div>
+            <table id="transactions-table" style="display: none;">
                 <thead>
                     <tr>
                         <th>Fecha</th>
@@ -605,98 +649,273 @@
                         <th>Acciones</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>2023-10-15</td>
-                        <td>Salario Mensual</td>
-                        <td>Salario Personal</td>
-                        <td>$3,200,000</td>
-                        <td><span class="badge badge-income">Ingreso</span></td>
-                        <td>
-                            <button class="action-btn"><i class="fas fa-edit"></i></button>
-                            <button class="action-btn"><i class="fas fa-trash"></i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2023-10-14</td>
-                        <td>Supermercado</td>
-                        <td>Comidas</td>
-                        <td>$180,000</td>
-                        <td><span class="badge badge-expense">Gasto</span></td>
-                        <td>
-                            <button class="action-btn"><i class="fas fa-edit"></i></button>
-                            <button class="action-btn"><i class="fas fa-trash"></i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2023-10-12</td>
-                        <td>Pago Tarjeta Éxito</td>
-                        <td>Pago Tarjetas de Crédito</td>
-                        <td>$450,000</td>
-                        <td><span class="badge badge-expense">Gasto</span></td>
-                        <td>
-                            <button class="action-btn"><i class="fas fa-edit"></i></button>
-                            <button class="action-btn"><i class="fas fa-trash"></i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2023-10-10</td>
-                        <td>Salario Esposa</td>
-                        <td>Salario Esposa</td>
-                        <td>$1,650,000</td>
-                        <td><span class="badge badge-income">Ingreso</span></td>
-                        <td>
-                            <button class="action-btn"><i class="fas fa-edit"></i></button>
-                            <button class="action-btn"><i class="fas fa-trash"></i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2023-10-08</td>
-                        <td>Gasolina Moto</td>
-                        <td>Gasolina Moto</td>
-                        <td>$65,000</td>
-                        <td><span class="badge badge-expense">Gasto</span></td>
-                        <td>
-                            <button class="action-btn"><i class="fas fa-edit"></i></button>
-                            <button class="action-btn"><i class="fas fa-trash"></i></button>
-                        </td>
-                    </tr>
+                <tbody id="transactions-body">
+                    <!-- Las transacciones se cargarán aquí -->
                 </tbody>
             </table>
         </div>
     </div>
 
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, onSnapshot, query, orderBy, limit, Timestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyA_Zn5FMQVPXCH9cPc0Yqk0O0K96wRdtK0",
+            authDomain: "crm-familiar.firebaseapp.com",
+            projectId: "crm-familiar",
+            storageBucket: "crm-familiar.firebasestorage.app",
+            messagingSenderId: "676787680550",
+            appId: "1:676787680550:web:2a31780e5a0af802d37de7"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        
+        // Hacer db global para usar en los scripts
+        window.db = db;
+        window.addDoc = addDoc;
+        window.collection = collection;
+        window.getDocs = getDocs;
+        window.deleteDoc = deleteDoc;
+        window.doc = doc;
+        window.onSnapshot = onSnapshot;
+        window.query = query;
+        window.orderBy = orderBy;
+        window.limit = limit;
+        window.Timestamp = Timestamp;
+        
+        console.log("Firebase inicializado correctamente");
+        
+        // Actualizar estado de conexión
+        document.getElementById('connection-status').innerHTML = '<i class="fas fa-check-circle"></i> Conectado a Firebase';
+        document.getElementById('connection-status').className = 'status status-connected';
+        
+        // Cargar datos iniciales
+        loadTransactions();
+        loadSummary();
+    </script>
+    
     <script>
+        // Referencias a elementos del DOM
+        const connectionStatus = document.getElementById('connection-status');
+        const incomeValue = document.getElementById('income-value');
+        const expenseValue = document.getElementById('expense-value');
+        const balanceValue = document.getElementById('balance-value');
+        const totalIncome = document.getElementById('total-income');
+        const totalExpense = document.getElementById('total-expense');
+        const totalSavings = document.getElementById('total-savings');
+        const totalDebt = document.getElementById('total-debt');
+        const transactionsBody = document.getElementById('transactions-body');
+        const transactionsTable = document.getElementById('transactions-table');
+        const loadingTransactions = document.getElementById('loading-transactions');
+        
+        // Función para cargar transacciones
+        function loadTransactions() {
+            // Ocultar tabla y mostrar loading
+            transactionsTable.style.display = 'none';
+            loadingTransactions.style.display = 'block';
+            
+            const q = query(collection(window.db, "transactions"), orderBy("date", "desc"), limit(20));
+            
+            onSnapshot(q, (querySnapshot) => {
+                transactionsBody.innerHTML = '';
+                
+                if (querySnapshot.empty) {
+                    transactionsBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No hay transacciones registradas</td></tr>';
+                } else {
+                    querySnapshot.forEach((doc) => {
+                        const data = doc.data();
+                        const row = document.createElement('tr');
+                        
+                        row.innerHTML = `
+                            <td>${formatDate(data.date)}</td>
+                            <td>${data.description || '-'}</td>
+                            <td>${data.categoryName || data.category || '-'}</td>
+                            <td>$${parseFloat(data.amount).toLocaleString()}</td>
+                            <td><span class="badge ${data.type === 'income' ? 'badge-income' : 'badge-expense'}">
+                                ${data.type === 'income' ? 'Ingreso' : 'Gasto'}
+                            </span></td>
+                            <td>
+                                <button class="action-btn edit-btn" data-id="${doc.id}">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="action-btn delete-btn" data-id="${doc.id}">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        `;
+                        
+                        transactionsBody.appendChild(row);
+                    });
+                }
+                
+                // Mostrar tabla y ocultar loading
+                loadingTransactions.style.display = 'none';
+                transactionsTable.style.display = 'table';
+                
+                // Agregar event listeners a los botones
+                document.querySelectorAll('.edit-btn').forEach(btn => {
+                    btn.addEventListener('click', () => editTransaction(btn.dataset.id));
+                });
+                
+                document.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', () => deleteTransaction(btn.dataset.id));
+                });
+            }, (error) => {
+                console.error("Error cargando transacciones: ", error);
+                loadingTransactions.innerHTML = '<p>Error al cargar transacciones</p>';
+            });
+        }
+        
+        // Función para cargar resumen
+        function loadSummary() {
+            // Mostrar loading en cards
+            incomeValue.textContent = '$0';
+            expenseValue.textContent = '$0';
+            balanceValue.textContent = '$0';
+            totalIncome.textContent = '$0';
+            totalExpense.textContent = '$0';
+            totalSavings.textContent = '$0';
+            totalDebt.textContent = '$0';
+            
+            // Calcular totales reales
+            const transactionsRef = collection(window.db, "transactions");
+            getDocs(transactionsRef).then((querySnapshot) => {
+                let totalIncomeVal = 0;
+                let totalExpenseVal = 0;
+                
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const amount = parseFloat(data.amount) || 0;
+                    
+                    if (data.type === 'income') {
+                        totalIncomeVal += amount;
+                    } else if (data.type === 'expense') {
+                        totalExpenseVal += amount;
+                    }
+                });
+                
+                const balance = totalIncomeVal - totalExpenseVal;
+                
+                incomeValue.textContent = `$${totalIncomeVal.toLocaleString()}`;
+                expenseValue.textContent = `$${totalExpenseVal.toLocaleString()}`;
+                balanceValue.textContent = `$${balance.toLocaleString()}`;
+                totalIncome.textContent = `$${totalIncomeVal.toLocaleString()}`;
+                totalExpense.textContent = `$${totalExpenseVal.toLocaleString()}`;
+                totalSavings.textContent = `$${balance.toLocaleString()}`;
+                
+                // Calcular deudas (ejemplo simplificado)
+                totalDebt.textContent = '$0';
+            }).catch((error) => {
+                console.error("Error cargando resumen: ", error);
+            });
+        }
+        
+        // Formatear fecha
+        function formatDate(dateString) {
+            if (!dateString) return '-';
+            
+            // Si es un objeto Timestamp de Firebase
+            if (dateString.toDate) {
+                return dateString.toDate().toLocaleDateString('es-ES');
+            }
+            
+            // Si es una cadena de fecha
+            const date = new Date(dateString);
+            if (isNaN(date.getTime())) return '-';
+            
+            const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+            return date.toLocaleDateString('es-ES', options);
+        }
+        
+        // Editar transacción
+        function editTransaction(id) {
+            alert(`Editar transacción con ID: ${id}\n(En una implementación completa, abrirías un formulario para editar)`);
+        }
+        
+        // Eliminar transacción
+        function deleteTransaction(id) {
+            if (confirm('¿Estás seguro de que deseas eliminar esta transacción?')) {
+                deleteDoc(doc(window.db, "transactions", id))
+                    .then(() => {
+                        console.log("Transacción eliminada");
+                        loadSummary(); // Actualizar resumen
+                    })
+                    .catch((error) => {
+                        console.error("Error eliminando transacción: ", error);
+                        alert("Error al eliminar la transacción");
+                    });
+            }
+        }
+        
+        // Registrar ingreso
+        document.getElementById('income-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const incomeData = {
+                type: 'income',
+                source: document.getElementById('income-source').value,
+                amount: parseFloat(document.getElementById('income-amount').value),
+                date: document.getElementById('income-date').value,
+                description: document.getElementById('income-description').value,
+                category: document.getElementById('income-source').options[document.getElementById('income-source').selectedIndex].text,
+                createdAt: window.Timestamp.now()
+            };
+            
+            addDoc(collection(window.db, "transactions"), incomeData)
+                .then(() => {
+                    console.log("Ingreso registrado");
+                    this.reset();
+                    document.getElementById('income-date').value = new Date().toISOString().split('T')[0];
+                    loadSummary(); // Actualizar resumen
+                })
+                .catch((error) => {
+                    console.error("Error registrando ingreso: ", error);
+                    alert("Error al registrar el ingreso");
+                });
+        });
+        
+        // Registrar gasto
+        document.getElementById('expense-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const expenseData = {
+                type: 'expense',
+                category: document.getElementById('expense-category').value,
+                amount: parseFloat(document.getElementById('expense-amount').value),
+                date: document.getElementById('expense-date').value,
+                description: document.getElementById('expense-description').value,
+                categoryName: document.getElementById('expense-category').options[document.getElementById('expense-category').selectedIndex].text,
+                createdAt: window.Timestamp.now()
+            };
+            
+            addDoc(collection(window.db, "transactions"), expenseData)
+                .then(() => {
+                    console.log("Gasto registrado");
+                    this.reset();
+                    document.getElementById('expense-date').value = new Date().toISOString().split('T')[0];
+                    loadSummary(); // Actualizar resumen
+                })
+                .catch((error) => {
+                    console.error("Error registrando gasto: ", error);
+                    alert("Error al registrar el gasto");
+                });
+        });
+        
         // Toggle sidebar on mobile
         document.querySelector('.menu-toggle').addEventListener('click', function() {
             document.querySelector('.sidebar').classList.toggle('active');
-        });
-        
-        // Form submission handling
-        document.getElementById('income-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Ingreso registrado correctamente');
-            this.reset();
-        });
-        
-        document.getElementById('expense-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Gasto registrado correctamente');
-            this.reset();
         });
         
         // Set today's date as default
         const today = new Date().toISOString().split('T')[0];
         document.getElementById('income-date').value = today;
         document.getElementById('expense-date').value = today;
-        
-        // Sample data for charts (in a real app, this would come from your data)
-        const incomeData = [3200000, 1650000];
-        const expenseData = [180000, 450000, 65000, 120000, 80000];
-        
-        // Simple chart rendering (in a real app, you would use Chart.js or similar)
-        console.log('Datos de ingresos:', incomeData);
-        console.log('Datos de gastos:', expenseData);
     </script>
 </body>
 </html>
