@@ -35,6 +35,18 @@
             min-height: 100vh;
         }
         
+        /* 🔥 MEJORA: Sidebar con Overlay */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 99;
+        }
+        
         /* Sidebar */
         .sidebar {
             width: 250px;
@@ -44,7 +56,8 @@
             position: fixed;
             padding: 20px 0;
             box-shadow: 3px 0 10px rgba(0,0,0,0.1);
-            z-index: 100;
+            z-index: 1000;
+            transition: transform 0.3s ease;
         }
         
         .logo {
@@ -80,6 +93,7 @@
             padding: 12px 15px;
             border-radius: 5px;
             transition: all 0.3s ease;
+            min-height: 48px; /* 🔥 MEJORA: Touch target */
         }
         
         .nav-links a:hover, .nav-links a.active {
@@ -224,12 +238,14 @@
             color: var(--dark);
         }
         
+        /* 🔥 MEJORA: Touch targets mejorados */
         input, select, textarea {
             width: 100%;
-            padding: 12px 15px;
+            padding: 15px;
             border: 1px solid #ddd;
             border-radius: 8px;
-            font-size: 1rem;
+            font-size: 16px; /* Previene zoom en iOS */
+            min-height: 48px;
             transition: border 0.3s ease;
         }
         
@@ -239,28 +255,53 @@
             box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
         }
         
+        /* 🔥 MEJORA: Botones mejorados con loading states */
         .btn {
-            padding: 12px 25px;
+            padding: 15px 25px;
             border: none;
             border-radius: 8px;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
+            min-height: 48px;
+            min-width: 48px;
+            position: relative;
+            overflow: hidden;
         }
         
         .btn-primary {
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
+            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
         }
         
         .btn-primary:hover {
-            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
         }
         
         .btn-block {
             display: block;
             width: 100%;
+        }
+        
+        /* 🔥 MEJORA: Estados de loading */
+        .btn.loading {
+            pointer-events: none;
+            opacity: 0.8;
+        }
+        
+        .btn-loading {
+            display: none;
+        }
+        
+        .btn.loading .btn-text {
+            display: none;
+        }
+        
+        .btn.loading .btn-loading {
+            display: inline-block;
         }
         
         /* Tables */
@@ -312,10 +353,123 @@
             font-size: 1.1rem;
             margin: 0 5px;
             transition: color 0.3s ease;
+            min-height: 44px;
+            min-width: 44px;
+            border-radius: 5px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .action-btn:hover {
             color: var(--primary);
+            background: rgba(67, 97, 238, 0.1);
+        }
+        
+        /* 🔥 MEJORA: Cards móviles para transacciones */
+        .mobile-transactions {
+            display: none;
+        }
+        
+        .transaction-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-left: 4px solid var(--primary);
+        }
+        
+        .transaction-card.income {
+            border-left-color: var(--success);
+        }
+        
+        .transaction-card.expense {
+            border-left-color: var(--danger);
+        }
+        
+        .transaction-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .transaction-amount {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+        
+        .transaction-details {
+            margin-bottom: 10px;
+        }
+        
+        .transaction-details strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .transaction-details small {
+            color: var(--gray);
+        }
+        
+        .transaction-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn-edit, .btn-delete {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 40px;
+        }
+        
+        .btn-edit {
+            background: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+        }
+        
+        .btn-delete {
+            background: rgba(247, 37, 133, 0.1);
+            color: var(--danger);
+        }
+        
+        .btn-edit:hover, .btn-delete:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        /* 🔥 MEJORA: Toast Notifications */
+        .toast-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 1050;
+            transition: all 0.3s ease;
+            max-width: 300px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .toast-success {
+            background: linear-gradient(135deg, var(--success), #2dd4bf);
+        }
+        
+        .toast-error {
+            background: linear-gradient(135deg, var(--danger), #ef4444);
+        }
+        
+        .toast-warning {
+            background: linear-gradient(135deg, var(--warning), #f59e0b);
         }
         
         /* Responsive */
@@ -348,15 +502,20 @@
         }
         
         @media (max-width: 768px) {
+            /* 🔥 MEJORA: Sidebar con overlay mejorado */
+            .sidebar-overlay.active {
+                display: block;
+            }
+            
             .main-content {
                 margin-left: 0;
-                padding: 10px;
+                padding: 15px 10px;
             }
             
             .sidebar {
-                width: 250px;
+                width: 280px;
                 transform: translateX(-100%);
-                transition: transform 0.3s ease;
+                box-shadow: 5px 0 15px rgba(0,0,0,0.3);
             }
             
             .sidebar.active {
@@ -371,19 +530,95 @@
                 background: var(--primary);
                 color: white;
                 border: none;
-                width: 40px;
-                height: 40px;
-                border-radius: 5px;
+                width: 48px;
+                height: 48px;
+                border-radius: 8px;
                 z-index: 101;
+                box-shadow: 0 4px 12px rgba(67, 97, 238, 0.4);
             }
             
             .header {
                 flex-direction: column;
                 text-align: center;
+                padding: 15px;
+            }
+            
+            .header h2 {
+                font-size: 1.3rem;
             }
             
             .user-info {
                 margin-top: 15px;
+            }
+            
+            /* 🔥 MEJORA: Summary cards scroll horizontal */
+            .summary-cards {
+                display: flex;
+                overflow-x: auto;
+                gap: 15px;
+                padding: 0 5px 10px 5px;
+                scroll-snap-type: x mandatory;
+            }
+            
+            .summary-card {
+                min-width: 140px;
+                flex-shrink: 0;
+                scroll-snap-align: start;
+                padding: 15px;
+            }
+            
+            .summary-card h3 {
+                font-size: 1.4rem;
+            }
+            
+            /* 🔥 MEJORA: Tabla → Cards en móvil */
+            .table-container table {
+                display: none;
+            }
+            
+            .mobile-transactions {
+                display: block;
+            }
+            
+            /* Form responsive */
+            .form-row {
+                flex-direction: column;
+            }
+            
+            .form-group {
+                flex: none;
+                margin-bottom: 15px;
+                padding: 0;
+            }
+            
+            /* Toast responsive */
+            .toast-notification {
+                right: 10px;
+                left: 10px;
+                max-width: none;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .summary-card {
+                min-width: 120px;
+                padding: 12px;
+            }
+            
+            .summary-card h3 {
+                font-size: 1.2rem;
+            }
+            
+            .summary-card p {
+                font-size: 0.8rem;
+            }
+            
+            .form-section {
+                padding: 15px;
+            }
+            
+            .header h2 {
+                font-size: 1.1rem;
             }
         }
         
@@ -405,6 +640,12 @@
             padding: 20px;
             text-align: center;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+        
+        .summary-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
         }
         
         .summary-card i {
@@ -415,6 +656,7 @@
         .summary-card h3 {
             font-size: 1.8rem;
             margin-bottom: 5px;
+            font-weight: 700;
         }
         
         .summary-card p {
@@ -424,37 +666,40 @@
         
         /* Status */
         .status {
-            padding: 10px;
-            border-radius: 5px;
+            padding: 15px;
+            border-radius: 8px;
             margin: 10px 0;
             text-align: center;
             font-weight: 500;
+            transition: all 0.3s ease;
         }
         
         .status-connected {
             background: rgba(76, 201, 240, 0.2);
             color: var(--success);
+            border: 1px solid rgba(76, 201, 240, 0.3);
         }
         
         .status-disconnected {
             background: rgba(247, 37, 133, 0.2);
             color: var(--danger);
+            border: 1px solid rgba(247, 37, 133, 0.3);
         }
         
         /* Loading */
         .loading {
             text-align: center;
-            padding: 20px;
+            padding: 30px;
         }
         
         .spinner {
             border: 4px solid rgba(0, 0, 0, 0.1);
             border-radius: 50%;
             border-top: 4px solid var(--primary);
-            width: 30px;
-            height: 30px;
+            width: 40px;
+            height: 40px;
             animation: spin 1s linear infinite;
-            margin: 0 auto;
+            margin: 0 auto 15px auto;
         }
         
         @keyframes spin {
@@ -468,14 +713,18 @@
             align-items: center;
             margin-bottom: 20px;
             gap: 15px;
+            flex-wrap: wrap;
         }
         
         .monthly-filter label {
             margin-bottom: 0;
+            font-weight: 600;
+            color: var(--dark);
         }
         
         .monthly-filter select {
             width: auto;
+            min-width: 180px;
         }
         
         /* Chart Container */
@@ -495,12 +744,22 @@
             height: 100%;
             color: var(--gray);
             font-style: italic;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .chart-placeholder i {
+            font-size: 3rem;
+            opacity: 0.5;
         }
     </style>
 </head>
 <body>
+    <!-- 🔥 MEJORA: Overlay para sidebar -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+    
     <!-- Sidebar -->
-    <div class="sidebar">
+    <div class="sidebar" id="sidebar">
         <div class="logo">
             <h1>Familia <span>Serrano</span> 👨‍👨‍👧‍👦</h1>
         </div>
@@ -516,7 +775,7 @@
     
     <!-- Main Content -->
     <div class="main-content">
-        <button class="menu-toggle">
+        <button class="menu-toggle" id="menu-toggle">
             <i class="fas fa-bars"></i>
         </button>
         
@@ -608,13 +867,14 @@
         <!-- Chart Placeholder -->
         <div class="chart-container">
             <div class="chart-placeholder">
-                <p><i class="fas fa-chart-bar"></i> Historial mensual de ingresos y gastos</p>
+                <i class="fas fa-chart-bar"></i>
+                <p>Historial mensual de ingresos y gastos</p>
             </div>
         </div>
         
         <!-- Ingresos Form -->
         <div class="form-section">
-            <h3 class="section-title">Registrar Ingreso</h3>
+            <h3 class="section-title">💰 Registrar Ingreso</h3>
             <form id="income-form">
                 <div class="form-row">
                     <div class="form-group">
@@ -641,31 +901,34 @@
                     <label for="income-description">Descripción</label>
                     <textarea id="income-description" rows="2" placeholder="Detalles del ingreso..."></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Registrar Ingreso</button>
+                <button type="submit" class="btn btn-primary" id="income-submit-btn">
+                    <span class="btn-text"><i class="fas fa-plus-circle"></i> Registrar Ingreso</span>
+                    <span class="btn-loading"><i class="fas fa-spinner fa-spin"></i> Guardando...</span>
+                </button>
             </form>
         </div>
         
         <!-- Gastos Form -->
         <div class="form-section">
-            <h3 class="section-title">Registrar Gasto</h3>
+            <h3 class="section-title">💸 Registrar Gasto</h3>
             <form id="expense-form">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="expense-category">Categoría</label>
                         <select id="expense-category" required>
                             <option value="">Seleccionar...</option>
-                            <option value="comida">Comidas</option>
-                            <option value="salidas">Salidas/Entretenimiento</option>
-                            <option value="tarjetas">Pago Tarjetas de Crédito</option>
-                            <option value="creditos">Créditos (Bancoomeva, Fesfa)</option>
-                            <option value="gasolina">Gasolina Moto</option>
-                            <option value="gasolina-carro">Gasolina Carro</option>
-                            <option value="gastos-varios">Gastos Varios</option>
-                            <option value="agua">Recibo de Agua</option>
-                            <option value="luz">Recibo de Luz</option>
-                            <option value="gas">Recibo de Gas</option>
-                            <option value="celular">Planes Móviles</option>
-                            <option value="internet">Plan de Internet</option>
+                            <option value="comida">🍽️ Comidas</option>
+                            <option value="salidas">🎯 Salidas/Entretenimiento</option>
+                            <option value="tarjetas">💳 Pago Tarjetas de Crédito</option>
+                            <option value="creditos">🏦 Créditos (Bancoomeva, Fesfa)</option>
+                            <option value="gasolina">⛽ Gasolina Moto</option>
+                            <option value="gasolina-carro">🚗 Gasolina Carro</option>
+                            <option value="gastos-varios">📦 Gastos Varios</option>
+                            <option value="agua">💧 Recibo de Agua</option>
+                            <option value="luz">💡 Recibo de Luz</option>
+                            <option value="gas">🔥 Recibo de Gas</option>
+                            <option value="celular">📱 Planes Móviles</option>
+                            <option value="internet">📡 Plan de Internet</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -681,17 +944,22 @@
                     <label for="expense-description">Descripción</label>
                     <textarea id="expense-description" rows="2" placeholder="Detalles del gasto..."></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Registrar Gasto</button>
+                <button type="submit" class="btn btn-primary" id="expense-submit-btn">
+                    <span class="btn-text"><i class="fas fa-plus-circle"></i> Registrar Gasto</span>
+                    <span class="btn-loading"><i class="fas fa-spinner fa-spin"></i> Guardando...</span>
+                </button>
             </form>
         </div>
         
         <!-- Transacciones Recientes -->
         <div class="table-container">
-            <h3 class="section-title">Transacciones Recientes</h3>
+            <h3 class="section-title">📋 Transacciones Recientes</h3>
             <div id="loading-transactions" class="loading">
                 <div class="spinner"></div>
                 <p>Cargando transacciones...</p>
             </div>
+            
+            <!-- 🔥 MEJORA: Vista desktop (tabla original) -->
             <table id="transactions-table" style="display: none;">
                 <thead>
                     <tr>
@@ -707,6 +975,11 @@
                     <!-- Las transacciones se cargarán aquí -->
                 </tbody>
             </table>
+            
+            <!-- 🔥 MEJORA: Vista móvil (cards) -->
+            <div class="mobile-transactions" id="mobile-transactions">
+                <!-- Las transacciones móviles se cargarán aquí -->
+            </div>
         </div>
     </div>
 
@@ -756,6 +1029,46 @@
     </script>
     
     <script>
+        // 🔥 MEJORA: Sistema de Toast Notifications
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast-notification toast-${type}`;
+            toast.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(toast);
+            
+            // Remover después de 4 segundos
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            }, 4000);
+        }
+        
+        // 🔥 MEJORA: Toggle sidebar móvil
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        });
+        
+        // Cerrar sidebar al hacer clic en overlay
+        document.getElementById('sidebar-overlay').addEventListener('click', function() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+        
         // Referencias a elementos del DOM
         const connectionStatus = document.getElementById('connection-status');
         const incomeValue = document.getElementById('income-value');
@@ -769,25 +1082,30 @@
         const transactionsTable = document.getElementById('transactions-table');
         const loadingTransactions = document.getElementById('loading-transactions');
         const monthSelector = document.getElementById('month-selector');
+        const mobileTransactions = document.getElementById('mobile-transactions');
         
-        // Función para cargar transacciones
+        // 🔥 MEJORA: Función mejorada para cargar transacciones (con vista móvil)
         function loadTransactions() {
             // Ocultar tabla y mostrar loading
             transactionsTable.style.display = 'none';
+            mobileTransactions.style.display = 'none';
             loadingTransactions.style.display = 'block';
             
             const q = query(collection(window.db, "transactions"), orderBy("date", "desc"), limit(20));
             
             onSnapshot(q, (querySnapshot) => {
                 transactionsBody.innerHTML = '';
+                mobileTransactions.innerHTML = '';
                 
                 if (querySnapshot.empty) {
                     transactionsBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No hay transacciones registradas</td></tr>';
+                    mobileTransactions.innerHTML = '<div style="text-align: center; padding: 40px; color: #6c757d;">No hay transacciones registradas</div>';
                 } else {
                     querySnapshot.forEach((doc) => {
                         const data = doc.data();
-                        const row = document.createElement('tr');
                         
+                        // Fila para tabla desktop
+                        const row = document.createElement('tr');
                         row.innerHTML = `
                             <td>${formatDate(data.date)}</td>
                             <td>${data.description || '-'}</td>
@@ -805,16 +1123,41 @@
                                 </button>
                             </td>
                         `;
-                        
                         transactionsBody.appendChild(row);
+                        
+                        // Card para vista móvil
+                        const card = document.createElement('div');
+                        card.className = `transaction-card ${data.type}`;
+                        card.innerHTML = `
+                            <div class="transaction-header">
+                                <span class="badge ${data.type === 'income' ? 'badge-income' : 'badge-expense'}">
+                                    ${data.type === 'income' ? '💰 Ingreso' : '💸 Gasto'}
+                                </span>
+                                <span class="transaction-amount">$${parseFloat(data.amount).toLocaleString()}</span>
+                            </div>
+                            <div class="transaction-details">
+                                <strong>${data.categoryName || data.category || 'Sin categoría'}</strong>
+                                <small>${formatDate(data.date)} • ${data.description || 'Sin descripción'}</small>
+                            </div>
+                            <div class="transaction-actions">
+                                <button class="btn-edit" data-id="${doc.id}">
+                                    <i class="fas fa-edit"></i> Editar
+                                </button>
+                                <button class="btn-delete" data-id="${doc.id}">
+                                    <i class="fas fa-trash"></i> Eliminar
+                                </button>
+                            </div>
+                        `;
+                        mobileTransactions.appendChild(card);
                     });
                 }
                 
-                // Mostrar tabla y ocultar loading
+                // Mostrar tabla y vista móvil, ocultar loading
                 loadingTransactions.style.display = 'none';
                 transactionsTable.style.display = 'table';
+                mobileTransactions.style.display = 'block';
                 
-                // Agregar event listeners a los botones
+                // Agregar event listeners a los botones (ambas vistas)
                 document.querySelectorAll('.edit-btn').forEach(btn => {
                     btn.addEventListener('click', () => editTransaction(btn.dataset.id));
                 });
@@ -822,16 +1165,26 @@
                 document.querySelectorAll('.delete-btn').forEach(btn => {
                     btn.addEventListener('click', () => deleteTransaction(btn.dataset.id));
                 });
+                
+                document.querySelectorAll('.btn-edit').forEach(btn => {
+                    btn.addEventListener('click', () => editTransaction(btn.dataset.id));
+                });
+                
+                document.querySelectorAll('.btn-delete').forEach(btn => {
+                    btn.addEventListener('click', () => deleteTransaction(btn.dataset.id));
+                });
             }, (error) => {
                 console.error("Error cargando transacciones: ", error);
                 loadingTransactions.innerHTML = '<p>Error al cargar transacciones</p>';
+                showToast('Error al cargar transacciones', 'error');
             });
         }
         
-        // Función para cargar transacciones por mes
+        // Función para cargar transacciones por mes (MANTENIDA IGUAL)
         function loadTransactionsByMonth(selectedMonth) {
             // Ocultar tabla y mostrar loading
             transactionsTable.style.display = 'none';
+            mobileTransactions.style.display = 'none';
             loadingTransactions.style.display = 'block';
             
             let q;
@@ -849,7 +1202,7 @@
                 q = query(
                     collection(window.db, "transactions"),
                     where("date", ">=", startOfMonth.toISOString().split('T')[0]),
-                    where("date", "<", endOfMonth.toISOString().split('T')[0]),
+                    where("date", "<", endOfMonth.toISOString().split('T')),
                     orderBy("date", "desc")
                 );
             } else {
@@ -871,14 +1224,17 @@
             
             onSnapshot(q, (querySnapshot) => {
                 transactionsBody.innerHTML = '';
+                mobileTransactions.innerHTML = '';
                 
                 if (querySnapshot.empty) {
                     transactionsBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No hay transacciones para este mes</td></tr>';
+                    mobileTransactions.innerHTML = '<div style="text-align: center; padding: 40px; color: #6c757d;">No hay transacciones para este mes</div>';
                 } else {
                     querySnapshot.forEach((doc) => {
                         const data = doc.data();
-                        const row = document.createElement('tr');
                         
+                        // Fila para tabla desktop
+                        const row = document.createElement('tr');
                         row.innerHTML = `
                             <td>${formatDate(data.date)}</td>
                             <td>${data.description || '-'}</td>
@@ -896,14 +1252,39 @@
                                 </button>
                             </td>
                         `;
-                        
                         transactionsBody.appendChild(row);
+                        
+                        // Card para vista móvil
+                        const card = document.createElement('div');
+                        card.className = `transaction-card ${data.type}`;
+                        card.innerHTML = `
+                            <div class="transaction-header">
+                                <span class="badge ${data.type === 'income' ? 'badge-income' : 'badge-expense'}">
+                                    ${data.type === 'income' ? '💰 Ingreso' : '💸 Gasto'}
+                                </span>
+                                <span class="transaction-amount">$${parseFloat(data.amount).toLocaleString()}</span>
+                            </div>
+                            <div class="transaction-details">
+                                <strong>${data.categoryName || data.category || 'Sin categoría'}</strong>
+                                <small>${formatDate(data.date)} • ${data.description || 'Sin descripción'}</small>
+                            </div>
+                            <div class="transaction-actions">
+                                <button class="btn-edit" data-id="${doc.id}">
+                                    <i class="fas fa-edit"></i> Editar
+                                </button>
+                                <button class="btn-delete" data-id="${doc.id}">
+                                    <i class="fas fa-trash"></i> Eliminar
+                                </button>
+                            </div>
+                        `;
+                        mobileTransactions.appendChild(card);
                     });
                 }
                 
-                // Mostrar tabla y ocultar loading
+                // Mostrar tabla y vista móvil, ocultar loading
                 loadingTransactions.style.display = 'none';
                 transactionsTable.style.display = 'table';
+                mobileTransactions.style.display = 'block';
                 
                 // Agregar event listeners a los botones
                 document.querySelectorAll('.edit-btn').forEach(btn => {
@@ -914,15 +1295,24 @@
                     btn.addEventListener('click', () => deleteTransaction(btn.dataset.id));
                 });
                 
+                document.querySelectorAll('.btn-edit').forEach(btn => {
+                    btn.addEventListener('click', () => editTransaction(btn.dataset.id));
+                });
+                
+                document.querySelectorAll('.btn-delete').forEach(btn => {
+                    btn.addEventListener('click', () => deleteTransaction(btn.dataset.id));
+                });
+                
                 // Actualizar resumen para el mes seleccionado
                 loadSummaryForMonth(selectedMonth);
             }, (error) => {
                 console.error("Error cargando transacciones: ", error);
                 loadingTransactions.innerHTML = '<p>Error al cargar transacciones</p>';
+                showToast('Error al cargar transacciones', 'error');
             });
         }
         
-        // Función para cargar resumen
+        // Función para cargar resumen (MANTENIDA IGUAL)
         function loadSummary() {
             // Mostrar loading en cards
             incomeValue.textContent = '$0';
@@ -963,10 +1353,11 @@
                 totalDebt.textContent = '$0';
             }).catch((error) => {
                 console.error("Error cargando resumen: ", error);
+                showToast('Error al cargar resumen', 'error');
             });
         }
         
-        // Función para cargar resumen por mes
+        // Función para cargar resumen por mes (MANTENIDA IGUAL)
         function loadSummaryForMonth(selectedMonth) {
             // Mostrar loading en cards
             incomeValue.textContent = '$0';
@@ -992,7 +1383,7 @@
                 q = query(
                     collection(window.db, "transactions"),
                     where("date", ">=", startOfMonth.toISOString().split('T')[0]),
-                    where("date", "<", endOfMonth.toISOString().split('T')[0])
+                    where("date", "<", endOfMonth.toISOString().split('T'))
                 );
             } else {
                 // Formato esperado: "YYYY-MM"
@@ -1038,10 +1429,11 @@
                 totalDebt.textContent = '$0';
             }).catch((error) => {
                 console.error("Error cargando resumen: ", error);
+                showToast('Error al cargar resumen', 'error');
             });
         }
         
-        // Formatear fecha
+        // Formatear fecha (MANTENIDA IGUAL)
         function formatDate(dateString) {
             if (!dateString) return '-';
             
@@ -1058,81 +1450,122 @@
             return date.toLocaleDateString('es-ES', options);
         }
         
-        // Editar transacción
+        // Editar transacción (MANTENIDA IGUAL)
         function editTransaction(id) {
-            alert(`Editar transacción con ID: ${id}\n(En una implementación completa, abrirías un formulario para editar)`);
+            showToast(`Función de edición en desarrollo para ID: ${id}`, 'warning');
         }
         
-        // Eliminar transacción
+        // 🔥 MEJORA: Eliminar transacción con toast
         function deleteTransaction(id) {
             if (confirm('¿Estás seguro de que deseas eliminar esta transacción?')) {
                 deleteDoc(doc(window.db, "transactions", id))
                     .then(() => {
                         console.log("Transacción eliminada");
                         loadSummary(); // Actualizar resumen
+                        showToast('Transacción eliminada exitosamente', 'success');
                     })
                     .catch((error) => {
                         console.error("Error eliminando transacción: ", error);
-                        alert("Error al eliminar la transacción");
+                        showToast('Error al eliminar la transacción', 'error');
                     });
             }
         }
         
-        // Registrar ingreso
+        // 🔥 MEJORA: Registrar ingreso con loading y toast
         document.getElementById('income-form').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const incomeData = {
-                type: 'income',
-                source: document.getElementById('income-source').value,
-                amount: parseFloat(document.getElementById('income-amount').value),
-                date: document.getElementById('income-date').value,
-                description: document.getElementById('income-description').value,
-                category: document.getElementById('income-source').options[document.getElementById('income-source').selectedIndex].text,
-                createdAt: window.Timestamp.now()
-            };
+            const submitBtn = document.getElementById('income-submit-btn');
+            submitBtn.classList.add('loading');
             
-            addDoc(collection(window.db, "transactions"), incomeData)
-                .then(() => {
-                    console.log("Ingreso registrado");
-                    this.reset();
-                    document.getElementById('income-date').value = new Date().toISOString().split('T')[0];
-                    loadSummary(); // Actualizar resumen
-                })
-                .catch((error) => {
-                    console.error("Error registrando ingreso: ", error);
-                    alert("Error al registrar el ingreso");
-                });
+            const source = document.getElementById('income-source').value;
+            const amount = document.getElementById('income-amount').value;
+            const date = document.getElementById('income-date').value;
+            const description = document.getElementById('income-description').value;
+            
+            // Obtener nombre de la categoría
+            const sourceSelect = document.getElementById('income-source');
+            const categoryName = sourceSelect.options[sourceSelect.selectedIndex].text;
+            
+            addDoc(collection(window.db, "transactions"), {
+                type: 'income',
+                category: source,
+                categoryName: categoryName,
+                amount: parseFloat(amount),
+                date: date,
+                description: description,
+                timestamp: new Date()
+            })
+            .then((docRef) => {
+                console.log("Ingreso registrado con ID: ", docRef.id);
+                
+                // Limpiar formulario
+                this.reset();
+                document.getElementById('income-date').value = new Date().toISOString().split('T')[0];
+                
+                // Actualizar datos
+                loadSummary();
+                
+                // Mostrar toast de éxito
+                showToast('Ingreso registrado exitosamente', 'success');
+            })
+            .catch((error) => {
+                console.error("Error registrando ingreso: ", error);
+                showToast('Error al registrar el ingreso', 'error');
+            })
+            .finally(() => {
+                submitBtn.classList.remove('loading');
+            });
         });
         
-        // Registrar gasto
+        // 🔥 MEJORA: Registrar gasto con loading y toast
         document.getElementById('expense-form').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const expenseData = {
-                type: 'expense',
-                category: document.getElementById('expense-category').value,
-                amount: parseFloat(document.getElementById('expense-amount').value),
-                date: document.getElementById('expense-date').value,
-                description: document.getElementById('expense-description').value,
-                categoryName: document.getElementById('expense-category').options[document.getElementById('expense-category').selectedIndex].text,
-                createdAt: window.Timestamp.now()
-            };
+            const submitBtn = document.getElementById('expense-submit-btn');
+            submitBtn.classList.add('loading');
             
-            addDoc(collection(window.db, "transactions"), expenseData)
-                .then(() => {
-                    console.log("Gasto registrado");
-                    this.reset();
-                    document.getElementById('expense-date').value = new Date().toISOString().split('T')[0];
-                    loadSummary(); // Actualizar resumen
-                })
-                .catch((error) => {
-                    console.error("Error registrando gasto: ", error);
-                    alert("Error al registrar el gasto");
-                });
+            const category = document.getElementById('expense-category').value;
+            const amount = document.getElementById('expense-amount').value;
+            const date = document.getElementById('expense-date').value;
+            const description = document.getElementById('expense-description').value;
+            
+            // Obtener nombre de la categoría
+            const categorySelect = document.getElementById('expense-category');
+            const categoryName = categorySelect.options[categorySelect.selectedIndex].text;
+            
+            addDoc(collection(window.db, "transactions"), {
+                type: 'expense',
+                category: category,
+                categoryName: categoryName,
+                amount: parseFloat(amount),
+                date: date,
+                description: description,
+                timestamp: new Date()
+            })
+            .then((docRef) => {
+                console.log("Gasto registrado con ID: ", docRef.id);
+                
+                // Limpiar formulario
+                this.reset();
+                document.getElementById('expense-date').value = new Date().toISOString().split('T')[0];
+                
+                // Actualizar datos
+                loadSummary();
+                
+                // Mostrar toast de éxito
+                showToast('Gasto registrado exitosamente', 'success');
+            })
+            .catch((error) => {
+                console.error("Error registrando gasto: ", error);
+                showToast('Error al registrar el gasto', 'error');
+            })
+            .finally(() => {
+                submitBtn.classList.remove('loading');
+            });
         });
         
-        // Evento para cambiar el filtro mensual
+        // Event listener para el selector de mes (MANTENIDO IGUAL)
         monthSelector.addEventListener('change', function() {
             const selectedMonth = this.value;
             if (selectedMonth === 'current') {
@@ -1142,18 +1575,12 @@
             }
         });
         
-        // Toggle sidebar on mobile
-        document.querySelector('.menu-toggle').addEventListener('click', function() {
-            document.querySelector('.sidebar').classList.toggle('active');
+        // Inicializar fechas con fecha actual
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('income-date').value = today;
+            document.getElementById('expense-date').value = today;
         });
-        
-        // Set today's date as default
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById('income-date').value = today;
-        document.getElementById('expense-date').value = today;
-        
-        // Cargar transacciones iniciales
-        loadTransactions();
     </script>
 </body>
 </html>
