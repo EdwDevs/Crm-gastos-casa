@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRM Financiero Familiar</title>
+    <title>CRM Financiero Familiar Serrano</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -461,21 +461,56 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        
+        /* Monthly Filter */
+        .monthly-filter {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 15px;
+        }
+        
+        .monthly-filter label {
+            margin-bottom: 0;
+        }
+        
+        .monthly-filter select {
+            width: auto;
+        }
+        
+        /* Chart Container */
+        .chart-container {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            height: 300px;
+        }
+        
+        .chart-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: var(--gray);
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="logo">
-            <h1>CRM <span>Familiar</span></h1>
+            <h1>Familia <span>Serrano</span> 👨‍👨‍👧‍👦</h1>
         </div>
         <ul class="nav-links">
             <li><a href="#" class="active"><i class="fas fa-home"></i> <span>Dashboard</span></a></li>
             <li><a href="#"><i class="fas fa-wallet"></i> <span>Ingresos</span></a></li>
             <li><a href="#"><i class="fas fa-shopping-cart"></i> <span>Gastos</span></a></li>
             <li><a href="#"><i class="fas fa-chart-pie"></i> <span>Reportes</span></a></li>
+            <li><a href="#"><i class="fas fa-history"></i> <span>Historial</span></a></li>
             <li><a href="#"><i class="fas fa-cog"></i> <span>Configuración</span></a></li>
-            <li><a href="#"><i class="fas fa-question-circle"></i> <span>Ayuda</span></a></li>
         </ul>
     </div>
     
@@ -486,10 +521,10 @@
         </button>
         
         <div class="header">
-            <h2><i class="fas fa-chart-line"></i> Dashboard Financiero</h2>
+            <h2><i class="fas fa-chart-line"></i> Dashboard Financiero - Familia Serrano 👨‍👨‍👧‍👦</h2>
             <div class="user-info">
-                <img src="https://ui-avatars.com/api/?name=Usuario+Familiar&background=4361ee&color=fff" alt="Usuario">
-                <span>Familia Pérez</span>
+                <img src="https://ui-avatars.com/api/?name=Familia+Serrano&background=4361ee&color=fff" alt="Familia Serrano">
+                <span>Familia Serrano</span>
             </div>
         </div>
         
@@ -555,6 +590,25 @@
                 </div>
                 <div class="card-value" id="balance-value">$0</div>
                 <div class="card-footer">Ahorro mensual</div>
+            </div>
+        </div>
+        
+        <!-- Monthly Filter -->
+        <div class="monthly-filter">
+            <label for="month-selector"><i class="fas fa-calendar-alt"></i> Filtrar por mes:</label>
+            <select id="month-selector">
+                <option value="current">Mes actual</option>
+                <option value="2023-09">Septiembre 2023</option>
+                <option value="2023-08">Agosto 2023</option>
+                <option value="2023-07">Julio 2023</option>
+                <option value="2023-06">Junio 2023</option>
+            </select>
+        </div>
+        
+        <!-- Chart Placeholder -->
+        <div class="chart-container">
+            <div class="chart-placeholder">
+                <p><i class="fas fa-chart-bar"></i> Historial mensual de ingresos y gastos</p>
             </div>
         </div>
         
@@ -660,7 +714,7 @@
     <script type="module">
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, onSnapshot, query, orderBy, limit, Timestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, onSnapshot, query, orderBy, limit, Timestamp, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         // Your web app's Firebase configuration
         const firebaseConfig = {
@@ -688,6 +742,7 @@
         window.orderBy = orderBy;
         window.limit = limit;
         window.Timestamp = Timestamp;
+        window.where = where;
         
         console.log("Firebase inicializado correctamente");
         
@@ -713,6 +768,7 @@
         const transactionsBody = document.getElementById('transactions-body');
         const transactionsTable = document.getElementById('transactions-table');
         const loadingTransactions = document.getElementById('loading-transactions');
+        const monthSelector = document.getElementById('month-selector');
         
         // Función para cargar transacciones
         function loadTransactions() {
@@ -772,6 +828,100 @@
             });
         }
         
+        // Función para cargar transacciones por mes
+        function loadTransactionsByMonth(selectedMonth) {
+            // Ocultar tabla y mostrar loading
+            transactionsTable.style.display = 'none';
+            loadingTransactions.style.display = 'block';
+            
+            let q;
+            
+            if (selectedMonth === 'current') {
+                // Obtener el primer día del mes actual
+                const startOfMonth = new Date();
+                startOfMonth.setDate(1);
+                startOfMonth.setHours(0, 0, 0, 0);
+                
+                // Obtener el primer día del próximo mes
+                const endOfMonth = new Date(startOfMonth);
+                endOfMonth.setMonth(endOfMonth.getMonth() + 1);
+                
+                q = query(
+                    collection(window.db, "transactions"),
+                    where("date", ">=", startOfMonth.toISOString().split('T')[0]),
+                    where("date", "<", endOfMonth.toISOString().split('T')[0]),
+                    orderBy("date", "desc")
+                );
+            } else {
+                // Formato esperado: "YYYY-MM"
+                const [year, month] = selectedMonth.split('-');
+                
+                // Crear fechas para el inicio y fin del mes
+                const startDate = `${year}-${month}-01`;
+                const endDate = new Date(year, month, 0); // Último día del mes
+                const formattedEndDate = `${year}-${month}-${endDate.getDate()}`;
+                
+                q = query(
+                    collection(window.db, "transactions"),
+                    where("date", ">=", startDate),
+                    where("date", "<=", formattedEndDate),
+                    orderBy("date", "desc")
+                );
+            }
+            
+            onSnapshot(q, (querySnapshot) => {
+                transactionsBody.innerHTML = '';
+                
+                if (querySnapshot.empty) {
+                    transactionsBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No hay transacciones para este mes</td></tr>';
+                } else {
+                    querySnapshot.forEach((doc) => {
+                        const data = doc.data();
+                        const row = document.createElement('tr');
+                        
+                        row.innerHTML = `
+                            <td>${formatDate(data.date)}</td>
+                            <td>${data.description || '-'}</td>
+                            <td>${data.categoryName || data.category || '-'}</td>
+                            <td>$${parseFloat(data.amount).toLocaleString()}</td>
+                            <td><span class="badge ${data.type === 'income' ? 'badge-income' : 'badge-expense'}">
+                                ${data.type === 'income' ? 'Ingreso' : 'Gasto'}
+                            </span></td>
+                            <td>
+                                <button class="action-btn edit-btn" data-id="${doc.id}">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="action-btn delete-btn" data-id="${doc.id}">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        `;
+                        
+                        transactionsBody.appendChild(row);
+                    });
+                }
+                
+                // Mostrar tabla y ocultar loading
+                loadingTransactions.style.display = 'none';
+                transactionsTable.style.display = 'table';
+                
+                // Agregar event listeners a los botones
+                document.querySelectorAll('.edit-btn').forEach(btn => {
+                    btn.addEventListener('click', () => editTransaction(btn.dataset.id));
+                });
+                
+                document.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', () => deleteTransaction(btn.dataset.id));
+                });
+                
+                // Actualizar resumen para el mes seleccionado
+                loadSummaryForMonth(selectedMonth);
+            }, (error) => {
+                console.error("Error cargando transacciones: ", error);
+                loadingTransactions.innerHTML = '<p>Error al cargar transacciones</p>';
+            });
+        }
+        
         // Función para cargar resumen
         function loadSummary() {
             // Mostrar loading en cards
@@ -786,6 +936,81 @@
             // Calcular totales reales
             const transactionsRef = collection(window.db, "transactions");
             getDocs(transactionsRef).then((querySnapshot) => {
+                let totalIncomeVal = 0;
+                let totalExpenseVal = 0;
+                
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const amount = parseFloat(data.amount) || 0;
+                    
+                    if (data.type === 'income') {
+                        totalIncomeVal += amount;
+                    } else if (data.type === 'expense') {
+                        totalExpenseVal += amount;
+                    }
+                });
+                
+                const balance = totalIncomeVal - totalExpenseVal;
+                
+                incomeValue.textContent = `$${totalIncomeVal.toLocaleString()}`;
+                expenseValue.textContent = `$${totalExpenseVal.toLocaleString()}`;
+                balanceValue.textContent = `$${balance.toLocaleString()}`;
+                totalIncome.textContent = `$${totalIncomeVal.toLocaleString()}`;
+                totalExpense.textContent = `$${totalExpenseVal.toLocaleString()}`;
+                totalSavings.textContent = `$${balance.toLocaleString()}`;
+                
+                // Calcular deudas (ejemplo simplificado)
+                totalDebt.textContent = '$0';
+            }).catch((error) => {
+                console.error("Error cargando resumen: ", error);
+            });
+        }
+        
+        // Función para cargar resumen por mes
+        function loadSummaryForMonth(selectedMonth) {
+            // Mostrar loading en cards
+            incomeValue.textContent = '$0';
+            expenseValue.textContent = '$0';
+            balanceValue.textContent = '$0';
+            totalIncome.textContent = '$0';
+            totalExpense.textContent = '$0';
+            totalSavings.textContent = '$0';
+            totalDebt.textContent = '$0';
+            
+            let q;
+            
+            if (selectedMonth === 'current') {
+                // Obtener el primer día del mes actual
+                const startOfMonth = new Date();
+                startOfMonth.setDate(1);
+                startOfMonth.setHours(0, 0, 0, 0);
+                
+                // Obtener el primer día del próximo mes
+                const endOfMonth = new Date(startOfMonth);
+                endOfMonth.setMonth(endOfMonth.getMonth() + 1);
+                
+                q = query(
+                    collection(window.db, "transactions"),
+                    where("date", ">=", startOfMonth.toISOString().split('T')[0]),
+                    where("date", "<", endOfMonth.toISOString().split('T')[0])
+                );
+            } else {
+                // Formato esperado: "YYYY-MM"
+                const [year, month] = selectedMonth.split('-');
+                
+                // Crear fechas para el inicio y fin del mes
+                const startDate = `${year}-${month}-01`;
+                const endDate = new Date(year, month, 0); // Último día del mes
+                const formattedEndDate = `${year}-${month}-${endDate.getDate()}`;
+                
+                q = query(
+                    collection(window.db, "transactions"),
+                    where("date", ">=", startDate),
+                    where("date", "<=", formattedEndDate)
+                );
+            }
+            
+            getDocs(q).then((querySnapshot) => {
                 let totalIncomeVal = 0;
                 let totalExpenseVal = 0;
                 
@@ -907,6 +1132,16 @@
                 });
         });
         
+        // Evento para cambiar el filtro mensual
+        monthSelector.addEventListener('change', function() {
+            const selectedMonth = this.value;
+            if (selectedMonth === 'current') {
+                loadTransactions();
+            } else {
+                loadTransactionsByMonth(selectedMonth);
+            }
+        });
+        
         // Toggle sidebar on mobile
         document.querySelector('.menu-toggle').addEventListener('click', function() {
             document.querySelector('.sidebar').classList.toggle('active');
@@ -916,6 +1151,9 @@
         const today = new Date().toISOString().split('T')[0];
         document.getElementById('income-date').value = today;
         document.getElementById('expense-date').value = today;
+        
+        // Cargar transacciones iniciales
+        loadTransactions();
     </script>
 </body>
 </html>
