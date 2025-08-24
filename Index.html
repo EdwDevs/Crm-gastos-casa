@@ -783,6 +783,13 @@
             width: auto;
             min-width: 200px;
         }
+
+        /* ➕ NUEVO ESTILO: Para el botón de nuevo mes */
+        .monthly-filter .btn {
+            padding: 14px 24px;
+            font-size: 0.95rem;
+            min-height: 52px;
+        }
         
         /* Chart Container */
         .chart-container {
@@ -943,6 +950,11 @@
             .monthly-filter select {
                 width: 100%;
             }
+            
+            /* ➕ NUEVO ESTILO: Botón de nuevo mes en móvil */
+            .monthly-filter .btn {
+                width: 100%;
+            }
         }
         
         @media (max-width: 576px) {
@@ -978,10 +990,8 @@
     </style>
 </head>
 <body>
-    <!-- 🎨 MEJORA: Overlay más bonito -->
     <div class="sidebar-overlay" id="sidebar-overlay"></div>
     
-    <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <div class="logo">
             <h1>Familia <span>Serrano</span></h1>
@@ -997,7 +1007,6 @@
         </ul>
     </div>
     
-    <!-- Main Content -->
     <div class="main-content">
         <button class="menu-toggle" id="menu-toggle">
             <i class="fas fa-bars"></i>
@@ -1011,12 +1020,10 @@
             </div>
         </div>
         
-        <!-- Connection Status -->
         <div id="connection-status" class="status status-disconnected">
             <i class="fas fa-exclamation-circle"></i> Inicializando Firebase...
         </div>
         
-        <!-- Summary Cards -->
         <div class="summary-cards">
             <div class="summary-card">
                 <i class="fas fa-wallet"></i>
@@ -1040,7 +1047,6 @@
             </div>
         </div>
         
-        <!-- Dashboard Cards -->
         <div class="dashboard">
             <div class="card">
                 <div class="card-header">
@@ -1076,7 +1082,6 @@
             </div>
         </div>
         
-        <!-- 🆕 FECHAS ACTUALIZADAS: Monthly Filter -->
         <div class="monthly-filter">
             <label for="month-selector"><i class="fas fa-calendar-alt"></i> Filtrar por mes:</label>
             <select id="month-selector">
@@ -1093,9 +1098,11 @@
                 <option value="2024-11">Noviembre 2024</option>
                 <option value="2024-10">Octubre 2024</option>
             </select>
+            <button id="new-month-btn" class="btn btn-primary">
+                <i class="fas fa-calendar-plus"></i> Iniciar Nuevo Mes
+            </button>
         </div>
         
-        <!-- Chart Placeholder -->
         <div class="chart-container">
             <div class="chart-placeholder">
                 <i class="fas fa-chart-bar"></i>
@@ -1103,7 +1110,6 @@
             </div>
         </div>
         
-        <!-- Ingresos Form -->
         <div class="form-section">
             <h3 class="section-title">
                 <i class="fas fa-plus-circle"></i>
@@ -1142,7 +1148,6 @@
             </form>
         </div>
         
-        <!-- Gastos Form -->
         <div class="form-section">
             <h3 class="section-title">
                 <i class="fas fa-minus-circle"></i>
@@ -1188,7 +1193,6 @@
             </form>
         </div>
         
-        <!-- Transacciones Recientes -->
         <div class="table-container">
             <h3 class="section-title">
                 <i class="fas fa-history"></i>
@@ -1199,7 +1203,6 @@
                 <p>Cargando transacciones...</p>
             </div>
             
-            <!-- Vista desktop (tabla original) -->
             <table id="transactions-table" style="display: none;">
                 <thead>
                     <tr>
@@ -1212,18 +1215,14 @@
                     </tr>
                 </thead>
                 <tbody id="transactions-body">
-                    <!-- Las transacciones se cargarán aquí -->
-                </tbody>
+                    </tbody>
             </table>
             
-            <!-- Vista móvil (cards) -->
             <div class="mobile-transactions" id="mobile-transactions">
-                <!-- Las transacciones móviles se cargarán aquí -->
-            </div>
+                </div>
         </div>
     </div>
 
-    <!-- Firebase SDK -->
     <script type="module">
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -1435,7 +1434,7 @@
                 q = query(
                     collection(window.db, "transactions"),
                     where("date", ">=", startOfMonth.toISOString().split('T')[0]),
-                    where("date", "<", endOfMonth.toISOString().split('T')),
+                    where("date", "<", endOfMonth.toISOString().split('T')[0]),
                     orderBy("date", "desc")
                 );
             } else {
@@ -1608,7 +1607,7 @@
                 q = query(
                     collection(window.db, "transactions"),
                     where("date", ">=", startOfMonth.toISOString().split('T')[0]),
-                    where("date", "<", endOfMonth.toISOString().split('T'))
+                    where("date", "<", endOfMonth.toISOString().split('T')[0])
                 );
             } else {
                 // Formato esperado: "YYYY-MM"
@@ -1809,6 +1808,66 @@
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('income-date').value = today;
             document.getElementById('expense-date').value = today;
+        });
+
+        // ➕ NUEVA FUNCIÓN: Iniciar un nuevo mes
+        const newMonthBtn = document.getElementById('new-month-btn');
+        const monthSelectorForNewMonth = document.getElementById('month-selector');
+
+        newMonthBtn.addEventListener('click', function() {
+            if (confirm('¿Estás seguro de que quieres iniciar un nuevo mes? Esto agregará el próximo mes al selector.')) {
+                
+                // Encuentra el mes más reciente de las opciones (saltando "Mes actual")
+                const latestOption = monthSelectorForNewMonth.options[1]; // Asume que el último mes es siempre la segunda opción
+                const latestMonthValue = latestOption.value; // ej: "2025-08"
+
+                // Crea un objeto de fecha a partir del último mes.
+                const [year, month] = latestMonthValue.split('-');
+                const latestDate = new Date(year, month - 1, 15); // El mes es 0-indexado (0=enero)
+
+                // Suma un mes
+                latestDate.setMonth(latestDate.getMonth() + 1);
+
+                const newYear = latestDate.getFullYear();
+                const newMonth = latestDate.getMonth() + 1; // getMonth() es 0-indexado, se suma 1
+
+                // Formatea el valor del nuevo mes (YYYY-MM) y el texto (Mes AAAA)
+                const newMonthValue = `${newYear}-${String(newMonth).padStart(2, '0')}`;
+                const newMonthText = latestDate.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
+                // Pone en mayúscula la primera letra del mes
+                const capitalizedNewMonthText = newMonthText.charAt(0).toUpperCase() + newMonthText.slice(1);
+
+                // Verifica si este mes ya existe
+                let monthExists = false;
+                for (let i = 0; i < monthSelectorForNewMonth.options.length; i++) {
+                    if (monthSelectorForNewMonth.options[i].value === newMonthValue) {
+                        monthExists = true;
+                        break;
+                    }
+                }
+
+                if (monthExists) {
+                    // Si ya existe, simplemente lo selecciona
+                    monthSelectorForNewMonth.value = newMonthValue;
+                    showToast(`El mes de ${capitalizedNewMonthText} ya existe. Ha sido seleccionado.`, 'info');
+                } else {
+                    // Si no existe, crea y añade la nueva opción
+                    const newOption = document.createElement('option');
+                    newOption.value = newMonthValue;
+                    newOption.textContent = capitalizedNewMonthText;
+                    
+                    // Lo inserta después de la opción "Mes actual"
+                    monthSelectorForNewMonth.insertBefore(newOption, monthSelectorForNewMonth.options[1]);
+                    
+                    // Selecciona la nueva opción
+                    monthSelectorForNewMonth.value = newMonthValue;
+                    
+                    showToast(`🗓️ Se ha iniciado el mes de ${capitalizedNewMonthText}.`, 'success');
+                }
+
+                // Dispara el evento 'change' para filtrar las transacciones
+                monthSelectorForNewMonth.dispatchEvent(new Event('change'));
+            }
         });
     </script>
 </body>
