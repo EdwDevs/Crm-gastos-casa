@@ -784,7 +784,6 @@
             min-width: 200px;
         }
 
-        /* ➕ NUEVO ESTILO: Para el botón de nuevo mes */
         .monthly-filter .btn {
             padding: 14px 24px;
             font-size: 0.95rem;
@@ -951,7 +950,6 @@
                 width: 100%;
             }
             
-            /* ➕ NUEVO ESTILO: Botón de nuevo mes en móvil */
             .monthly-filter .btn {
                 width: 100%;
             }
@@ -1412,7 +1410,7 @@
             });
         }
         
-        // Función para cargar transacciones por mes (MANTENIDA IGUAL)
+        // Función para cargar transacciones por mes
         function loadTransactionsByMonth(selectedMonth) {
             // Ocultar tabla y mostrar loading
             transactionsTable.style.display = 'none';
@@ -1667,7 +1665,8 @@
             }
             
             // Si es una cadena de fecha
-            const date = new Date(dateString);
+            // ➕ CORRECCIÓN ZONA HORARIA: Se añade 'T00:00:00' para forzar la interpretación como hora local
+            const date = new Date(dateString + 'T00:00:00'); 
             if (isNaN(date.getTime())) return '-';
             
             const options = { 
@@ -1798,6 +1797,7 @@
             const selectedMonth = this.value;
             if (selectedMonth === 'current') {
                 loadTransactions();
+                loadSummary();
             } else {
                 loadTransactionsByMonth(selectedMonth);
             }
@@ -1810,7 +1810,7 @@
             document.getElementById('expense-date').value = today;
         });
 
-        // ➕ NUEVA FUNCIÓN: Iniciar un nuevo mes
+        // FUNCIÓN: Iniciar un nuevo mes
         const newMonthBtn = document.getElementById('new-month-btn');
         const monthSelectorForNewMonth = document.getElementById('month-selector');
 
