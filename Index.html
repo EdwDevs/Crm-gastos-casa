@@ -1084,18 +1084,7 @@
             <label for="month-selector"><i class="fas fa-calendar-alt"></i> Filtrar por mes:</label>
             <select id="month-selector">
                 <option value="current">Mes actual</option>
-                <option value="2025-08">Agosto 2025</option>
-                <option value="2025-07">Julio 2025</option>
-                <option value="2025-06">Junio 2025</option>
-                <option value="2025-05">Mayo 2025</option>
-                <option value="2025-04">Abril 2025</option>
-                <option value="2025-03">Marzo 2025</option>
-                <option value="2025-02">Febrero 2025</option>
-                <option value="2025-01">Enero 2025</option>
-                <option value="2024-12">Diciembre 2024</option>
-                <option value="2024-11">Noviembre 2024</option>
-                <option value="2024-10">Octubre 2024</option>
-            </select>
+                </select>
             <button id="new-month-btn" class="btn btn-primary">
                 <i class="fas fa-calendar-plus"></i> Iniciar Nuevo Mes
             </button>
@@ -1322,359 +1311,171 @@
         const monthSelector = document.getElementById('month-selector');
         const mobileTransactions = document.getElementById('mobile-transactions');
         
-        // Función para cargar transacciones (con vista móvil)
+        // 🔄 ACTUALIZADO: Cargar transacciones ahora escucha cambios en el selector
         function loadTransactions() {
-            // Ocultar tabla y mostrar loading
-            transactionsTable.style.display = 'none';
-            mobileTransactions.style.display = 'none';
-            loadingTransactions.style.display = 'block';
-            
-            const q = query(collection(window.db, "transactions"), orderBy("date", "desc"), limit(20));
-            
-            onSnapshot(q, (querySnapshot) => {
-                transactionsBody.innerHTML = '';
-                mobileTransactions.innerHTML = '';
-                
-                if (querySnapshot.empty) {
-                    transactionsBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No hay transacciones registradas</td></tr>';
-                    mobileTransactions.innerHTML = '<div style="text-align: center; padding: 40px; color: #718096;">No hay transacciones registradas</div>';
-                } else {
-                    querySnapshot.forEach((doc) => {
-                        const data = doc.data();
-                        
-                        // Fila para tabla desktop
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${formatDate(data.date)}</td>
-                            <td>${data.description || '-'}</td>
-                            <td>${data.categoryName || data.category || '-'}</td>
-                            <td><strong>$${parseFloat(data.amount).toLocaleString()}</strong></td>
-                            <td><span class="badge ${data.type === 'income' ? 'badge-income' : 'badge-expense'}">
-                                ${data.type === 'income' ? '💰 Ingreso' : '💸 Gasto'}
-                            </span></td>
-                            <td>
-                                <button class="action-btn edit-btn" data-id="${doc.id}" title="Editar">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="action-btn delete-btn" data-id="${doc.id}" title="Eliminar">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </td>
-                        `;
-                        transactionsBody.appendChild(row);
-                        
-                        // Card para vista móvil
-                        const card = document.createElement('div');
-                        card.className = `transaction-card ${data.type}`;
-                        card.innerHTML = `
-                            <div class="transaction-header">
-                                <span class="badge ${data.type === 'income' ? 'badge-income' : 'badge-expense'}">
-                                    ${data.type === 'income' ? '💰 Ingreso' : '💸 Gasto'}
-                                </span>
-                                <span class="transaction-amount">$${parseFloat(data.amount).toLocaleString()}</span>
-                            </div>
-                            <div class="transaction-details">
-                                <strong>${data.categoryName || data.category || 'Sin categoría'}</strong>
-                                <small>${formatDate(data.date)} • ${data.description || 'Sin descripción'}</small>
-                            </div>
-                            <div class="transaction-actions">
-                                <button class="btn-edit" data-id="${doc.id}">
-                                    <i class="fas fa-edit"></i> Editar
-                                </button>
-                                <button class="btn-delete" data-id="${doc.id}">
-                                    <i class="fas fa-trash"></i> Eliminar
-                                </button>
-                            </div>
-                        `;
-                        mobileTransactions.appendChild(card);
-                    });
-                }
-                
-                // Mostrar tabla y vista móvil, ocultar loading
-                loadingTransactions.style.display = 'none';
-                transactionsTable.style.display = 'table';
-                mobileTransactions.style.display = 'block';
-                
-                // Agregar event listeners a los botones (ambas vistas)
-                document.querySelectorAll('.edit-btn, .btn-edit').forEach(btn => {
-                    btn.addEventListener('click', () => editTransaction(btn.dataset.id));
-                });
-                
-                document.querySelectorAll('.delete-btn, .btn-delete').forEach(btn => {
-                    btn.addEventListener('click', () => deleteTransaction(btn.dataset.id));
-                });
-            }, (error) => {
-                console.error("Error cargando transacciones: ", error);
-                loadingTransactions.innerHTML = '<p>Error al cargar transacciones</p>';
-                showToast('Error al cargar transacciones', 'error');
-            });
-        }
-        
-        // Función para cargar transacciones por mes
-        function loadTransactionsByMonth(selectedMonth) {
-            // Ocultar tabla y mostrar loading
-            transactionsTable.style.display = 'none';
-            mobileTransactions.style.display = 'none';
-            loadingTransactions.style.display = 'block';
-            
-            let q;
-            
+            const selectedMonth = monthSelector.value;
             if (selectedMonth === 'current') {
-                // Obtener el primer día del mes actual
-                const startOfMonth = new Date();
-                startOfMonth.setDate(1);
-                startOfMonth.setHours(0, 0, 0, 0);
-                
-                // Obtener el primer día del próximo mes
-                const endOfMonth = new Date(startOfMonth);
-                endOfMonth.setMonth(endOfMonth.getMonth() + 1);
-                
-                q = query(
-                    collection(window.db, "transactions"),
-                    where("date", ">=", startOfMonth.toISOString().split('T')[0]),
-                    where("date", "<", endOfMonth.toISOString().split('T')[0]),
-                    orderBy("date", "desc")
-                );
+                loadCurrentMonthTransactions();
             } else {
-                // Formato esperado: "YYYY-MM"
-                const [year, month] = selectedMonth.split('-');
-                
-                // Crear fechas para el inicio y fin del mes
-                const startDate = `${year}-${month}-01`;
-                const endDate = new Date(year, month, 0); // Último día del mes
-                const formattedEndDate = `${year}-${month}-${String(endDate.getDate()).padStart(2, '0')}`;
-                
-                q = query(
-                    collection(window.db, "transactions"),
-                    where("date", ">=", startDate),
-                    where("date", "<=", formattedEndDate),
-                    orderBy("date", "desc")
-                );
+                loadArchivedTransactions(selectedMonth);
             }
+        }
+        
+        // ➕ NUEVO: Función para cargar transacciones del mes actual
+        function loadCurrentMonthTransactions() {
+            transactionsTable.style.display = 'none';
+            mobileTransactions.style.display = 'none';
+            loadingTransactions.style.display = 'block';
+
+            const q = query(collection(window.db, "transactions"), orderBy("date", "desc"));
             
             onSnapshot(q, (querySnapshot) => {
-                transactionsBody.innerHTML = '';
-                mobileTransactions.innerHTML = '';
-                
-                if (querySnapshot.empty) {
-                    transactionsBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No hay transacciones para este mes</td></tr>';
-                    mobileTransactions.innerHTML = '<div style="text-align: center; padding: 40px; color: #718096;">No hay transacciones para este mes</div>';
-                } else {
-                    querySnapshot.forEach((doc) => {
-                        const data = doc.data();
-                        
-                        // Fila para tabla desktop
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${formatDate(data.date)}</td>
-                            <td>${data.description || '-'}</td>
-                            <td>${data.categoryName || data.category || '-'}</td>
-                            <td><strong>$${parseFloat(data.amount).toLocaleString()}</strong></td>
-                            <td><span class="badge ${data.type === 'income' ? 'badge-income' : 'badge-expense'}">
-                                ${data.type === 'income' ? '💰 Ingreso' : '💸 Gasto'}
-                            </span></td>
-                            <td>
-                                <button class="action-btn edit-btn" data-id="${doc.id}">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="action-btn delete-btn" data-id="${doc.id}">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </td>
-                        `;
-                        transactionsBody.appendChild(row);
-                        
-                        // Card para vista móvil
-                        const card = document.createElement('div');
-                        card.className = `transaction-card ${data.type}`;
-                        card.innerHTML = `
-                            <div class="transaction-header">
-                                <span class="badge ${data.type === 'income' ? 'badge-income' : 'badge-expense'}">
-                                    ${data.type === 'income' ? '💰 Ingreso' : '💸 Gasto'}
-                                </span>
-                                <span class="transaction-amount">$${parseFloat(data.amount).toLocaleString()}</span>
-                            </div>
-                            <div class="transaction-details">
-                                <strong>${data.categoryName || data.category || 'Sin categoría'}</strong>
-                                <small>${formatDate(data.date)} • ${data.description || 'Sin descripción'}</small>
-                            </div>
-                            <div class="transaction-actions">
-                                <button class="btn-edit" data-id="${doc.id}">
-                                    <i class="fas fa-edit"></i> Editar
-                                </button>
-                                <button class="btn-delete" data-id="${doc.id}">
-                                    <i class="fas fa-trash"></i> Eliminar
-                                </button>
-                            </div>
-                        `;
-                        mobileTransactions.appendChild(card);
-                    });
-                }
-                
-                // Mostrar tabla y vista móvil, ocultar loading
-                loadingTransactions.style.display = 'none';
-                transactionsTable.style.display = 'table';
-                mobileTransactions.style.display = 'block';
-                
-                // Agregar event listeners a los botones
-                document.querySelectorAll('.edit-btn, .btn-edit').forEach(btn => {
-                    btn.addEventListener('click', () => editTransaction(btn.dataset.id));
-                });
-                
-                document.querySelectorAll('.delete-btn, .btn-delete').forEach(btn => {
-                    btn.addEventListener('click', () => deleteTransaction(btn.dataset.id));
-                });
-                
-                // Actualizar resumen para el mes seleccionado
-                loadSummaryForMonth(selectedMonth);
+                renderTransactions(querySnapshot, false); // false = no es archivo
             }, (error) => {
-                console.error("Error cargando transacciones: ", error);
-                loadingTransactions.innerHTML = '<p>Error al cargar transacciones</p>';
+                console.error("Error cargando transacciones actuales: ", error);
                 showToast('Error al cargar transacciones', 'error');
             });
         }
+
+        // ➕ NUEVO: Función para cargar transacciones de meses archivados
+        async function loadArchivedTransactions(archiveId) {
+            transactionsTable.style.display = 'none';
+            mobileTransactions.style.display = 'none';
+            loadingTransactions.style.display = 'block';
+
+            const q = query(collection(window.db, "archived_transactions"), where("archiveId", "==", archiveId), orderBy("date", "desc"));
+            
+            try {
+                const querySnapshot = await getDocs(q);
+                renderTransactions(querySnapshot, true); // true = es archivo
+            } catch (error) {
+                console.error("Error cargando transacciones archivadas: ", error);
+                showToast('Error al cargar datos archivados', 'error');
+            }
+        }
+
+        // ➕ NUEVO: Función centralizada para renderizar transacciones
+        function renderTransactions(querySnapshot, isArchived) {
+            transactionsBody.innerHTML = '';
+            mobileTransactions.innerHTML = '';
+            
+            if (querySnapshot.empty) {
+                transactionsBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No hay transacciones para este período</td></tr>';
+                mobileTransactions.innerHTML = '<div style="text-align: center; padding: 40px; color: #718096;">No hay transacciones para este período</div>';
+            } else {
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const actionsHtml = isArchived ? '' : `
+                        <button class="action-btn edit-btn" data-id="${doc.id}" title="Editar">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn delete-btn" data-id="${doc.id}" title="Eliminar">
+                            <i class="fas fa-trash"></i>
+                        </button>`;
+                    const mobileActionsHtml = isArchived ? '' : `
+                        <div class="transaction-actions">
+                            <button class="btn-edit" data-id="${doc.id}"><i class="fas fa-edit"></i> Editar</button>
+                            <button class="btn-delete" data-id="${doc.id}"><i class="fas fa-trash"></i> Eliminar</button>
+                        </div>`;
+
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${formatDate(data.date)}</td>
+                        <td>${data.description || '-'}</td>
+                        <td>${data.categoryName || data.category || '-'}</td>
+                        <td><strong>$${parseFloat(data.amount).toLocaleString()}</strong></td>
+                        <td><span class="badge ${data.type === 'income' ? 'badge-income' : 'badge-expense'}">${data.type === 'income' ? '💰 Ingreso' : '💸 Gasto'}</span></td>
+                        <td>${actionsHtml}</td>`;
+                    transactionsBody.appendChild(row);
+
+                    const card = document.createElement('div');
+                    card.className = `transaction-card ${data.type}`;
+                    card.innerHTML = `
+                        <div class="transaction-header">
+                            <span class="badge ${data.type === 'income' ? 'badge-income' : 'badge-expense'}">${data.type === 'income' ? '💰 Ingreso' : '💸 Gasto'}</span>
+                            <span class="transaction-amount">$${parseFloat(data.amount).toLocaleString()}</span>
+                        </div>
+                        <div class="transaction-details">
+                            <strong>${data.categoryName || data.category || 'Sin categoría'}</strong>
+                            <small>${formatDate(data.date)} • ${data.description || 'Sin descripción'}</small>
+                        </div>
+                        ${mobileActionsHtml}`;
+                    mobileTransactions.appendChild(card);
+                });
+            }
+
+            loadingTransactions.style.display = 'none';
+            transactionsTable.style.display = 'table';
+            mobileTransactions.style.display = 'block';
+
+            if (!isArchived) {
+                document.querySelectorAll('.edit-btn, .btn-edit').forEach(btn => {
+                    btn.addEventListener('click', () => editTransaction(btn.dataset.id));
+                });
+                document.querySelectorAll('.delete-btn, .btn-delete').forEach(btn => {
+                    btn.addEventListener('click', () => deleteTransaction(btn.dataset.id));
+                });
+            }
+        }
         
-        // Función para cargar resumen
+        // 🔄 ACTUALIZADO: Cargar resumen ahora diferencia entre actual y archivado
         function loadSummary() {
-            // Mostrar loading en cards
-            incomeValue.textContent = '$0';
-            expenseValue.textContent = '$0';
-            balanceValue.textContent = '$0';
-            totalIncome.textContent = '$0';
-            totalExpense.textContent = '$0';
-            totalSavings.textContent = '$0';
-            totalDebt.textContent = '$0';
-            
-            // Calcular totales reales
-            const transactionsRef = collection(window.db, "transactions");
-            getDocs(transactionsRef).then((querySnapshot) => {
-                let totalIncomeVal = 0;
-                let totalExpenseVal = 0;
-                
-                querySnapshot.forEach((doc) => {
-                    const data = doc.data();
-                    const amount = parseFloat(data.amount) || 0;
-                    
-                    if (data.type === 'income') {
-                        totalIncomeVal += amount;
-                    } else if (data.type === 'expense') {
-                        totalExpenseVal += amount;
-                    }
-                });
-                
-                const balance = totalIncomeVal - totalExpenseVal;
-                
-                incomeValue.textContent = `$${totalIncomeVal.toLocaleString()}`;
-                expenseValue.textContent = `$${totalExpenseVal.toLocaleString()}`;
-                balanceValue.textContent = `$${balance.toLocaleString()}`;
-                totalIncome.textContent = `$${totalIncomeVal.toLocaleString()}`;
-                totalExpense.textContent = `$${totalExpenseVal.toLocaleString()}`;
-                totalSavings.textContent = `$${balance.toLocaleString()}`;
-                
-                // Calcular deudas (ejemplo simplificado)
-                totalDebt.textContent = '$0';
-            }).catch((error) => {
-                console.error("Error cargando resumen: ", error);
-                showToast('Error al cargar resumen', 'error');
-            });
+            const selectedMonth = monthSelector.value;
+            if (selectedMonth === 'current') {
+                loadSummaryForCollection("transactions");
+            } else {
+                loadSummaryForCollection("archived_transactions", selectedMonth);
+            }
         }
         
-        // Función para cargar resumen por mes
-        function loadSummaryForMonth(selectedMonth) {
-            // Mostrar loading en cards
-            incomeValue.textContent = '$0';
-            expenseValue.textContent = '$0';
-            balanceValue.textContent = '$0';
-            totalIncome.textContent = '$0';
-            totalExpense.textContent = '$0';
-            totalSavings.textContent = '$0';
-            totalDebt.textContent = '$0';
+        // 🔄 ACTUALIZADO: Función genérica para cargar resumen
+        async function loadSummaryForCollection(collectionName, archiveId = null) {
+            const values = { income: 0, expense: 0, balance: 0 };
             
-            let q;
-            
-            if (selectedMonth === 'current') {
-                // Obtener el primer día del mes actual
-                const startOfMonth = new Date();
-                startOfMonth.setDate(1);
-                startOfMonth.setHours(0, 0, 0, 0);
-                
-                // Obtener el primer día del próximo mes
-                const endOfMonth = new Date(startOfMonth);
-                endOfMonth.setMonth(endOfMonth.getMonth() + 1);
-                
-                q = query(
-                    collection(window.db, "transactions"),
-                    where("date", ">=", startOfMonth.toISOString().split('T')[0]),
-                    where("date", "<", endOfMonth.toISOString().split('T')[0])
-                );
-            } else {
-                // Formato esperado: "YYYY-MM"
-                const [year, month] = selectedMonth.split('-');
-                
-                // Crear fechas para el inicio y fin del mes
-                const startDate = `${year}-${month}-01`;
-                const endDate = new Date(year, month, 0); // Último día del mes
-                const formattedEndDate = `${year}-${month}-${String(endDate.getDate()).padStart(2, '0')}`;
-                
-                q = query(
-                    collection(window.db, "transactions"),
-                    where("date", ">=", startDate),
-                    where("date", "<=", formattedEndDate)
-                );
+            let q = collection(window.db, collectionName);
+            if (archiveId) {
+                q = query(q, where("archiveId", "==", archiveId));
             }
-            
-            getDocs(q).then((querySnapshot) => {
-                let totalIncomeVal = 0;
-                let totalExpenseVal = 0;
-                
+
+            try {
+                const querySnapshot = await getDocs(q);
                 querySnapshot.forEach((doc) => {
                     const data = doc.data();
                     const amount = parseFloat(data.amount) || 0;
-                    
-                    if (data.type === 'income') {
-                        totalIncomeVal += amount;
-                    } else if (data.type === 'expense') {
-                        totalExpenseVal += amount;
-                    }
+                    if (data.type === 'income') values.income += amount;
+                    else if (data.type === 'expense') values.expense += amount;
                 });
+
+                values.balance = values.income - values.expense;
                 
-                const balance = totalIncomeVal - totalExpenseVal;
-                
-                incomeValue.textContent = `$${totalIncomeVal.toLocaleString()}`;
-                expenseValue.textContent = `$${totalExpenseVal.toLocaleString()}`;
-                balanceValue.textContent = `$${balance.toLocaleString()}`;
-                totalIncome.textContent = `$${totalIncomeVal.toLocaleString()}`;
-                totalExpense.textContent = `$${totalExpenseVal.toLocaleString()}`;
-                totalSavings.textContent = `$${balance.toLocaleString()}`;
-                
-                // Calcular deudas (ejemplo simplificado)
-                totalDebt.textContent = '$0';
-            }).catch((error) => {
+                incomeValue.textContent = `$${values.income.toLocaleString()}`;
+                expenseValue.textContent = `$${values.expense.toLocaleString()}`;
+                balanceValue.textContent = `$${values.balance.toLocaleString()}`;
+                totalIncome.textContent = `$${values.income.toLocaleString()}`;
+                totalExpense.textContent = `$${values.expense.toLocaleString()}`;
+                totalSavings.textContent = `$${values.balance.toLocaleString()}`;
+                totalDebt.textContent = '$0'; // Lógica de deuda pendiente
+            } catch (error) {
                 console.error("Error cargando resumen: ", error);
-                showToast('Error al cargar resumen', 'error');
-            });
+                showToast('Error al cargar el resumen', 'error');
+            }
         }
         
         // Formatear fecha
         function formatDate(dateString) {
             if (!dateString) return '-';
-            
-            // Si es un objeto Timestamp de Firebase
             if (dateString.toDate) {
-                return dateString.toDate().toLocaleDateString('es-ES');
+                dateString = dateString.toDate();
             }
-            
-            // Si es una cadena de fecha
-            // ➕ CORRECCIÓN ZONA HORARIA: Se añade 'T00:00:00' para forzar la interpretación como hora local
-            const date = new Date(dateString + 'T00:00:00'); 
-            if (isNaN(date.getTime())) return '-';
-            
-            const options = { 
-                year: 'numeric', 
-                month: 'short', 
-                day: 'numeric' 
-            };
-            return date.toLocaleDateString('es-ES', options);
+            const date = new Date(dateString);
+             if (isNaN(date.getTime())) {
+                const parts = dateString.split('-');
+                if(parts.length === 3) {
+                    return new Date(parts[0], parts[1] - 1, parts[2]).toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' });
+                }
+                return '-';
+            }
+            return date.toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' });
         }
         
         // Editar transacción
@@ -1687,8 +1488,6 @@
             if (confirm('¿Estás seguro de que deseas eliminar esta transacción?')) {
                 deleteDoc(doc(window.db, "transactions", id))
                     .then(() => {
-                        console.log("Transacción eliminada");
-                        loadSummary(); // Actualizar resumen
                         showToast('✅ Transacción eliminada exitosamente', 'success');
                     })
                     .catch((error) => {
@@ -1701,43 +1500,26 @@
         // Registrar ingreso con loading y toast
         document.getElementById('income-form').addEventListener('submit', function(e) {
             e.preventDefault();
-            
             const submitBtn = document.getElementById('income-submit-btn');
             submitBtn.classList.add('loading');
             
-            const source = document.getElementById('income-source').value;
-            const amount = document.getElementById('income-amount').value;
-            const date = document.getElementById('income-date').value;
-            const description = document.getElementById('income-description').value;
-            
-            // Obtener nombre de la categoría
             const sourceSelect = document.getElementById('income-source');
-            const categoryName = sourceSelect.options[sourceSelect.selectedIndex].text;
             
             addDoc(collection(window.db, "transactions"), {
                 type: 'income',
-                category: source,
-                categoryName: categoryName,
-                amount: parseFloat(amount),
-                date: date,
-                description: description,
+                category: sourceSelect.value,
+                categoryName: sourceSelect.options[sourceSelect.selectedIndex].text,
+                amount: parseFloat(document.getElementById('income-amount').value),
+                date: document.getElementById('income-date').value,
+                description: document.getElementById('income-description').value,
                 timestamp: new Date()
             })
-            .then((docRef) => {
-                console.log("Ingreso registrado con ID: ", docRef.id);
-                
-                // Limpiar formulario
+            .then(() => {
                 this.reset();
                 document.getElementById('income-date').value = new Date().toISOString().split('T')[0];
-                
-                // Actualizar datos
-                loadSummary();
-                
-                // Mostrar toast de éxito
                 showToast('💰 Ingreso registrado exitosamente', 'success');
             })
             .catch((error) => {
-                console.error("Error registrando ingreso: ", error);
                 showToast('❌ Error al registrar el ingreso', 'error');
             })
             .finally(() => {
@@ -1748,43 +1530,26 @@
         // Registrar gasto con loading y toast
         document.getElementById('expense-form').addEventListener('submit', function(e) {
             e.preventDefault();
-            
             const submitBtn = document.getElementById('expense-submit-btn');
             submitBtn.classList.add('loading');
             
-            const category = document.getElementById('expense-category').value;
-            const amount = document.getElementById('expense-amount').value;
-            const date = document.getElementById('expense-date').value;
-            const description = document.getElementById('expense-description').value;
-            
-            // Obtener nombre de la categoría
             const categorySelect = document.getElementById('expense-category');
-            const categoryName = categorySelect.options[categorySelect.selectedIndex].text;
-            
+
             addDoc(collection(window.db, "transactions"), {
                 type: 'expense',
-                category: category,
-                categoryName: categoryName,
-                amount: parseFloat(amount),
-                date: date,
-                description: description,
+                category: categorySelect.value,
+                categoryName: categorySelect.options[categorySelect.selectedIndex].text,
+                amount: parseFloat(document.getElementById('expense-amount').value),
+                date: document.getElementById('expense-date').value,
+                description: document.getElementById('expense-description').value,
                 timestamp: new Date()
             })
-            .then((docRef) => {
-                console.log("Gasto registrado con ID: ", docRef.id);
-                
-                // Limpiar formulario
+            .then(() => {
                 this.reset();
                 document.getElementById('expense-date').value = new Date().toISOString().split('T')[0];
-                
-                // Actualizar datos
-                loadSummary();
-                
-                // Mostrar toast de éxito
                 showToast('💸 Gasto registrado exitosamente', 'success');
             })
             .catch((error) => {
-                console.error("Error registrando gasto: ", error);
                 showToast('❌ Error al registrar el gasto', 'error');
             })
             .finally(() => {
@@ -1794,79 +1559,91 @@
         
         // Event listener para el selector de mes
         monthSelector.addEventListener('change', function() {
-            const selectedMonth = this.value;
-            if (selectedMonth === 'current') {
-                loadTransactions();
-                loadSummary();
-            } else {
-                loadTransactionsByMonth(selectedMonth);
-            }
+            loadTransactions();
+            loadSummary();
         });
         
-        // Inicializar fechas con fecha actual
+        // Inicializar
         document.addEventListener('DOMContentLoaded', function() {
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('income-date').value = today;
             document.getElementById('expense-date').value = today;
+            populateArchivedMonths();
         });
 
-        // FUNCIÓN: Iniciar un nuevo mes
-        const newMonthBtn = document.getElementById('new-month-btn');
-        const monthSelectorForNewMonth = document.getElementById('month-selector');
-
-        newMonthBtn.addEventListener('click', function() {
-            if (confirm('¿Estás seguro de que quieres iniciar un nuevo mes? Esto agregará el próximo mes al selector.')) {
+        // ➕ NUEVO: Poblar el selector con meses archivados
+        async function populateArchivedMonths() {
+            try {
+                const q = query(collection(window.db, "archived_transactions"));
+                const querySnapshot = await getDocs(q);
+                const archiveIds = new Set();
+                querySnapshot.forEach(doc => archiveIds.add(doc.data().archiveId));
                 
-                // Encuentra el mes más reciente de las opciones (saltando "Mes actual")
-                const latestOption = monthSelectorForNewMonth.options[1]; // Asume que el último mes es siempre la segunda opción
-                const latestMonthValue = latestOption.value; // ej: "2025-08"
-
-                // Crea un objeto de fecha a partir del último mes.
-                const [year, month] = latestMonthValue.split('-');
-                const latestDate = new Date(year, month - 1, 15); // El mes es 0-indexado (0=enero)
-
-                // Suma un mes
-                latestDate.setMonth(latestDate.getMonth() + 1);
-
-                const newYear = latestDate.getFullYear();
-                const newMonth = latestDate.getMonth() + 1; // getMonth() es 0-indexado, se suma 1
-
-                // Formatea el valor del nuevo mes (YYYY-MM) y el texto (Mes AAAA)
-                const newMonthValue = `${newYear}-${String(newMonth).padStart(2, '0')}`;
-                const newMonthText = latestDate.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
-                // Pone en mayúscula la primera letra del mes
-                const capitalizedNewMonthText = newMonthText.charAt(0).toUpperCase() + newMonthText.slice(1);
-
-                // Verifica si este mes ya existe
-                let monthExists = false;
-                for (let i = 0; i < monthSelectorForNewMonth.options.length; i++) {
-                    if (monthSelectorForNewMonth.options[i].value === newMonthValue) {
-                        monthExists = true;
-                        break;
-                    }
+                // Limpiar opciones existentes (excepto "Mes actual")
+                while (monthSelector.options.length > 1) {
+                    monthSelector.remove(1);
                 }
 
-                if (monthExists) {
-                    // Si ya existe, simplemente lo selecciona
-                    monthSelectorForNewMonth.value = newMonthValue;
-                    showToast(`El mes de ${capitalizedNewMonthText} ya existe. Ha sido seleccionado.`, 'info');
-                } else {
-                    // Si no existe, crea y añade la nueva opción
-                    const newOption = document.createElement('option');
-                    newOption.value = newMonthValue;
-                    newOption.textContent = capitalizedNewMonthText;
-                    
-                    // Lo inserta después de la opción "Mes actual"
-                    monthSelectorForNewMonth.insertBefore(newOption, monthSelectorForNewMonth.options[1]);
-                    
-                    // Selecciona la nueva opción
-                    monthSelectorForNewMonth.value = newMonthValue;
-                    
-                    showToast(`🗓️ Se ha iniciado el mes de ${capitalizedNewMonthText}.`, 'success');
+                // Ordenar y agregar los meses archivados
+                Array.from(archiveIds).sort().reverse().forEach(id => {
+                    const [year, month] = id.split('-');
+                    const date = new Date(year, month - 1, 1);
+                    const monthName = date.toLocaleString('es-ES', { month: 'long', year: 'numeric' });
+                    const option = new Option(monthName.charAt(0).toUpperCase() + monthName.slice(1), id);
+                    monthSelector.add(option);
+                });
+            } catch (error) {
+                console.error("Error poblando meses archivados: ", error);
+            }
+        }
+
+        // 🔄 ACTUALIZADO: Lógica para archivar el mes actual e iniciar uno nuevo
+        const newMonthBtn = document.getElementById('new-month-btn');
+        newMonthBtn.addEventListener('click', async function() {
+            const now = new Date();
+            const archiveId = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+            const monthName = now.toLocaleString('es-ES', { month: 'long', year: 'numeric' });
+            
+            if (!confirm(`¿Estás seguro de que quieres cerrar el mes actual (${monthName}) y empezar uno nuevo? Todas las transacciones actuales serán archivadas y no se podrán modificar.`)) {
+                return;
+            }
+
+            this.classList.add('loading');
+            showToast('Archivando transacciones del mes actual...', 'info');
+
+            try {
+                const transactionsRef = collection(window.db, "transactions");
+                const snapshot = await getDocs(transactionsRef);
+
+                if (snapshot.empty) {
+                    showToast('No hay transacciones para archivar.', 'warning');
+                    this.classList.remove('loading');
+                    return;
                 }
 
-                // Dispara el evento 'change' para filtrar las transacciones
-                monthSelectorForNewMonth.dispatchEvent(new Event('change'));
+                // Copiar y luego eliminar cada transacción
+                for (const docSnapshot of snapshot.docs) {
+                    const data = docSnapshot.data();
+                    await addDoc(collection(window.db, "archived_transactions"), {
+                        ...data,
+                        archiveId: archiveId
+                    });
+                    await deleteDoc(doc(window.db, "transactions", docSnapshot.id));
+                }
+                
+                showToast(`✅ Mes de ${monthName} archivado exitosamente.`, 'success');
+                
+                // Actualizar la UI
+                await populateArchivedMonths();
+                monthSelector.value = "current";
+                loadTransactions();
+                loadSummary();
+
+            } catch (error) {
+                console.error("Error al archivar el mes:", error);
+                showToast('❌ Error al archivar el mes.', 'error');
+            } finally {
+                this.classList.remove('loading');
             }
         });
     </script>
