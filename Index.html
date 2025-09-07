@@ -1,1651 +1,927 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRM Financiero Familiar Serrano</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-        }
-        
-        :root {
-            --primary: #667eea;
-            --primary-dark: #5a67d8;
-            --secondary: #764ba2;
-            --accent: #f093fb;
-            --success: #48bb78;
-            --success-light: #68d391;
-            --danger: #f56565;
-            --danger-light: #fc8181;
-            --warning: #ed8936;
-            --warning-light: #f6ad55;
-            --info: #4299e1;
-            --info-light: #63b3ed;
-            --dark: #2d3748;
-            --light: #f7fafc;
-            --gray: #718096;
-            --gray-light: #e2e8f0;
-            --white: #ffffff;
-            --card-bg: rgba(255, 255, 255, 0.9);
-            --sidebar-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --header-bg: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-        
-        body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            color: var(--dark);
-            display: flex;
-            min-height: 100vh;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-        
-        /* 🎨 MEJORA: Sidebar más bonito */
-        .sidebar-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.6);
-            z-index: 99;
-            backdrop-filter: blur(3px);
-        }
-        
-        .sidebar {
-            width: 280px;
-            background: var(--sidebar-bg);
-            color: white;
-            height: 100vh;
-            position: fixed;
-            padding: 0;
-            box-shadow: var(--shadow-xl);
-            z-index: 1000;
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            backdrop-filter: blur(20px);
-        }
-        
-        .logo {
-            text-align: center;
-            padding: 30px 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.15);
-            margin-bottom: 20px;
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-        }
-        
-        .logo h1 {
-            font-size: 1.75rem;
-            font-weight: 800;
-            letter-spacing: -0.025em;
-            margin-bottom: 8px;
-            background: linear-gradient(135deg, #ffffff 0%, #f093fb 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .logo .subtitle {
-            font-size: 0.875rem;
-            opacity: 0.8;
-            font-weight: 400;
-        }
-        
-        .nav-links {
-            padding: 10px 20px;
-        }
-        
-        .nav-links li {
-            list-style: none;
-            margin: 8px 0;
-        }
-        
-        .nav-links a {
-            color: rgba(255,255,255,0.85);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            padding: 16px 20px;
-            border-radius: 12px;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            min-height: 52px;
-            font-weight: 500;
-            font-size: 0.95rem;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .nav-links a::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            transition: left 0.5s;
-        }
-        
-        .nav-links a:hover::before {
-            left: 100%;
-        }
-        
-        .nav-links a:hover, .nav-links a.active {
-            background: rgba(255,255,255,0.15);
-            color: white;
-            transform: translateX(8px);
-            box-shadow: var(--shadow-md);
-        }
-        
-        .nav-links a.active {
-            background: rgba(255,255,255,0.2);
-            border-left: 4px solid var(--accent);
-        }
-        
-        .nav-links i {
-            margin-right: 16px;
-            font-size: 1.2rem;
-            width: 20px;
-            text-align: center;
-        }
-        
-        /* 🎨 MEJORA: Main content más bonito */
-        .main-content {
-            flex: 1;
-            margin-left: 280px;
-            padding: 25px;
-            background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(10px);
-        }
-        
-        .header {
-            background: var(--header-bg);
-            color: white;
-            padding: 30px;
-            border-radius: 20px;
-            margin-bottom: 30px;
-            box-shadow: var(--shadow-lg);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.2);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-        }
-        
-        .header > * {
-            position: relative;
-            z-index: 1;
-        }
-        
-        .header h2 {
-            font-weight: 700;
-            font-size: 1.5rem;
-            letter-spacing: -0.025em;
-        }
-        
-        .user-info {
-            display: flex;
-            align-items: center;
-            background: rgba(255,255,255,0.15);
-            padding: 12px 20px;
-            border-radius: 50px;
-            backdrop-filter: blur(10px);
-        }
-        
-        .user-info img {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            margin-right: 12px;
-            object-fit: cover;
-            border: 2px solid rgba(255,255,255,0.3);
-        }
-        
-        .user-info span {
-            font-weight: 600;
-        }
-        
-        /* 🎨 MEJORA: Cards más bonitas */
-        .summary-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 24px;
-            margin-bottom: 40px;
-        }
-        
-        .summary-card {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 30px;
-            text-align: center;
-            box-shadow: var(--shadow-md);
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            border: 1px solid rgba(255,255,255,0.5);
-            backdrop-filter: blur(20px);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .summary-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-        }
-        
-        .summary-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: var(--shadow-xl);
-        }
-        
-        .summary-card:nth-child(1)::before { background: linear-gradient(90deg, var(--success), var(--success-light)); }
-        .summary-card:nth-child(2)::before { background: linear-gradient(90deg, var(--danger), var(--danger-light)); }
-        .summary-card:nth-child(3)::before { background: linear-gradient(90deg, var(--info), var(--info-light)); }
-        .summary-card:nth-child(4)::before { background: linear-gradient(90deg, var(--warning), var(--warning-light)); }
-        
-        .summary-card i {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .summary-card:nth-child(1) i { background: linear-gradient(135deg, var(--success), var(--success-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .summary-card:nth-child(2) i { background: linear-gradient(135deg, var(--danger), var(--danger-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .summary-card:nth-child(3) i { background: linear-gradient(135deg, var(--info), var(--info-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .summary-card:nth-child(4) i { background: linear-gradient(135deg, var(--warning), var(--warning-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        
-        .summary-card h3 {
-            font-size: 2.25rem;
-            margin-bottom: 8px;
-            font-weight: 800;
-            letter-spacing: -0.025em;
-            color: var(--dark);
-        }
-        
-        .summary-card p {
-            color: var(--gray);
-            font-size: 0.95rem;
-            font-weight: 500;
-        }
-        
-        /* Dashboard */
-        .dashboard {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 24px;
-            margin-bottom: 40px;
-        }
-        
-        .card {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: var(--shadow-md);
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            border: 1px solid rgba(255,255,255,0.5);
-            backdrop-filter: blur(20px);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .card:hover {
-            transform: translateY(-6px);
-            box-shadow: var(--shadow-xl);
-        }
-        
-        .card:hover::before {
-            opacity: 1;
-        }
-        
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        
-        .card-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--dark);
-        }
-        
-        .card-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: white;
-            box-shadow: var(--shadow-md);
-        }
-        
-        .bg-success .card-icon { background: linear-gradient(135deg, var(--success), var(--success-light)); }
-        .bg-danger .card-icon { background: linear-gradient(135deg, var(--danger), var(--danger-light)); }
-        .bg-warning .card-icon { background: linear-gradient(135deg, var(--warning), var(--warning-light)); }
-        .bg-primary .card-icon { background: linear-gradient(135deg, var(--primary), var(--accent)); }
-        
-        .card-value {
-            font-size: 2.25rem;
-            font-weight: 800;
-            margin-bottom: 8px;
-            background: linear-gradient(135deg, var(--dark), var(--gray));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .card-footer {
-            font-size: 0.9rem;
-            color: var(--gray);
-            font-weight: 500;
-        }
-        
-        /* 🎨 MEJORA: Forms más bonitos */
-        .form-section {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 35px;
-            margin-bottom: 40px;
-            box-shadow: var(--shadow-md);
-            border: 1px solid rgba(255,255,255,0.5);
-            backdrop-filter: blur(20px);
-        }
-        
-        .section-title {
-            font-size: 1.5rem;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid var(--gray-light);
-            color: var(--dark);
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        .form-row {
-            display: flex;
-            flex-wrap: wrap;
-            margin: 0 -12px;
-        }
-        
-        .form-group {
-            flex: 1 0 220px;
-            padding: 0 12px;
-            margin-bottom: 24px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: 600;
-            color: var(--dark);
-            font-size: 0.9rem;
-            letter-spacing: 0.025em;
-        }
-        
-        input, select, textarea {
-            width: 100%;
-            padding: 16px 20px;
-            border: 2px solid var(--gray-light);
-            border-radius: 12px;
-            font-size: 16px;
-            min-height: 52px;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            background: rgba(255,255,255,0.8);
-            backdrop-filter: blur(10px);
-            font-weight: 500;
-        }
-        
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
-            transform: translateY(-2px);
-            background: white;
-        }
-        
-        /* 🎨 MEJORA: Botones más bonitos */
-        .btn {
-            padding: 16px 32px;
-            border: none;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            min-height: 52px;
-            min-width: 52px;
-            position: relative;
-            overflow: hidden;
-            letter-spacing: 0.025em;
-        }
-        
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
-        }
-        
-        .btn:hover::before {
-            left: 100%;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: white;
-            box-shadow: var(--shadow-md);
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-lg);
-        }
-        
-        .btn-block {
-            display: block;
-            width: 100%;
-        }
-        
-        .btn.loading {
-            pointer-events: none;
-            opacity: 0.8;
-        }
-        
-        .btn-loading {
-            display: none;
-        }
-        
-        .btn.loading .btn-text {
-            display: none;
-        }
-        
-        .btn.loading .btn-loading {
-            display: inline-block;
-        }
-        
-        /* Tables */
-        .table-container {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: var(--shadow-md);
-            overflow: hidden;
-            margin-bottom: 40px;
-            border: 1px solid rgba(255,255,255,0.5);
-            backdrop-filter: blur(20px);
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        th, td {
-            padding: 18px;
-            text-align: left;
-            border-bottom: 1px solid var(--gray-light);
-        }
-        
-        th {
-            font-weight: 700;
-            color: var(--dark);
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.08), rgba(240, 147, 251, 0.08));
-            font-size: 0.9rem;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-        }
-        
-        tr:hover {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.03), rgba(240, 147, 251, 0.03));
-        }
-        
-        .badge {
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            letter-spacing: 0.025em;
-        }
-        
-        .badge-income { 
-            background: linear-gradient(135deg, var(--success), var(--success-light)); 
-            color: white;
-            box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
-        }
-        .badge-expense { 
-            background: linear-gradient(135deg, var(--danger), var(--danger-light)); 
-            color: white;
-            box-shadow: 0 4px 12px rgba(245, 101, 101, 0.3);
-        }
-        
-        .action-btn {
-            background: none;
-            border: none;
-            color: var(--gray);
-            cursor: pointer;
-            font-size: 1.2rem;
-            margin: 0 6px;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            min-height: 48px;
-            min-width: 48px;
-            border-radius: 10px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .action-btn:hover {
-            color: var(--primary);
-            background: rgba(102, 126, 234, 0.1);
-            transform: translateY(-2px);
-        }
-        
-        /* 🎨 MEJORA: Cards móviles más bonitas */
-        .mobile-transactions {
-            display: none;
-        }
-        
-        .transaction-card {
-            background: white;
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: var(--shadow-md);
-            border-left: 5px solid var(--primary);
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            backdrop-filter: blur(20px);
-        }
-        
-        .transaction-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
-        }
-        
-        .transaction-card.income {
-            border-left-color: var(--success);
-        }
-        
-        .transaction-card.expense {
-            border-left-color: var(--danger);
-        }
-        
-        .transaction-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-        
-        .transaction-amount {
-            font-size: 1.35rem;
-            font-weight: 800;
-            color: var(--dark);
-        }
-        
-        .transaction-details {
-            margin-bottom: 16px;
-        }
-        
-        .transaction-details strong {
-            display: block;
-            margin-bottom: 6px;
-            font-size: 1.05rem;
-            color: var(--dark);
-        }
-        
-        .transaction-details small {
-            color: var(--gray);
-            font-weight: 500;
-        }
-        
-        .transaction-actions {
-            display: flex;
-            gap: 12px;
-        }
-        
-        .btn-edit, .btn-delete {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            min-height: 44px;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-        
-        .btn-edit {
-            background: linear-gradient(135deg, var(--info), var(--info-light));
-            color: white;
-        }
-        
-        .btn-delete {
-            background: linear-gradient(135deg, var(--danger), var(--danger-light));
-            color: white;
-        }
-        
-        .btn-edit:hover, .btn-delete:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-        
-        /* 🎨 MEJORA: Toast más bonito */
-        .toast-notification {
-            position: fixed;
-            top: 24px;
-            right: 24px;
-            padding: 20px 24px;
-            border-radius: 16px;
-            color: white;
-            box-shadow: var(--shadow-xl);
-            z-index: 1050;
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            max-width: 350px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            backdrop-filter: blur(20px);
-            font-weight: 600;
-        }
-        
-        .toast-success {
-            background: linear-gradient(135deg, var(--success), var(--success-light));
-        }
-        
-        .toast-error {
-            background: linear-gradient(135deg, var(--danger), var(--danger-light));
-        }
-        
-        .toast-warning {
-            background: linear-gradient(135deg, var(--warning), var(--warning-light));
-        }
-        
-        /* Status */
-        .status {
-            padding: 20px;
-            border-radius: 16px;
-            margin: 15px 0;
-            text-align: center;
-            font-weight: 600;
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-        
-        .status-connected {
-            background: linear-gradient(135deg, rgba(72, 187, 120, 0.15), rgba(104, 211, 145, 0.15));
-            color: var(--success);
-            border-color: rgba(72, 187, 120, 0.3);
-        }
-        
-        .status-disconnected {
-            background: linear-gradient(135deg, rgba(245, 101, 101, 0.15), rgba(252, 129, 129, 0.15));
-            color: var(--danger);
-            border-color: rgba(245, 101, 101, 0.3);
-        }
-        
-        /* Loading */
-        .loading {
-            text-align: center;
-            padding: 40px;
-        }
-        
-        .spinner {
-            border: 4px solid rgba(102, 126, 234, 0.1);
-            border-radius: 50%;
-            border-top: 4px solid var(--primary);
-            width: 48px;
-            height: 48px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px auto;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        /* 🎨 MEJORA: Monthly Filter más bonito */
-        .monthly-filter {
-            display: flex;
-            align-items: center;
-            margin-bottom: 24px;
-            gap: 16px;
-            flex-wrap: wrap;
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 16px;
-            box-shadow: var(--shadow-sm);
-            backdrop-filter: blur(20px);
-        }
-        
-        .monthly-filter label {
-            margin-bottom: 0;
-            font-weight: 700;
-            color: var(--dark);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .monthly-filter select {
-            width: auto;
-            min-width: 200px;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CRM Financiero Familiar Serrano</title>
+  <!-- Iconos y fuentes -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
 
-        .monthly-filter .btn {
-            padding: 14px 24px;
-            font-size: 0.95rem;
-            min-height: 52px;
-        }
-        
-        /* Chart Container */
-        .chart-container {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: var(--shadow-md);
-            margin-bottom: 40px;
-            height: 350px;
-            border: 1px solid rgba(255,255,255,0.5);
-            backdrop-filter: blur(20px);
-        }
-        
-        .chart-placeholder {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            color: var(--gray);
-            font-style: italic;
-            flex-direction: column;
-            gap: 16px;
-        }
-        
-        .chart-placeholder i {
-            font-size: 4rem;
-            opacity: 0.6;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        /* Responsive */
-        @media (max-width: 992px) {
-            .sidebar {
-                width: 80px;
-            }
-            
-            .sidebar .logo h1 span, .sidebar .nav-links a span {
-                display: none;
-            }
-            
-            .sidebar .logo h1 {
-                font-size: 1.5rem;
-            }
-            
-            .sidebar .nav-links i {
-                margin-right: 0;
-                font-size: 1.4rem;
-            }
-            
-            .sidebar .nav-links a {
-                justify-content: center;
-                padding: 18px;
-            }
-            
-            .main-content {
-                margin-left: 80px;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .sidebar-overlay.active {
-                display: block;
-            }
-            
-            .main-content {
-                margin-left: 0;
-                padding: 16px;
-            }
-            
-            .sidebar {
-                width: 300px;
-                transform: translateX(-100%);
-                box-shadow: var(--shadow-xl);
-            }
-            
-            .sidebar.active {
-                transform: translateX(0);
-            }
-            
-            .menu-toggle {
-                display: block;
-                position: fixed;
-                top: 24px;
-                left: 24px;
-                background: linear-gradient(135deg, var(--primary), var(--accent));
-                color: white;
-                border: none;
-                width: 52px;
-                height: 52px;
-                border-radius: 12px;
-                z-index: 101;
-                box-shadow: var(--shadow-lg);
-                font-size: 1.2rem;
-            }
-            
-            .header {
-                flex-direction: column;
-                text-align: center;
-                padding: 24px;
-                gap: 16px;
-            }
-            
-            .header h2 {
-                font-size: 1.25rem;
-            }
-            
-            .summary-cards {
-                display: flex;
-                overflow-x: auto;
-                gap: 20px;
-                padding: 0 8px 16px 8px;
-                scroll-snap-type: x mandatory;
-            }
-            
-            .summary-card {
-                min-width: 160px;
-                flex-shrink: 0;
-                scroll-snap-align: start;
-                padding: 20px;
-            }
-            
-            .summary-card h3 {
-                font-size: 1.6rem;
-            }
-            
-            .table-container table {
-                display: none;
-            }
-            
-            .mobile-transactions {
-                display: block;
-            }
-            
-            .form-row {
-                flex-direction: column;
-            }
-            
-            .form-group {
-                flex: none;
-                margin-bottom: 16px;
-                padding: 0;
-            }
-            
-            .toast-notification {
-                right: 16px;
-                left: 16px;
-                max-width: none;
-            }
-            
-            .monthly-filter {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            
-            .monthly-filter select {
-                width: 100%;
-            }
-            
-            .monthly-filter .btn {
-                width: 100%;
-            }
-        }
-        
-        @media (max-width: 576px) {
-            .summary-card {
-                min-width: 140px;
-                padding: 16px;
-            }
-            
-            .summary-card h3 {
-                font-size: 1.4rem;
-            }
-            
-            .summary-card p {
-                font-size: 0.85rem;
-            }
-            
-            .form-section {
-                padding: 20px;
-            }
-            
-            .header h2 {
-                font-size: 1.1rem;
-            }
-            
-            .main-content {
-                padding: 12px;
-            }
-        }
-        
-        .menu-toggle {
-            display: none;
-        }
-    </style>
+  <style>
+    /* =============================== */
+    /* Estilos base y variables        */
+    /* =============================== */
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Inter', -apple-system, BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif; }
+    :root{
+      --primary:#667eea; --primary-dark:#5a67d8; --secondary:#764ba2; --accent:#f093fb;
+      --success:#48bb78; --success-light:#68d391; --danger:#f56565; --danger-light:#fc8181;
+      --warning:#ed8936; --warning-light:#f6ad55; --info:#4299e1; --info-light:#63b3ed;
+      --dark:#2d3748; --light:#f7fafc; --gray:#718096; --gray-light:#e2e8f0; --white:#ffffff;
+      --card-bg:rgba(255,255,255,0.9); --sidebar-bg:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+      --header-bg:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);
+      --shadow-sm:0 1px 3px rgba(0,0,0,.1),0 1px 2px rgba(0,0,0,.06);
+      --shadow-md:0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -1px rgba(0,0,0,.06);
+      --shadow-lg:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -2px rgba(0,0,0,.05);
+      --shadow-xl:0 20px 25px -5px rgba(0,0,0,.1),0 10px 10px -5px rgba(0,0,0,.04);
+    }
+    body{ background:linear-gradient(135deg,#f5f7fa 0%,#c3cfe2 100%); color:var(--dark); display:flex; min-height:100vh; font-size:14px; line-height:1.6;}
+    .sidebar-overlay{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:99; backdrop-filter:blur(3px); }
+
+    /* =============================== */
+    /* Sidebar                         */
+    /* =============================== */
+    .sidebar{ width:280px; background:var(--sidebar-bg); color:#fff; height:100vh; position:fixed; padding:0; box-shadow:var(--shadow-xl); z-index:1000; transition:all .4s cubic-bezier(.25,.8,.25,1); backdrop-filter:blur(20px);}
+    .logo{ text-align:center; padding:30px 20px; border-bottom:1px solid rgba(255,255,255,.15); margin-bottom:20px; background:rgba(255,255,255,.1); backdrop-filter:blur(10px);}
+    .logo h1{ font-size:1.75rem; font-weight:800; letter-spacing:-.025em; margin-bottom:8px; background:linear-gradient(135deg,#fff 0%,#f093fb 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;}
+    .logo .subtitle{ font-size:.875rem; opacity:.8; font-weight:400;}
+    .nav-links{ padding:10px 20px;}
+    .nav-links li{ list-style:none; margin:8px 0;}
+    .nav-links a{ color:rgba(255,255,255,.85); text-decoration:none; display:flex; align-items:center; padding:16px 20px; border-radius:12px; transition:all .3s cubic-bezier(.25,.8,.25,1); min-height:52px; font-weight:500; font-size:.95rem; position:relative; overflow:hidden;}
+    .nav-links a::before{ content:''; position:absolute; top:0; left:-100%; width:100%; height:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,.1),transparent); transition:left .5s;}
+    .nav-links a:hover::before{ left:100%;}
+    .nav-links a:hover,.nav-links a.active{ background:rgba(255,255,255,.15); color:#fff; transform:translateX(8px); box-shadow:var(--shadow-md);}
+    .nav-links a.active{ background:rgba(255,255,255,.2); border-left:4px solid var(--accent);}
+    .nav-links i{ margin-right:16px; font-size:1.2rem; width:20px; text-align:center;}
+
+    /* =============================== */
+    /* Main y Header                   */
+    /* =============================== */
+    .main-content{ flex:1; margin-left:280px; padding:25px; background:rgba(255,255,255,.05); backdrop-filter:blur(10px);}
+    .header{ background:var(--header-bg); color:#fff; padding:30px; border-radius:20px; margin-bottom:30px; box-shadow:var(--shadow-lg); display:flex; justify-content:space-between; align-items:center; backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,.2); position:relative; overflow:hidden;}
+    .header::before{ content:''; position:absolute; inset:0; background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");}
+    .header > *{ position:relative; z-index:1;}
+    .header h2{ font-weight:700; font-size:1.5rem; letter-spacing:-.025em;}
+    .user-info{ display:flex; align-items:center; background:rgba(255,255,255,.15); padding:12px 20px; border-radius:50px; backdrop-filter:blur(10px);}
+    .user-info img{ width:44px; height:44px; border-radius:50%; margin-right:12px; object-fit:cover; border:2px solid rgba(255,255,255,.3);}
+    .user-info span{ font-weight:600;}
+
+    /* =============================== */
+    /* Resumen (cards)                 */
+    /* =============================== */
+    .summary-cards{ display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:24px; margin-bottom:40px;}
+    .summary-card{ background:var(--card-bg); border-radius:20px; padding:30px; text-align:center; box-shadow:var(--shadow-md); transition:all .3s cubic-bezier(.25,.8,.25,1); border:1px solid rgba(255,255,255,.5); backdrop-filter:blur(20px); position:relative; overflow:hidden;}
+    .summary-card::before{ content:''; position:absolute; top:0; left:0; right:0; height:4px; background:linear-gradient(90deg,var(--primary),var(--accent));}
+    .summary-card:hover{ transform:translateY(-8px) scale(1.02); box-shadow:var(--shadow-xl);}
+    .summary-card:nth-child(1)::before{ background:linear-gradient(90deg,var(--success),var(--success-light)); }
+    .summary-card:nth-child(2)::before{ background:linear-gradient(90deg,var(--danger),var(--danger-light)); }
+    .summary-card:nth-child(3)::before{ background:linear-gradient(90deg,var(--info),var(--info-light)); }
+    .summary-card:nth-child(4)::before{ background:linear-gradient(90deg,var(--warning),var(--warning-light)); }
+    .summary-card i{ font-size:2.5rem; margin-bottom:20px; background:linear-gradient(135deg,var(--primary),var(--accent)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;}
+    .summary-card:nth-child(1) i{ background:linear-gradient(135deg,var(--success),var(--success-light)); -webkit-background-clip:text; -webkit-text-fill-color:transparent;}
+    .summary-card:nth-child(2) i{ background:linear-gradient(135deg,var(--danger),var(--danger-light)); -webkit-background-clip:text; -webkit-text-fill-color:transparent;}
+    .summary-card:nth-child(3) i{ background:linear-gradient(135deg,var(--info),var(--info-light)); -webkit-background-clip:text; -webkit-text-fill-color:transparent;}
+    .summary-card:nth-child(4) i{ background:linear-gradient(135deg,var(--warning),var(--warning-light)); -webkit-background-clip:text; -webkit-text-fill-color:transparent;}
+    .summary-card h3{ font-size:2.25rem; margin-bottom:8px; font-weight:800; letter-spacing:-.025em; color:var(--dark);}
+    .summary-card p{ color:var(--gray); font-size:.95rem; font-weight:500;}
+
+    /* =============================== */
+    /* Dashboard (cards grandes)       */
+    /* =============================== */
+    .dashboard{ display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:24px; margin-bottom:40px;}
+    .card{ background:var(--card-bg); border-radius:20px; padding:30px; box-shadow:var(--shadow-md); transition:all .3s cubic-bezier(.25,.8,.25,1); border:1px solid rgba(255,255,255,.5); backdrop-filter:blur(20px); position:relative; overflow:hidden;}
+    .card:hover{ transform:translateY(-6px); box-shadow:var(--shadow-xl);}
+    .card-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;}
+    .card-title{ font-size:1.1rem; font-weight:600; color:var(--dark); }
+    .card-icon{ width:60px; height:60px; border-radius:16px; display:flex; align-items:center; justify-content:center; font-size:1.5rem; background:linear-gradient(135deg,var(--primary),var(--accent)); color:#fff; box-shadow:var(--shadow-md);}
+    .bg-success .card-icon{ background:linear-gradient(135deg,var(--success),var(--success-light)); }
+    .bg-danger .card-icon{ background:linear-gradient(135deg,var(--danger),var(--danger-light)); }
+    .bg-primary .card-icon{ background:linear-gradient(135deg,var(--primary),var(--accent)); }
+    .card-value{ font-size:2.25rem; font-weight:800; margin-bottom:8px; background:linear-gradient(135deg,var(--dark),var(--gray)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;}
+    .card-footer{ font-size:.9rem; color:var(--gray); font-weight:500;}
+
+    /* =============================== */
+    /* Formularios y tablas            */
+    /* =============================== */
+    .form-section{ background:var(--card-bg); border-radius:20px; padding:35px; margin-bottom:40px; box-shadow:var(--shadow-md); border:1px solid rgba(255,255,255,.5); backdrop-filter:blur(20px);}
+    .section-title{ font-size:1.5rem; margin-bottom:25px; padding-bottom:15px; border-bottom:2px solid var(--gray-light); color:var(--dark); font-weight:700; display:flex; align-items:center; gap:12px;}
+    .form-row{ display:flex; flex-wrap:wrap; margin:0 -12px;}
+    .form-group{ flex:1 0 220px; padding:0 12px; margin-bottom:24px;}
+    label{ display:block; margin-bottom:10px; font-weight:600; color:var(--dark); font-size:.9rem; letter-spacing:.025em;}
+    input,select,textarea{ width:100%; padding:16px 20px; border:2px solid var(--gray-light); border-radius:12px; font-size:16px; min-height:52px; transition:all .3s cubic-bezier(.25,.8,.25,1); background:rgba(255,255,255,.8); backdrop-filter:blur(10px); font-weight:500;}
+    input:focus,select:focus,textarea:focus{ outline:none; border-color:var(--primary); box-shadow:0 0 0 4px rgba(102,126,234,.15); transform:translateY(-2px); background:#fff;}
+    .btn{ padding:16px 32px; border:none; border-radius:12px; font-size:1rem; font-weight:600; cursor:pointer; transition:all .3s cubic-bezier(.25,.8,.25,1); min-height:52px; min-width:52px; position:relative; overflow:hidden; letter-spacing:.025em;}
+    .btn::before{ content:''; position:absolute; inset:0; left:-100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent); transition:left .5s;}
+    .btn:hover::before{ left:100%;}
+    .btn-primary{ background:linear-gradient(135deg,var(--primary),var(--accent)); color:#fff; box-shadow:var(--shadow-md);}
+    .btn-primary:hover{ transform:translateY(-3px); box-shadow:var(--shadow-lg);}
+    .table-container{ background:var(--card-bg); border-radius:20px; padding:30px; box-shadow:var(--shadow-md); overflow:hidden; margin-bottom:40px; border:1px solid rgba(255,255,255,.5); backdrop-filter:blur(20px);}
+    table{ width:100%; border-collapse:collapse;}
+    th,td{ padding:18px; text-align:left; border-bottom:1px solid var(--gray-light);}
+    th{ font-weight:700; color:var(--dark); background:linear-gradient(135deg, rgba(102,126,234,.08), rgba(240,147,251,.08)); font-size:.9rem; letter-spacing:.05em; text-transform:uppercase;}
+    tr:hover{ background:linear-gradient(135deg, rgba(102,126,234,.03), rgba(240,147,251,.03));}
+    .badge{ padding:8px 16px; border-radius:20px; font-size:.85rem; font-weight:600; letter-spacing:.025em;}
+    .badge-income{ background:linear-gradient(135deg,var(--success),var(--success-light)); color:#fff; box-shadow:0 4px 12px rgba(72,187,120,.3);}
+    .badge-expense{ background:linear-gradient(135deg,var(--danger),var(--danger-light)); color:#fff; box-shadow:0 4px 12px rgba(245,101,101,.3);}
+    .badge-transfer{ background:linear-gradient(135deg,var(--info),var(--info-light)); color:#fff; box-shadow:0 4px 12px rgba(66,153,225,.3);}
+
+    /* =============================== */
+    /* Responsive                      */
+    /* =============================== */
+    @media (max-width:992px){
+      .sidebar{ width:80px;}
+      .sidebar .logo h1 span, .sidebar .nav-links a span{ display:none;}
+      .sidebar .logo h1{ font-size:1.5rem;}
+      .sidebar .nav-links i{ margin-right:0; font-size:1.4rem;}
+      .sidebar .nav-links a{ justify-content:center; padding:18px;}
+      .main-content{ margin-left:80px;}
+    }
+    @media (max-width:768px){
+      .sidebar-overlay.active{ display:block;}
+      .main-content{ margin-left:0; padding:16px;}
+      .sidebar{ width:300px; transform:translateX(-100%); box-shadow:var(--shadow-xl);}
+      .sidebar.active{ transform:translateX(0);}
+      .menu-toggle{ display:block; position:fixed; top:24px; left:24px; background:linear-gradient(135deg,var(--primary),var(--accent)); color:#fff; border:none; width:52px; height:52px; border-radius:12px; z-index:101; box-shadow:var(--shadow-lg); font-size:1.2rem;}
+      .header{ flex-direction:column; text-align:center; padding:24px; gap:16px;}
+      .header h2{ font-size:1.25rem;}
+      .summary-cards{ display:flex; overflow-x:auto; gap:20px; padding:0 8px 16px 8px; scroll-snap-type:x mandatory;}
+      .summary-card{ min-width:160px; flex-shrink:0; scroll-snap-align:start; padding:20px;}
+      .summary-card h3{ font-size:1.6rem;}
+      .form-row{ flex-direction:column;}
+      .form-group{ flex:none; margin-bottom:16px; padding:0;}
+      .monthly-filter{ flex-direction:column; align-items:flex-start;}
+      .monthly-filter select,.monthly-filter .btn{ width:100%;}
+    }
+    @media (max-width:576px){
+      .summary-card{ min-width:140px; padding:16px;}
+      .summary-card h3{ font-size:1.4rem;}
+      .summary-card p{ font-size:.85rem;}
+      .form-section{ padding:20px;}
+      .header h2{ font-size:1.1rem;}
+      .main-content{ padding:12px;}
+    }
+
+    /* Tarjetas de cuentas */
+    .accounts-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; margin-bottom:24px;}
+    .account-card{ background:var(--card-bg); border:1px solid rgba(255,255,255,.5); border-left:6px solid var(--primary); padding:18px; border-radius:14px; box-shadow:var(--shadow-sm);}
+    .account-card h4{ margin-bottom:6px; font-weight:800;}
+    .account-meta{ color:var(--gray); font-size:.85rem; margin-bottom:10px;}
+    .account-balance{ font-size:1.3rem; font-weight:800;}
+    .account-nequi{ border-left-color:#6d28d9;}
+    .account-daviplata{ border-left-color:#ef4444;}
+    .account-ahorro{ border-left-color:#10b981;}
+    .account-efectivo{ border-left-color:#f59e0b;}
+    .small{ font-size:.85rem; color:var(--gray);}
+    .muted{ color:var(--gray);}
+    .toast{ position:fixed; top:24px; right:24px; display:none; padding:14px 18px; border-radius:12px; color:#fff; box-shadow:var(--shadow-xl); z-index:2000; font-weight:700;}
+    .toast.show{ display:block; }
+    .toast.success{ background:linear-gradient(135deg,var(--success),var(--success-light));}
+    .toast.error{ background:linear-gradient(135deg,var(--danger),var(--danger-light));}
+  </style>
 </head>
 <body>
-    <div class="sidebar-overlay" id="sidebar-overlay"></div>
-    
-    <div class="sidebar" id="sidebar">
-        <div class="logo">
-            <h1>Familia <span>Serrano</span></h1>
-            <div class="subtitle">💰 Control Financiero</div>
-        </div>
-        <ul class="nav-links">
-            <li><a href="#" class="active"><i class="fas fa-home"></i> <span>Dashboard</span></a></li>
-            <li><a href="#"><i class="fas fa-wallet"></i> <span>Ingresos</span></a></li>
-            <li><a href="#"><i class="fas fa-shopping-cart"></i> <span>Gastos</span></a></li>
-            <li><a href="#"><i class="fas fa-chart-pie"></i> <span>Reportes</span></a></li>
-            <li><a href="#"><i class="fas fa-history"></i> <span>Historial</span></a></li>
-            <li><a href="#"><i class="fas fa-cog"></i> <span>Configuración</span></a></li>
-        </ul>
+  <!-- Overlay para mobile -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <div class="logo">
+      <h1>Familia <span>Serrano</span></h1>
+      <div class="subtitle">💰 Control Financiero</div>
     </div>
-    
-    <div class="main-content">
-        <button class="menu-toggle" id="menu-toggle">
-            <i class="fas fa-bars"></i>
+    <ul class="nav-links">
+      <li><a href="#" class="active"><i class="fas fa-home"></i> <span>Dashboard</span></a></li>
+      <li><a href="#"><i class="fas fa-wallet"></i> <span>Ingresos</span></a></li>
+      <li><a href="#"><i class="fas fa-shopping-cart"></i> <span>Gastos</span></a></li>
+      <li><a href="#"><i class="fas fa-right-left"></i> <span>Transferencias</span></a></li>
+      <li><a href="#"><i class="fas fa-chart-pie"></i> <span>Reportes</span></a></li>
+      <li><a href="#"><i class="fas fa-cog"></i> <span>Configuración</span></a></li>
+    </ul>
+  </div>
+
+  <!-- Contenido principal -->
+  <div class="main-content">
+    <button class="menu-toggle" id="menu-toggle"><i class="fas fa-bars"></i></button>
+
+    <!-- Header -->
+    <div class="header">
+      <h2><i class="fas fa-chart-line"></i> Dashboard Financiero - Familia Serrano</h2>
+      <div class="user-info">
+        <img src="https://ui-avatars.com/api/?name=Familia+Serrano&background=667eea&color=fff&bold=true" alt="Familia Serrano"/>
+        <span>Familia Serrano</span>
+      </div>
+    </div>
+
+    <!-- Estado -->
+    <div id="connection-status" class="status status-connected">
+      <i class="fas fa-circle-check"></i> Conectado a Firebase/Firestore (crm-familiar)
+    </div>
+
+    <!-- Resumen superior -->
+    <div class="summary-cards">
+      <div class="summary-card">
+        <i class="fas fa-wallet"></i>
+        <h3 id="total-income">$0</h3>
+        <p>Ingresos Mensuales</p>
+      </div>
+      <div class="summary-card">
+        <i class="fas fa-shopping-cart"></i>
+        <h3 id="total-expense">$0</h3>
+        <p>Gastos Mensuales</p>
+      </div>
+      <div class="summary-card">
+        <i class="fas fa-piggy-bank"></i>
+        <h3 id="total-savings">$0</h3>
+        <p>Ahorro Mensual</p>
+      </div>
+      <div class="summary-card">
+        <i class="fas fa-scale-balanced"></i>
+        <h3 id="total-balance">$0</h3>
+        <p>Balance Cuentas</p>
+      </div>
+    </div>
+
+    <!-- Saldos por cuenta -->
+    <div class="form-section">
+      <h3 class="section-title"><i class="fas fa-building-columns"></i> Saldos por cuenta</h3>
+      <div class="accounts-grid" id="accounts-grid"></div>
+      <p class="small">Consejo: los retiros se registran como Transferencia “Desde cuenta digital → Efectivo”, no como gasto 🧠</p>
+    </div>
+
+    <!-- KPIs -->
+    <div class="dashboard">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Ingresos del Mes</div>
+          <div class="card-icon bg-success"><i class="fas fa-arrow-down"></i></div>
+        </div>
+        <div class="card-value" id="income-value">$0</div>
+        <div class="card-footer">Ingresos acumulados</div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Gastos del Mes</div>
+          <div class="card-icon bg-danger"><i class="fas fa-arrow-up"></i></div>
+        </div>
+        <div class="card-value" id="expense-value">$0</div>
+        <div class="card-footer">Gastos acumulados</div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Balance</div>
+          <div class="card-icon bg-primary"><i class="fas fa-balance-scale"></i></div>
+        </div>
+        <div class="card-value" id="balance-value">$0</div>
+        <div class="card-footer">Ingresos - Gastos (sin transferencias)</div>
+      </div>
+    </div>
+
+    <!-- Filtro mensual -->
+    <div class="monthly-filter">
+      <label for="month-selector"><i class="fas fa-calendar-alt"></i> Mes:</label>
+      <select id="month-selector"></select>
+      <button id="new-month-btn" class="btn btn-primary"><i class="fas fa-calendar-plus"></i> Iniciar Nuevo Mes</button>
+    </div>
+
+    <!-- Gráfico (placeholder) -->
+    <div class="chart-container">
+      <div class="chart-placeholder" style="display:flex; align-items:center; justify-content:center; height:100%; color:var(--gray); font-style:italic; flex-direction:column; gap:16px;">
+        <i class="fas fa-chart-bar" style="font-size:4rem; opacity:.6; background:linear-gradient(135deg,var(--primary),var(--accent)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;"></i>
+        <p>Historial mensual de ingresos y gastos</p>
+      </div>
+    </div>
+
+    <!-- Registrar Ingreso -->
+    <div class="form-section">
+      <h3 class="section-title"><i class="fas fa-plus-circle"></i> Registrar Ingreso</h3>
+      <form id="income-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="income-source">💼 Fuente de Ingreso</label>
+            <select id="income-source" required>
+              <option value="">Seleccionar...</option>
+              <option value="salario">💼 Salario Personal</option>
+              <option value="salario-esposa">👩‍💼 Salario Esposa</option>
+              <option value="freelance">💻 Trabajos Freelance</option>
+              <option value="inversiones">📈 Inversiones</option>
+              <option value="otros">💰 Otros</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="income-amount">💵 Monto</label>
+            <input type="number" id="income-amount" placeholder="0.00" required/>
+          </div>
+          <div class="form-group">
+            <label for="income-date">📅 Fecha</label>
+            <input type="date" id="income-date" required/>
+          </div>
+          <div class="form-group">
+            <label for="income-account">🏦 Cuenta destino</label>
+            <select id="income-account" required></select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="income-description">📝 Descripción</label>
+          <textarea id="income-description" rows="2" placeholder="Detalles del ingreso..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">
+          <span class="btn-text"><i class="fas fa-plus-circle"></i> Registrar Ingreso</span>
         </button>
-        
-        <div class="header">
-            <h2><i class="fas fa-chart-line"></i> Dashboard Financiero - Familia Serrano</h2>
-            <div class="user-info">
-                <img src="https://ui-avatars.com/api/?name=Familia+Serrano&background=667eea&color=fff&bold=true" alt="Familia Serrano">
-                <span>Familia Serrano</span>
-            </div>
-        </div>
-        
-        <div id="connection-status" class="status status-disconnected">
-            <i class="fas fa-exclamation-circle"></i> Inicializando Firebase...
-        </div>
-        
-        <div class="summary-cards">
-            <div class="summary-card">
-                <i class="fas fa-wallet"></i>
-                <h3 id="total-income">$0</h3>
-                <p>Ingresos Mensuales</p>
-            </div>
-            <div class="summary-card">
-                <i class="fas fa-shopping-cart"></i>
-                <h3 id="total-expense">$0</h3>
-                <p>Gastos Mensuales</p>
-            </div>
-            <div class="summary-card">
-                <i class="fas fa-piggy-bank"></i>
-                <h3 id="total-savings">$0</h3>
-                <p>Ahorro Mensual</p>
-            </div>
-            <div class="summary-card">
-                <i class="fas fa-credit-card"></i>
-                <h3 id="total-debt">$0</h3>
-                <p>Deudas Pendientes</p>
-            </div>
-        </div>
-        
-        <div class="dashboard">
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">Ingresos del Mes</div>
-                    <div class="card-icon bg-success">
-                        <i class="fas fa-arrow-down"></i>
-                    </div>
-                </div>
-                <div class="card-value" id="income-value">$0</div>
-                <div class="card-footer">+12% respecto al mes anterior</div>
-            </div>
-            
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">Gastos del Mes</div>
-                    <div class="card-icon bg-danger">
-                        <i class="fas fa-arrow-up"></i>
-                    </div>
-                </div>
-                <div class="card-value" id="expense-value">$0</div>
-                <div class="card-footer">+5% respecto al mes anterior</div>
-            </div>
-            
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">Balance</div>
-                    <div class="card-icon bg-primary">
-                        <i class="fas fa-balance-scale"></i>
-                    </div>
-                </div>
-                <div class="card-value" id="balance-value">$0</div>
-                <div class="card-footer">Ahorro mensual</div>
-            </div>
-        </div>
-        
-        <div class="monthly-filter">
-            <label for="month-selector"><i class="fas fa-calendar-alt"></i> Filtrar por mes:</label>
-            <select id="month-selector">
-                <option value="current">Mes actual</option>
-                </select>
-            <button id="new-month-btn" class="btn btn-primary">
-                <i class="fas fa-calendar-plus"></i> Iniciar Nuevo Mes
-            </button>
-        </div>
-        
-        <div class="chart-container">
-            <div class="chart-placeholder">
-                <i class="fas fa-chart-bar"></i>
-                <p>Historial mensual de ingresos y gastos</p>
-            </div>
-        </div>
-        
-        <div class="form-section">
-            <h3 class="section-title">
-                <i class="fas fa-plus-circle"></i>
-                Registrar Ingreso
-            </h3>
-            <form id="income-form">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="income-source">💼 Fuente de Ingreso</label>
-                        <select id="income-source" required>
-                            <option value="">Seleccionar...</option>
-                            <option value="salario">💼 Salario Personal</option>
-                            <option value="salario-esposa">👩‍💼 Salario Esposa</option>
-                            <option value="freelance">💻 Trabajos Freelance</option>
-                            <option value="inversiones">📈 Inversiones</option>
-                            <option value="otros">💰 Otros</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="income-amount">💵 Monto</label>
-                        <input type="number" id="income-amount" placeholder="0.00" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="income-date">📅 Fecha</label>
-                        <input type="date" id="income-date" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="income-description">📝 Descripción</label>
-                    <textarea id="income-description" rows="2" placeholder="Detalles del ingreso..."></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary" id="income-submit-btn">
-                    <span class="btn-text"><i class="fas fa-plus-circle"></i> Registrar Ingreso</span>
-                    <span class="btn-loading"><i class="fas fa-spinner fa-spin"></i> Guardando...</span>
-                </button>
-            </form>
-        </div>
-        
-        <div class="form-section">
-            <h3 class="section-title">
-                <i class="fas fa-minus-circle"></i>
-                Registrar Gasto
-            </h3>
-            <form id="expense-form">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="expense-category">🏷️ Categoría</label>
-                        <select id="expense-category" required>
-                            <option value="">Seleccionar...</option>
-                            <option value="comida">🍽️ Comidas</option>
-                            <option value="salidas">🎯 Salidas/Entretenimiento</option>
-                            <option value="tarjetas">💳 Pago Tarjetas de Crédito</option>
-                            <option value="creditos">🏦 Créditos (Bancoomeva, Fesfa)</option>
-                            <option value="gasolina">⛽ Gasolina Moto</option>
-                            <option value="gasolina-carro">🚗 Gasolina Carro</option>
-                            <option value="gastos-varios">📦 Gastos Varios</option>
-                            <option value="agua">💧 Recibo de Agua</option>
-                            <option value="luz">💡 Recibo de Luz</option>
-                            <option value="gas">🔥 Recibo de Gas</option>
-                            <option value="celular">📱 Planes Móviles</option>
-                            <option value="internet">📡 Plan de Internet</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="expense-amount">💵 Monto</label>
-                        <input type="number" id="expense-amount" placeholder="0.00" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="expense-date">📅 Fecha</label>
-                        <input type="date" id="expense-date" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="expense-description">📝 Descripción</label>
-                    <textarea id="expense-description" rows="2" placeholder="Detalles del gasto..."></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary" id="expense-submit-btn">
-                    <span class="btn-text"><i class="fas fa-plus-circle"></i> Registrar Gasto</span>
-                    <span class="btn-loading"><i class="fas fa-spinner fa-spin"></i> Guardando...</span>
-                </button>
-            </form>
-        </div>
-        
-        <div class="table-container">
-            <h3 class="section-title">
-                <i class="fas fa-history"></i>
-                Transacciones Recientes
-            </h3>
-            <div id="loading-transactions" class="loading">
-                <div class="spinner"></div>
-                <p>Cargando transacciones...</p>
-            </div>
-            
-            <table id="transactions-table" style="display: none;">
-                <thead>
-                    <tr>
-                        <th>📅 Fecha</th>
-                        <th>📝 Descripción</th>
-                        <th>🏷️ Categoría</th>
-                        <th>💵 Monto</th>
-                        <th>🔖 Tipo</th>
-                        <th>⚡ Acciones</th>
-                    </tr>
-                </thead>
-                <tbody id="transactions-body">
-                    </tbody>
-            </table>
-            
-            <div class="mobile-transactions" id="mobile-transactions">
-                </div>
-        </div>
+      </form>
     </div>
 
-    <script type="module">
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, onSnapshot, query, orderBy, limit, Timestamp, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    <!-- Registrar Gasto -->
+    <div class="form-section">
+      <h3 class="section-title"><i class="fas fa-minus-circle"></i> Registrar Gasto</h3>
+      <form id="expense-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="expense-category">🏷️ Categoría</label>
+            <select id="expense-category" required>
+              <option value="">Seleccionar...</option>
+              <option value="comida">🍽️ Comidas</option>
+              <option value="salidas">🎯 Salidas/Entretenimiento</option>
+              <option value="tarjetas">💳 Pago Tarjetas de Crédito</option>
+              <option value="creditos">🏦 Créditos (Bancoomeva, Fesfa)</option>
+              <option value="gasolina">⛽ Gasolina Moto</option>
+              <option value="gasolina-carro">🚗 Gasolina Carro</option>
+              <option value="gastos-varios">📦 Gastos Varios</option>
+              <option value="agua">💧 Recibo de Agua</option>
+              <option value="luz">💡 Recibo de Luz</option>
+              <option value="gas">🔥 Recibo de Gas</option>
+              <option value="celular">📱 Planes Móviles</option>
+              <option value="internet">📡 Plan de Internet</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="expense-amount">💵 Monto</label>
+            <input type="number" id="expense-amount" placeholder="0.00" required/>
+          </div>
+          <div class="form-group">
+            <label for="expense-date">📅 Fecha</label>
+            <input type="date" id="expense-date" required/>
+          </div>
+          <div class="form-group">
+            <label for="expense-paid-with">💳 Pagado con</label>
+            <select id="expense-paid-with" required></select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="expense-description">📝 Descripción</label>
+          <textarea id="expense-description" rows="2" placeholder="Detalles del gasto..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">
+          <span class="btn-text"><i class="fas fa-plus-circle"></i> Registrar Gasto</span>
+        </button>
+      </form>
+    </div>
 
-        // Your web app's Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyA_Zn5FMQVPXCH9cPc0Yqk0O0K96wRdtK0",
-            authDomain: "crm-familiar.firebaseapp.com",
-            projectId: "crm-familiar",
-            storageBucket: "crm-familiar.firebasestorage.app",
-            messagingSenderId: "676787680550",
-            appId: "1:676787680550:web:2a31780e5a0af802d37de7"
-        };
+    <!-- Transferencias -->
+    <div class="form-section">
+      <h3 class="section-title"><i class="fas fa-right-left"></i> Transferir (incluye retiros)</h3>
+      <form id="transfer-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="transfer-from">Desde</label>
+            <select id="transfer-from" required></select>
+          </div>
+          <div class="form-group">
+            <label for="transfer-to">Hacia</label>
+            <select id="transfer-to" required></select>
+          </div>
+          <div class="form-group">
+            <label for="transfer-amount">Monto</label>
+            <input type="number" id="transfer-amount" required/>
+          </div>
+          <div class="form-group">
+            <label for="transfer-date">Fecha</label>
+            <input type="date" id="transfer-date" required/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="transfer-description">Descripción</label>
+          <textarea id="transfer-description" rows="2" placeholder="Motivo del traspaso o retiro..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-paper-plane"></i> Registrar Transferencia
+        </button>
+      </form>
+    </div>
 
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        
-        // Hacer db global para usar en los scripts
-        window.db = db;
-        window.addDoc = addDoc;
-        window.collection = collection;
-        window.getDocs = getDocs;
-        window.deleteDoc = deleteDoc;
-        window.doc = doc;
-        window.onSnapshot = onSnapshot;
-        window.query = query;
-        window.orderBy = orderBy;
-        window.limit = limit;
-        window.Timestamp = Timestamp;
-        window.where = where;
-        
-        console.log("Firebase inicializado correctamente");
-        
-        // Actualizar estado de conexión
-        document.getElementById('connection-status').innerHTML = '<i class="fas fa-check-circle"></i> Conectado a Firebase';
-        document.getElementById('connection-status').className = 'status status-connected';
-        
-        // Cargar datos iniciales
-        loadTransactions();
-        loadSummary();
-    </script>
-    
-    <script>
-        // Sistema de Toast Notifications
-        function showToast(message, type = 'success') {
-            const toast = document.createElement('div');
-            toast.className = `toast-notification toast-${type}`;
-            toast.innerHTML = `
-                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
-                <span>${message}</span>
-            `;
-            
-            document.body.appendChild(toast);
-            
-            // Remover después de 4 segundos
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transform = 'translateX(100%)';
-                setTimeout(() => {
-                    if (toast.parentNode) {
-                        toast.parentNode.removeChild(toast);
-                    }
-                }, 300);
-            }, 4000);
-        }
-        
-        // Toggle sidebar móvil
-        document.getElementById('menu-toggle').addEventListener('click', function() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
-            
-            sidebar.classList.toggle('active');
-            overlay.classList.toggle('active');
+    <!-- Saldos iniciales -->
+    <div class="form-section">
+      <h3 class="section-title"><i class="fas fa-sliders"></i> Saldos iniciales del mes</h3>
+      <div class="table-container" style="padding:0;">
+        <table>
+          <thead>
+            <tr>
+              <th>Cuenta</th>
+              <th>Titular</th>
+              <th>Tipo</th>
+              <th>Saldo Inicial</th>
+            </tr>
+          </thead>
+          <tbody id="initial-balances-tbody"></tbody>
+        </table>
+      </div>
+      <button id="save-initial-balances" class="btn btn-primary"><i class="fas fa-save"></i> Guardar saldos iniciales</button>
+      <p class="small">Al crear un nuevo mes, se copian los saldos de cierre del mes anterior como saldos iniciales. </p>
+    </div>
+
+    <!-- Transacciones -->
+    <div class="table-container">
+      <h3 class="section-title"><i class="fas fa-history"></i> Transacciones Recientes</h3>
+      <table id="transactions-table">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Tipo</th>
+            <th>Categoría</th>
+            <th>Descripción</th>
+            <th>Cuenta</th>
+            <th>Contracuenta</th>
+            <th>Monto</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="transactions-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast"></div>
+
+  <!-- =============================================== -->
+  <!-- Firebase + Firestore (SDK modular por CDN)      -->
+  <!-- =============================================== -->
+  <script type="module">
+    // Importes del SDK (modular). Si cambias versión, mantén pares app/firestore. [Doc oficial]
+    // Refs: Add Firebase web, get data Firestore, transactions [1][2][3]
+
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+    import {
+      getFirestore, collection, doc, addDoc, getDocs, setDoc, updateDoc, deleteDoc,
+      query, orderBy, runTransaction, serverTimestamp, writeBatch
+    } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+    // =========================================
+    // Configuración de tu proyecto crm-familiar
+    // =========================================
+    const firebaseConfig = {
+      apiKey: "AIzaSyA_Zn5FMQVPXCH9cPc0Yqk0O0K96wRdtK0",
+      authDomain: "crm-familiar.firebaseapp.com",
+      projectId: "crm-familiar",
+      storageBucket: "crm-familiar.firebasestorage.app",
+      messagingSenderId: "676787680550",
+      appId: "1:676787680550:web:2a31780e5a0af802d37de7"
+    };
+
+    // Inicializa Firebase y Firestore
+    const app = initializeApp(firebaseConfig); // [1]
+    const db = getFirestore(app); // [1]
+
+    // =========================================
+    // Utilidades de formato/fecha
+    // =========================================
+    const fmtCOP = new Intl.NumberFormat('es-CO', { style:'currency', currency:'COP', maximumFractionDigits:0 }); // [4]
+    const toCOP = (v)=> fmtCOP.format(Number(v||0)); // [4]
+    const today = new Date();
+    const pad = (n)=> String(n).padStart(2,'0');
+    const yyyy = today.getFullYear(); const mm = pad(today.getMonth()+1); const dd = pad(today.getDate());
+    const currentMonthKey = `${yyyy}-${mm}`;
+
+    // =========================================
+    // Modelo y paths en Firestore
+    // families/{familyId}/months/{YYYY-MM}/accounts & transactions
+    // =========================================
+    const familyId = 'familia-serrano'; // puedes cambiarlo en Configuración
+
+    const monthSelector = document.getElementById('month-selector');
+    const accountsGrid = document.getElementById('accounts-grid');
+    const initialTbody = document.getElementById('initial-balances-tbody');
+    const txBody = document.getElementById('transactions-tbody');
+    const toastEl = document.getElementById('toast');
+
+    function showToast(msg, kind='success'){
+      toastEl.textContent = msg;
+      toastEl.className = `toast show ${kind}`;
+      setTimeout(()=> toastEl.className='toast', 2200);
+    }
+
+    // Cuentas base para inicializar meses nuevos
+    const BASE_ACCOUNTS = [
+      { id:'nequi-esposa', nombre:'Nequi Esposa', tipo:'nequi', titular:'esposa', saldoInicial:0, saldo:0 },
+      { id:'daviplata-esposa', nombre:'Daviplata Esposa', tipo:'daviplata', titular:'esposa', saldoInicial:0, saldo:0 },
+      { id:'daviplata-mio', nombre:'Daviplata Mío', tipo:'daviplata', titular:'mio', saldoInicial:0, saldo:0 },
+      { id:'ahorro-esposa', nombre:'Ahorros Esposa', tipo:'ahorro', titular:'esposa', saldoInicial:0, saldo:0 },
+      { id:'ahorro-mio', nombre:'Ahorros Mío', tipo:'ahorro', titular:'mio', saldoInicial:0, saldo:0 },
+      { id:'efectivo', nombre:'Efectivo', tipo:'efectivo', titular:'familia', saldoInicial:0, saldo:0 },
+    ];
+
+    // Estado en memoria de UI
+    let months = [];
+    let selectedMonth = currentMonthKey;
+    let state = { accounts: [], transactions: [] };
+
+    // Helpers de rutas
+    const monthCol = collection(db, 'families', familyId, 'months');
+    const accColRef = (m)=> collection(db, 'families', familyId, 'months', m, 'accounts');
+    const txColRef  = (m)=> collection(db, 'families', familyId, 'months', m, 'transactions');
+    const accountDocRef = (m, accId)=> doc(db, 'families', familyId, 'months', m, 'accounts', accId);
+
+    // =========================================
+    // Carga de meses, cuentas y transacciones
+    // =========================================
+    async function ensureMonthExists(monthKey){
+      // Crea doc del mes + cuentas base si no existe
+      const thisAccCol = accColRef(monthKey);
+      const snap = await getDocs(thisAccCol); // [2]
+      if (snap.empty){
+        // Crear doc del mes
+        await setDoc(doc(monthCol, monthKey), { createdAt: serverTimestamp() }); // [2]
+        // Crear cuentas base
+        const batch = writeBatch(db);
+        BASE_ACCOUNTS.forEach(a=>{
+          batch.set(doc(thisAccCol, a.id), a);
         });
-        
-        // Cerrar sidebar al hacer clic en overlay
-        document.getElementById('sidebar-overlay').addEventListener('click', function() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
-            
-            sidebar.classList.remove('active');
-            overlay.classList.remove('active');
+        await batch.commit(); // [2]
+      }
+    }
+
+    async function loadMonths(){
+      const snap = await getDocs(monthCol); // [2]
+      months = snap.docs.map(d=> d.id).sort();
+      if (months.length === 0){
+        months = [currentMonthKey];
+        await ensureMonthExists(currentMonthKey);
+      }
+      if (!months.includes(selectedMonth)) selectedMonth = months[months.length-1];
+      renderMonthSelector();
+    }
+
+    async function loadAccounts(){
+      const snap = await getDocs(accColRef(selectedMonth)); // [2]
+      return snap.docs.map(d=> ({ id:d.id, ...d.data() }));
+    }
+
+    async function loadTransactions(){
+      const q = query(txColRef(selectedMonth), orderBy('fecha','desc')); // [2]
+      const snap = await getDocs(q);
+      return snap.docs.map(d=> ({ id:d.id, ...d.data() }));
+    }
+
+    async function fetchState(){
+      await ensureMonthExists(selectedMonth);
+      const [acc, txs] = await Promise.all([loadAccounts(), loadTransactions()]);
+      state.accounts = acc;
+      state.transactions = txs;
+    }
+
+    // =========================================
+    // Cómputo de saldos (doble partida)
+    // =========================================
+    function computeBalances(accounts, txs){
+      const bal = {};
+      accounts.forEach(a=> bal[a.id] = Number(a.saldoInicial||0));
+      txs.forEach(tx=>{
+        const amt = Number(tx.monto||0);
+        if(tx.tipo==='ingreso'){
+          bal[tx.cuentaId] = (bal[tx.cuentaId]||0) + amt;
+        }else if(tx.tipo==='gasto'){
+          bal[tx.cuentaId] = (bal[tx.cuentaId]||0) - amt;
+        }else if(tx.tipo==='transferencia'){
+          bal[tx.cuentaId] = (bal[tx.cuentaId]||0) - amt;
+          bal[tx.contracuentaId] = (bal[tx.contracuentaId]||0) + amt;
+        }
+      });
+      return bal;
+    }
+
+    // Escribe en Firestore los saldos actuales por cuenta (útil tras editar/eliminar)
+    async function recomputeAndWriteAccountSaldos(){
+      const balances = computeBalances(state.accounts, state.transactions);
+      const batch = writeBatch(db);
+      state.accounts.forEach(a=>{
+        const newSaldo = Number(balances[a.id]||0);
+        batch.update(accountDocRef(selectedMonth, a.id), { saldo: newSaldo });
+      });
+      await batch.commit(); // [2]
+    }
+
+    // =========================================
+    // Render de UI
+    // =========================================
+    function accountCssClass(tipo){
+      if(tipo==='nequi') return 'account-nequi';
+      if(tipo==='daviplata') return 'account-daviplata';
+      if(tipo==='ahorro') return 'account-ahorro';
+      if(tipo==='efectivo') return 'account-efectivo';
+      return '';
+    }
+
+    function renderMonthSelector(){
+      monthSelector.innerHTML = '';
+      months.forEach(key=>{
+        const opt = document.createElement('option');
+        opt.value = key; opt.textContent = key;
+        monthSelector.appendChild(opt);
+      });
+      monthSelector.value = selectedMonth;
+    }
+
+    function renderAccounts(){
+      accountsGrid.innerHTML = '';
+      const balances = computeBalances(state.accounts, state.transactions);
+      state.accounts.forEach(a=>{
+        const div = document.createElement('div');
+        div.className = `account-card ${accountCssClass(a.tipo)}`;
+        div.innerHTML = `
+          <h4>${a.nombre}</h4>
+          <div class="account-meta">Titular: <strong>${a.titular}</strong> • Tipo: <strong>${a.tipo}</strong></div>
+          <div class="account-balance">${toCOP(balances[a.id]||0)}</div>
+          <div class="small muted">Saldo inicial: ${toCOP(a.saldoInicial||0)}</div>
+        `;
+        accountsGrid.appendChild(div);
+      });
+
+      const totalIncome = state.transactions.filter(t=>t.tipo==='ingreso').reduce((s,t)=>s+Number(t.monto||0),0);
+      const totalExpense = state.transactions.filter(t=>t.tipo==='gasto').reduce((s,t)=>s+Number(t.monto||0),0);
+      const savings = totalIncome - totalExpense;
+      const totalBalanceAll = Object.values(balances).reduce((s,v)=>s+Number(v||0),0);
+
+      document.getElementById('total-income').textContent = toCOP(totalIncome);
+      document.getElementById('income-value').textContent = toCOP(totalIncome);
+      document.getElementById('total-expense').textContent = toCOP(totalExpense);
+      document.getElementById('expense-value').textContent = toCOP(totalExpense);
+      document.getElementById('total-savings').textContent = toCOP(savings);
+      document.getElementById('balance-value').textContent = toCOP(savings);
+      document.getElementById('total-balance').textContent = toCOP(totalBalanceAll);
+    }
+
+    function renderInitialBalances(){
+      initialTbody.innerHTML = '';
+      state.accounts.forEach(a=>{
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${a.nombre}</td>
+          <td>${a.titular}</td>
+          <td>${a.tipo}</td>
+          <td>
+            <input type="number" step="1" data-acc-id="${a.id}" value="${Number(a.saldoInicial||0)}" style="width:160px;"/>
+          </td>
+        `;
+        initialTbody.appendChild(tr);
+      });
+    }
+
+    function renderTransactions(){
+      txBody.innerHTML = '';
+      const txs = [...state.transactions].sort((a,b)=> (b.fecha||'').localeCompare(a.fecha||'')); // por fecha desc
+      txs.forEach(tx=>{
+        const tr = document.createElement('tr');
+        const badgeClass = tx.tipo==='ingreso' ? 'badge-income' : (tx.tipo==='gasto' ? 'badge-expense' : 'badge-transfer');
+        const cat = tx.tipo==='transferencia' ? '—' : (tx.categoria||'—');
+        const cuenta = state.accounts.find(a=>a.id===tx.cuentaId)?.nombre || '—';
+        const contracuenta = tx.contracuentaId ? (state.accounts.find(a=>a.id===tx.contracuentaId)?.nombre || '—') : '—';
+        tr.innerHTML = `
+          <td>${tx.fecha||''}</td>
+          <td><span class="badge ${badgeClass}">${tx.tipo}</span></td>
+          <td>${cat}</td>
+          <td>${tx.descripcion||''}</td>
+          <td>${cuenta}</td>
+          <td>${contracuenta}</td>
+          <td><strong>${toCOP(tx.monto||0)}</strong></td>
+          <td>
+            <button class="action-btn" title="Editar" data-action="edit" data-id="${tx.id}"><i class="fas fa-pen"></i></button>
+            <button class="action-btn" title="Eliminar" data-action="delete" data-id="${tx.id}"><i class="fas fa-trash"></i></button>
+          </td>
+        `;
+        txBody.appendChild(tr);
+      });
+    }
+
+    function fillAccountSelect(selectEl){
+      selectEl.innerHTML = '<option value="">Seleccionar...</option>';
+      state.accounts.forEach(a=>{
+        const opt = document.createElement('option');
+        opt.value = a.id; opt.textContent = a.nombre;
+        selectEl.appendChild(opt);
+      });
+    }
+
+    function fillAllAccountSelects(){
+      fillAccountSelect(document.getElementById('income-account'));
+      fillAccountSelect(document.getElementById('expense-paid-with'));
+      fillAccountSelect(document.getElementById('transfer-from'));
+      fillAccountSelect(document.getElementById('transfer-to'));
+    }
+
+    async function refreshAll(){
+      await fetchState();
+      fillAllAccountSelects();
+      renderAccounts();
+      renderInitialBalances();
+      renderTransactions();
+    }
+
+    // =========================================
+    // Acciones: Mes actual / nuevo mes
+    // =========================================
+    document.getElementById('new-month-btn').addEventListener('click', async ()=>{
+      // Calcula saldos de cierre del mes actual
+      const balances = computeBalances(state.accounts, state.transactions);
+      // Crea siguiente mes (YYYY-MM)
+      const [y,m] = selectedMonth.split('-').map(Number);
+      const next = new Date(y, m-1, 1); next.setMonth(next.getMonth()+1);
+      const nextKey = `${next.getFullYear()}-${String(next.getMonth()+1).padStart(2,'0')}`;
+
+      // Crea doc del mes y sus cuentas con saldoInicial = saldo cierre
+      await setDoc(doc(monthCol, nextKey), { createdAt: serverTimestamp() }); // [2]
+      const batch = writeBatch(db);
+      BASE_ACCOUNTS.forEach(a=>{
+        const saldoInicial = Number(balances[a.id]||0);
+        batch.set(doc(accColRef(nextKey), a.id), { ...a, saldoInicial, saldo: saldoInicial });
+      });
+      await batch.commit(); // [2]
+
+      selectedMonth = nextKey;
+      await loadMonths();
+      await refreshAll();
+      showToast('Nuevo mes iniciado con saldos de cierre ✅','success');
+    });
+
+    monthSelector.addEventListener('change', async ()=>{
+      selectedMonth = monthSelector.value;
+      await refreshAll();
+      showToast(`Mes ${selectedMonth} cargado 📅`,'success');
+    });
+
+    // =========================================
+    // Guardar saldos iniciales del mes
+    // =========================================
+    document.getElementById('save-initial-balances').addEventListener('click', async ()=>{
+      const inputs = initialTbody.querySelectorAll('input[data-acc-id]');
+      const batch = writeBatch(db);
+      inputs.forEach(inp=>{
+        const accId = inp.dataset.accId;
+        const val = Number(inp.value||0);
+        batch.update(accountDocRef(selectedMonth, accId), { saldoInicial: val });
+      });
+      await batch.commit(); // [2]
+      await refreshAll();
+      showToast('Saldos iniciales actualizados 💾','success');
+    });
+
+    // =========================================
+    // Formularios: Ingreso, Gasto, Transferencia
+    // =========================================
+    // Por simplicidad de demo, no acumulamos "saldo" en cuentas en ingresos/gastos;
+    // preferimos mantener consistencia recalculando tras cambios o usar transacción.
+    // Aquí usaremos transacción para modificar saldo y registrar la transacción. [3]
+
+    document.getElementById('income-form').addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const categoria = document.getElementById('income-source').value;
+      const monto = Number(document.getElementById('income-amount').value||0);
+      const fecha = document.getElementById('income-date').value;
+      const descripcion = document.getElementById('income-description').value||'';
+      const cuentaId = document.getElementById('income-account').value;
+      if(!categoria || !monto || !fecha || !cuentaId){ showToast('Completa todos los campos de ingreso','error'); return; }
+
+      await runTransaction(db, async (trx)=>{ // atómico: saldo cuenta + transacción [3]
+        const accRef = accountDocRef(selectedMonth, cuentaId);
+        const accSnap = await trx.get(accRef);
+        if(!accSnap.exists()) throw new Error('Cuenta no existe');
+        const saldo = Number(accSnap.data().saldo||accSnap.data().saldoInicial||0);
+        trx.update(accRef, { saldo: saldo + monto });
+        const newTxRef = doc(txColRef(selectedMonth));
+        trx.set(newTxRef, {
+          tipo:'ingreso', categoria, monto, fecha, descripcion,
+          cuentaId, contracuentaId:null, createdAt: serverTimestamp()
         });
-        
-        // Referencias a elementos del DOM
-        const connectionStatus = document.getElementById('connection-status');
-        const incomeValue = document.getElementById('income-value');
-        const expenseValue = document.getElementById('expense-value');
-        const balanceValue = document.getElementById('balance-value');
-        const totalIncome = document.getElementById('total-income');
-        const totalExpense = document.getElementById('total-expense');
-        const totalSavings = document.getElementById('total-savings');
-        const totalDebt = document.getElementById('total-debt');
-        const transactionsBody = document.getElementById('transactions-body');
-        const transactionsTable = document.getElementById('transactions-table');
-        const loadingTransactions = document.getElementById('loading-transactions');
-        const monthSelector = document.getElementById('month-selector');
-        const mobileTransactions = document.getElementById('mobile-transactions');
-        
-        // 🔄 ACTUALIZADO: Cargar transacciones ahora escucha cambios en el selector
-        function loadTransactions() {
-            const selectedMonth = monthSelector.value;
-            if (selectedMonth === 'current') {
-                loadCurrentMonthTransactions();
-            } else {
-                loadArchivedTransactions(selectedMonth);
-            }
-        }
-        
-        // ➕ NUEVO: Función para cargar transacciones del mes actual
-        function loadCurrentMonthTransactions() {
-            transactionsTable.style.display = 'none';
-            mobileTransactions.style.display = 'none';
-            loadingTransactions.style.display = 'block';
+      });
 
-            const q = query(collection(window.db, "transactions"), orderBy("date", "desc"));
-            
-            onSnapshot(q, (querySnapshot) => {
-                renderTransactions(querySnapshot, false); // false = no es archivo
-            }, (error) => {
-                console.error("Error cargando transacciones actuales: ", error);
-                showToast('Error al cargar transacciones', 'error');
-            });
-        }
+      e.target.reset();
+      await refreshAll();
+      showToast('Ingreso registrado ✅','success');
+    });
 
-        // ➕ NUEVO: Función para cargar transacciones de meses archivados
-        async function loadArchivedTransactions(archiveId) {
-            transactionsTable.style.display = 'none';
-            mobileTransactions.style.display = 'none';
-            loadingTransactions.style.display = 'block';
+    document.getElementById('expense-form').addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const categoria = document.getElementById('expense-category').value;
+      const monto = Number(document.getElementById('expense-amount').value||0);
+      const fecha = document.getElementById('expense-date').value;
+      const descripcion = document.getElementById('expense-description').value||'';
+      const cuentaId = document.getElementById('expense-paid-with').value;
+      if(!categoria || !monto || !fecha || !cuentaId){ showToast('Completa todos los campos de gasto','error'); return; }
 
-            const q = query(collection(window.db, "archived_transactions"), where("archiveId", "==", archiveId), orderBy("date", "desc"));
-            
-            try {
-                const querySnapshot = await getDocs(q);
-                renderTransactions(querySnapshot, true); // true = es archivo
-            } catch (error) {
-                console.error("Error cargando transacciones archivadas: ", error);
-                showToast('Error al cargar datos archivados', 'error');
-            }
-        }
-
-        // ➕ NUEVO: Función centralizada para renderizar transacciones
-        function renderTransactions(querySnapshot, isArchived) {
-            transactionsBody.innerHTML = '';
-            mobileTransactions.innerHTML = '';
-            
-            if (querySnapshot.empty) {
-                transactionsBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No hay transacciones para este período</td></tr>';
-                mobileTransactions.innerHTML = '<div style="text-align: center; padding: 40px; color: #718096;">No hay transacciones para este período</div>';
-            } else {
-                querySnapshot.forEach((doc) => {
-                    const data = doc.data();
-                    const actionsHtml = isArchived ? '' : `
-                        <button class="action-btn edit-btn" data-id="${doc.id}" title="Editar">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="action-btn delete-btn" data-id="${doc.id}" title="Eliminar">
-                            <i class="fas fa-trash"></i>
-                        </button>`;
-                    const mobileActionsHtml = isArchived ? '' : `
-                        <div class="transaction-actions">
-                            <button class="btn-edit" data-id="${doc.id}"><i class="fas fa-edit"></i> Editar</button>
-                            <button class="btn-delete" data-id="${doc.id}"><i class="fas fa-trash"></i> Eliminar</button>
-                        </div>`;
-
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${formatDate(data.date)}</td>
-                        <td>${data.description || '-'}</td>
-                        <td>${data.categoryName || data.category || '-'}</td>
-                        <td><strong>$${parseFloat(data.amount).toLocaleString()}</strong></td>
-                        <td><span class="badge ${data.type === 'income' ? 'badge-income' : 'badge-expense'}">${data.type === 'income' ? '💰 Ingreso' : '💸 Gasto'}</span></td>
-                        <td>${actionsHtml}</td>`;
-                    transactionsBody.appendChild(row);
-
-                    const card = document.createElement('div');
-                    card.className = `transaction-card ${data.type}`;
-                    card.innerHTML = `
-                        <div class="transaction-header">
-                            <span class="badge ${data.type === 'income' ? 'badge-income' : 'badge-expense'}">${data.type === 'income' ? '💰 Ingreso' : '💸 Gasto'}</span>
-                            <span class="transaction-amount">$${parseFloat(data.amount).toLocaleString()}</span>
-                        </div>
-                        <div class="transaction-details">
-                            <strong>${data.categoryName || data.category || 'Sin categoría'}</strong>
-                            <small>${formatDate(data.date)} • ${data.description || 'Sin descripción'}</small>
-                        </div>
-                        ${mobileActionsHtml}`;
-                    mobileTransactions.appendChild(card);
-                });
-            }
-
-            loadingTransactions.style.display = 'none';
-            transactionsTable.style.display = 'table';
-            mobileTransactions.style.display = 'block';
-
-            if (!isArchived) {
-                document.querySelectorAll('.edit-btn, .btn-edit').forEach(btn => {
-                    btn.addEventListener('click', () => editTransaction(btn.dataset.id));
-                });
-                document.querySelectorAll('.delete-btn, .btn-delete').forEach(btn => {
-                    btn.addEventListener('click', () => deleteTransaction(btn.dataset.id));
-                });
-            }
-        }
-        
-        // 🔄 ACTUALIZADO: Cargar resumen ahora diferencia entre actual y archivado
-        function loadSummary() {
-            const selectedMonth = monthSelector.value;
-            if (selectedMonth === 'current') {
-                loadSummaryForCollection("transactions");
-            } else {
-                loadSummaryForCollection("archived_transactions", selectedMonth);
-            }
-        }
-        
-        // 🔄 ACTUALIZADO: Función genérica para cargar resumen
-        async function loadSummaryForCollection(collectionName, archiveId = null) {
-            const values = { income: 0, expense: 0, balance: 0 };
-            
-            let q = collection(window.db, collectionName);
-            if (archiveId) {
-                q = query(q, where("archiveId", "==", archiveId));
-            }
-
-            try {
-                const querySnapshot = await getDocs(q);
-                querySnapshot.forEach((doc) => {
-                    const data = doc.data();
-                    const amount = parseFloat(data.amount) || 0;
-                    if (data.type === 'income') values.income += amount;
-                    else if (data.type === 'expense') values.expense += amount;
-                });
-
-                values.balance = values.income - values.expense;
-                
-                incomeValue.textContent = `$${values.income.toLocaleString()}`;
-                expenseValue.textContent = `$${values.expense.toLocaleString()}`;
-                balanceValue.textContent = `$${values.balance.toLocaleString()}`;
-                totalIncome.textContent = `$${values.income.toLocaleString()}`;
-                totalExpense.textContent = `$${values.expense.toLocaleString()}`;
-                totalSavings.textContent = `$${values.balance.toLocaleString()}`;
-                totalDebt.textContent = '$0'; // Lógica de deuda pendiente
-            } catch (error) {
-                console.error("Error cargando resumen: ", error);
-                showToast('Error al cargar el resumen', 'error');
-            }
-        }
-        
-        // Formatear fecha
-        function formatDate(dateString) {
-            if (!dateString) return '-';
-            if (dateString.toDate) {
-                dateString = dateString.toDate();
-            }
-            const date = new Date(dateString);
-             if (isNaN(date.getTime())) {
-                const parts = dateString.split('-');
-                if(parts.length === 3) {
-                    return new Date(parts[0], parts[1] - 1, parts[2]).toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' });
-                }
-                return '-';
-            }
-            return date.toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' });
-        }
-        
-        // Editar transacción
-        function editTransaction(id) {
-            showToast(`Función de edición en desarrollo para ID: ${id}`, 'warning');
-        }
-        
-        // Eliminar transacción con toast
-        function deleteTransaction(id) {
-            if (confirm('¿Estás seguro de que deseas eliminar esta transacción?')) {
-                deleteDoc(doc(window.db, "transactions", id))
-                    .then(() => {
-                        showToast('✅ Transacción eliminada exitosamente', 'success');
-                    })
-                    .catch((error) => {
-                        console.error("Error eliminando transacción: ", error);
-                        showToast('❌ Error al eliminar la transacción', 'error');
-                    });
-            }
-        }
-        
-        // Registrar ingreso con loading y toast
-        document.getElementById('income-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const submitBtn = document.getElementById('income-submit-btn');
-            submitBtn.classList.add('loading');
-            
-            const sourceSelect = document.getElementById('income-source');
-            
-            addDoc(collection(window.db, "transactions"), {
-                type: 'income',
-                category: sourceSelect.value,
-                categoryName: sourceSelect.options[sourceSelect.selectedIndex].text,
-                amount: parseFloat(document.getElementById('income-amount').value),
-                date: document.getElementById('income-date').value,
-                description: document.getElementById('income-description').value,
-                timestamp: new Date()
-            })
-            .then(() => {
-                this.reset();
-                document.getElementById('income-date').value = new Date().toISOString().split('T')[0];
-                showToast('💰 Ingreso registrado exitosamente', 'success');
-            })
-            .catch((error) => {
-                showToast('❌ Error al registrar el ingreso', 'error');
-            })
-            .finally(() => {
-                submitBtn.classList.remove('loading');
-            });
+      await runTransaction(db, async (trx)=>{ // atómico: saldo cuenta - transacción [3]
+        const accRef = accountDocRef(selectedMonth, cuentaId);
+        const accSnap = await trx.get(accRef);
+        if(!accSnap.exists()) throw new Error('Cuenta no existe');
+        const saldo = Number(accSnap.data().saldo||accSnap.data().saldoInicial||0);
+        if(saldo < monto) throw new Error('Saldo insuficiente');
+        trx.update(accRef, { saldo: saldo - monto });
+        const newTxRef = doc(txColRef(selectedMonth));
+        trx.set(newTxRef, {
+          tipo:'gasto', categoria, monto, fecha, descripcion,
+          cuentaId, contracuentaId:null, createdAt: serverTimestamp()
         });
-        
-        // Registrar gasto con loading y toast
-        document.getElementById('expense-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const submitBtn = document.getElementById('expense-submit-btn');
-            submitBtn.classList.add('loading');
-            
-            const categorySelect = document.getElementById('expense-category');
+      });
 
-            addDoc(collection(window.db, "transactions"), {
-                type: 'expense',
-                category: categorySelect.value,
-                categoryName: categorySelect.options[categorySelect.selectedIndex].text,
-                amount: parseFloat(document.getElementById('expense-amount').value),
-                date: document.getElementById('expense-date').value,
-                description: document.getElementById('expense-description').value,
-                timestamp: new Date()
-            })
-            .then(() => {
-                this.reset();
-                document.getElementById('expense-date').value = new Date().toISOString().split('T')[0];
-                showToast('💸 Gasto registrado exitosamente', 'success');
-            })
-            .catch((error) => {
-                showToast('❌ Error al registrar el gasto', 'error');
-            })
-            .finally(() => {
-                submitBtn.classList.remove('loading');
-            });
+      e.target.reset();
+      await refreshAll();
+      showToast('Gasto registrado ✅','success');
+    });
+
+    document.getElementById('transfer-form').addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const fromId = document.getElementById('transfer-from').value;
+      const toId = document.getElementById('transfer-to').value;
+      const monto = Number(document.getElementById('transfer-amount').value||0);
+      const fecha = document.getElementById('transfer-date').value;
+      const descripcion = document.getElementById('transfer-description').value||'';
+      if(!fromId || !toId || !monto || !fecha){ showToast('Completa todos los campos de transferencia','error'); return; }
+      if(fromId===toId){ showToast('La cuenta origen y destino no pueden ser iguales','error'); return; }
+
+      // Transacción: baja saldo en origen, sube en destino y registra tx
+      await runTransaction(db, async (trx)=>{ // [3]
+        const fromRef = accountDocRef(selectedMonth, fromId);
+        const toRef   = accountDocRef(selectedMonth, toId);
+
+        const fromSnap = await trx.get(fromRef);
+        const toSnap   = await trx.get(toRef);
+        if(!fromSnap.exists() || !toSnap.exists()) throw new Error('Cuenta inválida');
+
+        const fromSaldo = Number(fromSnap.data().saldo||fromSnap.data().saldoInicial||0);
+        const toSaldo   = Number(toSnap.data().saldo||toSnap.data().saldoInicial||0);
+        if(fromSaldo < monto) throw new Error('Saldo insuficiente');
+
+        trx.update(fromRef, { saldo: fromSaldo - monto });
+        trx.update(toRef,   { saldo: toSaldo + monto });
+
+        const newTxRef = doc(txColRef(selectedMonth));
+        trx.set(newTxRef, {
+          tipo:'transferencia', categoria:null, monto, fecha, descripcion,
+          cuentaId: fromId, contracuentaId: toId, createdAt: serverTimestamp()
         });
-        
-        // Event listener para el selector de mes
-        monthSelector.addEventListener('change', function() {
-            loadTransactions();
-            loadSummary();
-        });
-        
-        // Inicializar
-        document.addEventListener('DOMContentLoaded', function() {
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('income-date').value = today;
-            document.getElementById('expense-date').value = today;
-            populateArchivedMonths();
-        });
+      });
 
-        // ➕ NUEVO: Poblar el selector con meses archivados
-        async function populateArchivedMonths() {
-            try {
-                const q = query(collection(window.db, "archived_transactions"));
-                const querySnapshot = await getDocs(q);
-                const archiveIds = new Set();
-                querySnapshot.forEach(doc => archiveIds.add(doc.data().archiveId));
-                
-                // Limpiar opciones existentes (excepto "Mes actual")
-                while (monthSelector.options.length > 1) {
-                    monthSelector.remove(1);
-                }
+      e.target.reset();
+      await refreshAll();
+      showToast('Transferencia registrada 🔁','success');
+    });
 
-                // Ordenar y agregar los meses archivados
-                Array.from(archiveIds).sort().reverse().forEach(id => {
-                    const [year, month] = id.split('-');
-                    const date = new Date(year, month - 1, 1);
-                    const monthName = date.toLocaleString('es-ES', { month: 'long', year: 'numeric' });
-                    const option = new Option(monthName.charAt(0).toUpperCase() + monthName.slice(1), id);
-                    monthSelector.add(option);
-                });
-            } catch (error) {
-                console.error("Error poblando meses archivados: ", error);
-            }
-        }
+    // =========================================
+    // Acciones: Editar / Eliminar transacción
+    // =========================================
+    document.getElementById('transactions-table').addEventListener('click', async (e)=>{
+      const btn = e.target.closest('.action-btn');
+      if(!btn) return;
+      const id = btn.dataset.id;
+      const action = btn.dataset.action;
 
-        // 🔄 ACTUALIZADO: Lógica para archivar el mes actual e iniciar uno nuevo
-        const newMonthBtn = document.getElementById('new-month-btn');
-        newMonthBtn.addEventListener('click', async function() {
-            const now = new Date();
-            const archiveId = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
-            const monthName = now.toLocaleString('es-ES', { month: 'long', year: 'numeric' });
-            
-            if (!confirm(`¿Estás seguro de que quieres cerrar el mes actual (${monthName}) y empezar uno nuevo? Todas las transacciones actuales serán archivadas y no se podrán modificar.`)) {
-                return;
-            }
+      // Localiza la transacción en memoria
+      const tx = state.transactions.find(t=>t.id===id);
+      if(!tx) return;
 
-            this.classList.add('loading');
-            showToast('Archivando transacciones del mes actual...', 'info');
+      if(action==='delete'){
+        // Eliminar doc y luego recomputar saldos en cuentas
+        await deleteDoc(doc(txColRef(selectedMonth), id)); // [2]
+        await fetchState();
+        await recomputeAndWriteAccountSaldos();
+        await refreshAll();
+        showToast('Transacción eliminada 🗑️','success');
+      }else if(action==='edit'){
+        // Edición básica: monto y descripción
+        const newAmt = Number(prompt('Nuevo monto:', tx.monto));
+        if(!newAmt || newAmt<=0) return;
+        const newDesc = prompt('Nueva descripción:', tx.descripcion||'') || '';
+        await updateDoc(doc(txColRef(selectedMonth), id), { monto: newAmt, descripcion: newDesc }); // [2]
+        await fetchState();
+        await recomputeAndWriteAccountSaldos();
+        await refreshAll();
+        showToast('Transacción actualizada ✏️','success');
+      }
+    });
 
-            try {
-                const transactionsRef = collection(window.db, "transactions");
-                const snapshot = await getDocs(transactionsRef);
+    // =========================================
+    // Sidebar móvil y fechas por defecto
+    // =========================================
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    const menuBtn = document.getElementById('menu-toggle');
+    menuBtn?.addEventListener('click', ()=>{
+      sidebar.classList.toggle('active'); overlay.classList.toggle('active');
+    });
+    overlay?.addEventListener('click', ()=>{
+      sidebar.classList.remove('active'); overlay.classList.remove('active');
+    });
 
-                if (snapshot.empty) {
-                    showToast('No hay transacciones para archivar.', 'warning');
-                    this.classList.remove('loading');
-                    return;
-                }
+    document.getElementById('income-date').value = `${yyyy}-${mm}-${dd}`;
+    document.getElementById('expense-date').value = `${yyyy}-${mm}-${dd}`;
+    document.getElementById('transfer-date').value = `${yyyy}-${mm}-${dd}`;
 
-                // Copiar y luego eliminar cada transacción
-                for (const docSnapshot of snapshot.docs) {
-                    const data = docSnapshot.data();
-                    await addDoc(collection(window.db, "archived_transactions"), {
-                        ...data,
-                        archiveId: archiveId
-                    });
-                    await deleteDoc(doc(window.db, "transactions", docSnapshot.id));
-                }
-                
-                showToast(`✅ Mes de ${monthName} archivado exitosamente.`, 'success');
-                
-                // Actualizar la UI
-                await populateArchivedMonths();
-                monthSelector.value = "current";
-                loadTransactions();
-                loadSummary();
-
-            } catch (error) {
-                console.error("Error al archivar el mes:", error);
-                showToast('❌ Error al archivar el mes.', 'error');
-            } finally {
-                this.classList.remove('loading');
-            }
-        });
-    </script>
+    // =========================================
+    // Inicialización: cargar meses y refrescar
+    // =========================================
+    (async function init(){
+      await loadMonths();
+      await refreshAll();
+    })();
+  </script>
 </body>
 </html>
