@@ -7,7 +7,6 @@
   <!-- Iconos y fuentes -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
-
   <style>
     /* =============================== */
     /* Estilos base y variables        */
@@ -27,7 +26,6 @@
     }
     body{ background:linear-gradient(135deg,#f5f7fa 0%,#c3cfe2 100%); color:var(--dark); display:flex; min-height:100vh; font-size:14px; line-height:1.6;}
     .sidebar-overlay{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:99; backdrop-filter:blur(3px); }
-
     /* =============================== */
     /* Sidebar                         */
     /* =============================== */
@@ -43,7 +41,6 @@
     .nav-links a:hover,.nav-links a.active{ background:rgba(255,255,255,.15); color:#fff; transform:translateX(8px); box-shadow:var(--shadow-md);}
     .nav-links a.active{ background:rgba(255,255,255,.2); border-left:4px solid var(--accent);}
     .nav-links i{ margin-right:16px; font-size:1.2rem; width:20px; text-align:center;}
-
     /* =============================== */
     /* Main y Header                   */
     /* =============================== */
@@ -55,7 +52,6 @@
     .user-info{ display:flex; align-items:center; background:rgba(255,255,255,.15); padding:12px 20px; border-radius:50px; backdrop-filter:blur(10px);}
     .user-info img{ width:44px; height:44px; border-radius:50%; margin-right:12px; object-fit:cover; border:2px solid rgba(255,255,255,.3);}
     .user-info span{ font-weight:600;}
-
     /* =============================== */
     /* Resumen (cards)                 */
     /* =============================== */
@@ -74,7 +70,6 @@
     .summary-card:nth-child(4) i{ background:linear-gradient(135deg,var(--warning),var(--warning-light)); -webkit-background-clip:text; -webkit-text-fill-color:transparent;}
     .summary-card h3{ font-size:2.25rem; margin-bottom:8px; font-weight:800; letter-spacing:-.025em; color:var(--dark);}
     .summary-card p{ color:var(--gray); font-size:.95rem; font-weight:500;}
-
     /* =============================== */
     /* Dashboard (cards grandes)       */
     /* =============================== */
@@ -89,9 +84,8 @@
     .bg-primary .card-icon{ background:linear-gradient(135deg,var(--primary),var(--accent)); }
     .card-value{ font-size:2.25rem; font-weight:800; margin-bottom:8px; background:linear-gradient(135deg,var(--dark),var(--gray)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;}
     .card-footer{ font-size:.9rem; color:var(--gray); font-weight:500;}
-
     /* =============================== */
-    /* Formularios y tablas            */
+    /* Formularios                     */
     /* =============================== */
     .form-section{ background:var(--card-bg); border-radius:20px; padding:35px; margin-bottom:40px; box-shadow:var(--shadow-md); border:1px solid rgba(255,255,255,.5); backdrop-filter:blur(20px);}
     .section-title{ font-size:1.5rem; margin-bottom:25px; padding-bottom:15px; border-bottom:2px solid var(--gray-light); color:var(--dark); font-weight:700; display:flex; align-items:center; gap:12px;}
@@ -105,6 +99,11 @@
     .btn:hover::before{ left:100%;}
     .btn-primary{ background:linear-gradient(135deg,var(--primary),var(--accent)); color:#fff; box-shadow:var(--shadow-md);}
     .btn-primary:hover{ transform:translateY(-3px); box-shadow:var(--shadow-lg);}
+    .btn-block{ display:block; width:100%;}
+    .btn:disabled{ opacity:.5; cursor:not-allowed; transform:none; }
+    /* =============================== */
+    /* Tablas                          */
+    /* =============================== */
     .table-container{ background:var(--card-bg); border-radius:20px; padding:30px; box-shadow:var(--shadow-md); overflow:hidden; margin-bottom:40px; border:1px solid rgba(255,255,255,.5); backdrop-filter:blur(20px);}
     table{ width:100%; border-collapse:collapse;}
     th,td{ padding:18px; text-align:left; border-bottom:1px solid var(--gray-light);}
@@ -114,7 +113,21 @@
     .badge-income{ background:linear-gradient(135deg,var(--success),var(--success-light)); color:#fff; box-shadow:0 4px 12px rgba(72,187,120,.3);}
     .badge-expense{ background:linear-gradient(135deg,var(--danger),var(--danger-light)); color:#fff; box-shadow:0 4px 12px rgba(245,101,101,.3);}
     .badge-transfer{ background:linear-gradient(135deg,var(--info),var(--info-light)); color:#fff; box-shadow:0 4px 12px rgba(66,153,225,.3);}
-
+    .action-btn{ background:none; border:none; color:var(--gray); cursor:pointer; font-size:1.2rem; margin:0 6px; transition:all .3s cubic-bezier(.25,.8,.25,1); min-height:48px; min-width:48px; border-radius:10px; display:inline-flex; align-items:center; justify-content:center;}
+    .action-btn:hover{ color:var(--primary); background:rgba(102,126,234,.1); transform:translateY(-2px);}
+    /* =============================== */
+    /* Estados, loading y filtro       */
+    /* =============================== */
+    .status{ padding:20px; border-radius:16px; margin:15px 0; text-align:center; font-weight:600; backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,.3);}
+    .status-connected{ background:linear-gradient(135deg, rgba(72,187,120,.15), rgba(104,211,145,.15)); color:var(--success); border-color:rgba(72,187,120,.3);}
+    .status-disconnected{ background:linear-gradient(135deg, rgba(245,101,101,.15), rgba(252,129,129,.15)); color:var(--danger); border-color:rgba(245,101,101,.3);}
+    .loading{ text-align:center; padding:40px;}
+    .spinner{ border:4px solid rgba(102,126,234,.1); border-radius:50%; border-top:4px solid var(--primary); width:48px; height:48px; animation:spin 1s linear infinite; margin:0 auto 20px auto;}
+    @keyframes spin{ 0%{ transform:rotate(0deg);} 100%{ transform:rotate(360deg);} }
+    .monthly-filter{ display:flex; align-items:center; margin-bottom:24px; gap:16px; flex-wrap:wrap; background:var(--card-bg); padding:20px; border-radius:16px; box-shadow:var(--shadow-sm); backdrop-filter:blur(20px);}
+    .monthly-filter label{ margin-bottom:0; font-weight:700; color:var(--dark); display:flex; align-items:center; gap:8px;}
+    .monthly-filter select{ width:auto; min-width:200px;}
+    .monthly-filter .btn{ padding:14px 24px; font-size:.95rem; min-height:52px;}
     /* =============================== */
     /* Responsive                      */
     /* =============================== */
@@ -150,8 +163,10 @@
       .header h2{ font-size:1.1rem;}
       .main-content{ padding:12px;}
     }
-
-    /* Tarjetas de cuentas */
+    .menu-toggle{ display:none;}
+    /* =============================== */
+    /* Tarjetas de cuentas             */
+    /* =============================== */
     .accounts-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; margin-bottom:24px;}
     .account-card{ background:var(--card-bg); border:1px solid rgba(255,255,255,.5); border-left:6px solid var(--primary); padding:18px; border-radius:14px; box-shadow:var(--shadow-sm);}
     .account-card h4{ margin-bottom:6px; font-weight:800;}
@@ -173,7 +188,9 @@
   <!-- Overlay para mobile -->
   <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
-  <!-- Sidebar -->
+  <!-- =============================== -->
+  <!-- Sidebar de navegación           -->
+  <!-- =============================== -->
   <div class="sidebar" id="sidebar">
     <div class="logo">
       <h1>Familia <span>Serrano</span></h1>
@@ -189,7 +206,9 @@
     </ul>
   </div>
 
-  <!-- Contenido principal -->
+  <!-- =============================== -->
+  <!-- Contenido principal             -->
+  <!-- =============================== -->
   <div class="main-content">
     <button class="menu-toggle" id="menu-toggle"><i class="fas fa-bars"></i></button>
 
@@ -202,9 +221,9 @@
       </div>
     </div>
 
-    <!-- Estado -->
-    <div id="connection-status" class="status status-connected">
-      <i class="fas fa-circle-check"></i> Conectado a Firebase/Firestore (crm-familiar)
+    <!-- Estado de conexión Firebase -->
+    <div id="connection-status" class="status status-disconnected">
+      <i class="fas fa-circle-notch fa-spin"></i> Conectando a Firebase...
     </div>
 
     <!-- Resumen superior -->
@@ -227,15 +246,17 @@
       <div class="summary-card">
         <i class="fas fa-scale-balanced"></i>
         <h3 id="total-balance">$0</h3>
-        <p>Balance Cuentas</p>
+        <p>Balance Total Cuentas</p>
       </div>
     </div>
 
-    <!-- Saldos por cuenta -->
+    <!-- Tarjetas de saldos por cuenta -->
     <div class="form-section">
       <h3 class="section-title"><i class="fas fa-building-columns"></i> Saldos por cuenta</h3>
-      <div class="accounts-grid" id="accounts-grid"></div>
-      <p class="small">Consejo: los retiros se registran como Transferencia “Desde cuenta digital → Efectivo”, no como gasto 🧠</p>
+      <div class="accounts-grid" id="accounts-grid">
+        <!-- Se llena dinámicamente desde Firestore -->
+      </div>
+      <p class="small">💡 Tip: Los retiros de cajero regístrados como transferencia Desde cuenta digital → Efectivo (no como gasto)</p>
     </div>
 
     <!-- KPIs -->
@@ -246,7 +267,7 @@
           <div class="card-icon bg-success"><i class="fas fa-arrow-down"></i></div>
         </div>
         <div class="card-value" id="income-value">$0</div>
-        <div class="card-footer">Ingresos acumulados</div>
+        <div class="card-footer">Ingresos acumulados del mes</div>
       </div>
 
       <div class="card">
@@ -255,7 +276,7 @@
           <div class="card-icon bg-danger"><i class="fas fa-arrow-up"></i></div>
         </div>
         <div class="card-value" id="expense-value">$0</div>
-        <div class="card-footer">Gastos acumulados</div>
+        <div class="card-footer">Gastos acumulados del mes</div>
       </div>
 
       <div class="card">
@@ -270,18 +291,22 @@
 
     <!-- Filtro mensual -->
     <div class="monthly-filter">
-      <label for="month-selector"><i class="fas fa-calendar-alt"></i> Mes:</label>
+      <label for="month-selector"><i class="fas fa-calendar-alt"></i> Filtrar por mes:</label>
       <select id="month-selector"></select>
-      <button id="new-month-btn" class="btn btn-primary"><i class="fas fa-calendar-plus"></i> Iniciar Nuevo Mes</button>
+      <button id="new-month-btn" class="btn btn-primary" disabled><i class="fas fa-calendar-plus"></i> Iniciar Nuevo Mes</button>
     </div>
 
-    <!-- Gráfico (placeholder) -->
+    <!-- Gráfico (placeholder visual) -->
     <div class="chart-container">
       <div class="chart-placeholder" style="display:flex; align-items:center; justify-content:center; height:100%; color:var(--gray); font-style:italic; flex-direction:column; gap:16px;">
         <i class="fas fa-chart-bar" style="font-size:4rem; opacity:.6; background:linear-gradient(135deg,var(--primary),var(--accent)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;"></i>
         <p>Historial mensual de ingresos y gastos</p>
       </div>
     </div>
+
+    <!-- =============================== -->
+    <!-- Formularios de captura          -->
+    <!-- =============================== -->
 
     <!-- Registrar Ingreso -->
     <div class="form-section">
@@ -316,7 +341,7 @@
           <label for="income-description">📝 Descripción</label>
           <textarea id="income-description" rows="2" placeholder="Detalles del ingreso..."></textarea>
         </div>
-        <button type="submit" class="btn btn-primary">
+        <button type="submit" class="btn btn-primary" id="income-submit-btn">
           <span class="btn-text"><i class="fas fa-plus-circle"></i> Registrar Ingreso</span>
         </button>
       </form>
@@ -362,13 +387,13 @@
           <label for="expense-description">📝 Descripción</label>
           <textarea id="expense-description" rows="2" placeholder="Detalles del gasto..."></textarea>
         </div>
-        <button type="submit" class="btn btn-primary">
+        <button type="submit" class="btn btn-primary" id="expense-submit-btn">
           <span class="btn-text"><i class="fas fa-plus-circle"></i> Registrar Gasto</span>
         </button>
       </form>
     </div>
 
-    <!-- Transferencias -->
+    <!-- Transferencias (retiros/traspasos) -->
     <div class="form-section">
       <h3 class="section-title"><i class="fas fa-right-left"></i> Transferir (incluye retiros)</h3>
       <form id="transfer-form">
@@ -400,30 +425,14 @@
       </form>
     </div>
 
-    <!-- Saldos iniciales -->
-    <div class="form-section">
-      <h3 class="section-title"><i class="fas fa-sliders"></i> Saldos iniciales del mes</h3>
-      <div class="table-container" style="padding:0;">
-        <table>
-          <thead>
-            <tr>
-              <th>Cuenta</th>
-              <th>Titular</th>
-              <th>Tipo</th>
-              <th>Saldo Inicial</th>
-            </tr>
-          </thead>
-          <tbody id="initial-balances-tbody"></tbody>
-        </table>
-      </div>
-      <button id="save-initial-balances" class="btn btn-primary"><i class="fas fa-save"></i> Guardar saldos iniciales</button>
-      <p class="small">Al crear un nuevo mes, se copian los saldos de cierre del mes anterior como saldos iniciales. </p>
-    </div>
-
     <!-- Transacciones -->
     <div class="table-container">
       <h3 class="section-title"><i class="fas fa-history"></i> Transacciones Recientes</h3>
-      <table id="transactions-table">
+      <div id="loading-transactions" class="loading">
+        <div class="spinner"></div>
+        <p>Cargando transacciones desde Firebase...</p>
+      </div>
+      <table id="transactions-table" style="display:none;">
         <thead>
           <tr>
             <th>Fecha</th>
@@ -436,29 +445,31 @@
             <th>Acciones</th>
           </tr>
         </thead>
-        <tbody id="transactions-tbody"></tbody>
+        <tbody id="transactions-tbody">
+          <!-- Filas dinámicas desde Firestore -->
+        </tbody>
       </table>
     </div>
   </div>
 
-  <!-- Toast -->
+  <!-- Toast de notificaciones -->
   <div id="toast" class="toast"></div>
 
-  <!-- =============================================== -->
-  <!-- Firebase + Firestore (SDK modular por CDN)      -->
-  <!-- =============================================== -->
+  <!-- =============================== -->
+  <!-- Firebase SDK e inicialización   -->
+  <!-- =============================== -->
   <script type="module">
-    // Importes del SDK (modular). Si cambias versión, mantén pares app/firestore. [Doc oficial]
-    // Refs: Add Firebase web, get data Firestore, transactions [1][2][3]
-
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-    import {
+    // =========================================
+    // Importar Firebase SDK modular (v10.12+)
+    // =========================================
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+    import { 
       getFirestore, collection, doc, addDoc, getDocs, setDoc, updateDoc, deleteDoc,
-      query, orderBy, runTransaction, serverTimestamp, writeBatch
-    } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+      query, where, orderBy, runTransaction, serverTimestamp, enableNetwork, disableNetwork
+    } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 
     // =========================================
-    // Configuración de tu proyecto crm-familiar
+    // Configuración de tu proyecto Firebase
     // =========================================
     const firebaseConfig = {
       apiKey: "AIzaSyA_Zn5FMQVPXCH9cPc0Yqk0O0K96wRdtK0",
@@ -469,279 +480,204 @@
       appId: "1:676787680550:web:2a31780e5a0af802d37de7"
     };
 
-    // Inicializa Firebase y Firestore
-    const app = initializeApp(firebaseConfig); // [1]
-    const db = getFirestore(app); // [1]
+    // Inicializar Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
     // =========================================
-    // Utilidades de formato/fecha
+    // Utilidades de formato y fecha
     // =========================================
-    const fmtCOP = new Intl.NumberFormat('es-CO', { style:'currency', currency:'COP', maximumFractionDigits:0 }); // [4]
-    const toCOP = (v)=> fmtCOP.format(Number(v||0)); // [4]
+    const fmtCOP = new Intl.NumberFormat('es-CO', { style:'currency', currency:'COP', maximumFractionDigits:0 });
+    const toCOP = (v)=> fmtCOP.format(Number(v||0));
+
     const today = new Date();
     const pad = (n)=> String(n).padStart(2,'0');
-    const yyyy = today.getFullYear(); const mm = pad(today.getMonth()+1); const dd = pad(today.getDate());
+    const yyyy = today.getFullYear();
+    const mm = pad(today.getMonth()+1);
+    const dd = pad(today.getDate());
     const currentMonthKey = `${yyyy}-${mm}`;
 
     // =========================================
-    // Modelo y paths en Firestore
-    // families/{familyId}/months/{YYYY-MM}/accounts & transactions
+    // Estado global y configuración
     // =========================================
-    const familyId = 'familia-serrano'; // puedes cambiarlo en Configuración
+    const FAMILY_ID = 'familia-serrano'; // ID fijo familia, o usa Auth si tienes autenticación
+    let availableMonths = []; // Se carga desde Firestore
+    let selectedMonth = currentMonthKey;
+    let accounts = []; // Cuentas del mes actual
+    let transactions = []; // Transacciones del mes actual
 
-    const monthSelector = document.getElementById('month-selector');
-    const accountsGrid = document.getElementById('accounts-grid');
-    const initialTbody = document.getElementById('initial-balances-tbody');
-    const txBody = document.getElementById('transactions-tbody');
+    // Cuentas base (se crean automáticamente si no existen)
+    const BASE_ACCOUNTS = [
+      { id:'nequi-esposa', nombre:'Nequi Esposa', tipo:'nequi', titular:'esposa', saldo:0 },
+      { id:'daviplata-esposa', nombre:'Daviplata Esposa', tipo:'daviplata', titular:'esposa', saldo:0 },
+      { id:'daviplata-mio', nombre:'Daviplata Mío', tipo:'daviplata', titular:'mio', saldo:0 },
+      { id:'ahorro-esposa', nombre:'Ahorros Esposa', tipo:'ahorro', titular:'esposa', saldo:0 },
+      { id:'ahorro-mio', nombre:'Ahorros Mío', tipo:'ahorro', titular:'mio', saldo:0 },
+      { id:'efectivo', nombre:'Efectivo', tipo:'efectivo', titular:'familia', saldo:0 },
+    ];
+
+    // =========================================
+    // Helpers Firebase: paths de colecciones
+    // =========================================
+    function getAccountsCollection(month = selectedMonth) {
+      return collection(db, 'families', FAMILY_ID, 'months', month, 'accounts');
+    }
+
+    function getTransactionsCollection(month = selectedMonth) {
+      return collection(db, 'families', FAMILY_ID, 'months', month, 'transactions');
+    }
+
+    function getAccountDoc(accountId, month = selectedMonth) {
+      return doc(db, 'families', FAMILY_ID, 'months', month, 'accounts', accountId);
+    }
+
+    // =========================================
+    // UI: Toast de mensajes
+    // =========================================
     const toastEl = document.getElementById('toast');
-
     function showToast(msg, kind='success'){
       toastEl.textContent = msg;
       toastEl.className = `toast show ${kind}`;
-      setTimeout(()=> toastEl.className='toast', 2200);
+      setTimeout(()=> toastEl.className='toast', 3000);
     }
 
-    // Cuentas base para inicializar meses nuevos
-    const BASE_ACCOUNTS = [
-      { id:'nequi-esposa', nombre:'Nequi Esposa', tipo:'nequi', titular:'esposa', saldoInicial:0, saldo:0 },
-      { id:'daviplata-esposa', nombre:'Daviplata Esposa', tipo:'daviplata', titular:'esposa', saldoInicial:0, saldo:0 },
-      { id:'daviplata-mio', nombre:'Daviplata Mío', tipo:'daviplata', titular:'mio', saldoInicial:0, saldo:0 },
-      { id:'ahorro-esposa', nombre:'Ahorros Esposa', tipo:'ahorro', titular:'esposa', saldoInicial:0, saldo:0 },
-      { id:'ahorro-mio', nombre:'Ahorros Mío', tipo:'ahorro', titular:'mio', saldoInicial:0, saldo:0 },
-      { id:'efectivo', nombre:'Efectivo', tipo:'efectivo', titular:'familia', saldoInicial:0, saldo:0 },
-    ];
-
-    // Estado en memoria de UI
-    let months = [];
-    let selectedMonth = currentMonthKey;
-    let state = { accounts: [], transactions: [] };
-
-    // Helpers de rutas
-    const monthCol = collection(db, 'families', familyId, 'months');
-    const accColRef = (m)=> collection(db, 'families', familyId, 'months', m, 'accounts');
-    const txColRef  = (m)=> collection(db, 'families', familyId, 'months', m, 'transactions');
-    const accountDocRef = (m, accId)=> doc(db, 'families', familyId, 'months', m, 'accounts', accId);
-
     // =========================================
-    // Carga de meses, cuentas y transacciones
+    // Estado de conexión
     // =========================================
-    async function ensureMonthExists(monthKey){
-      // Crea doc del mes + cuentas base si no existe
-      const thisAccCol = accColRef(monthKey);
-      const snap = await getDocs(thisAccCol); // [2]
-      if (snap.empty){
-        // Crear doc del mes
-        await setDoc(doc(monthCol, monthKey), { createdAt: serverTimestamp() }); // [2]
-        // Crear cuentas base
-        const batch = writeBatch(db);
-        BASE_ACCOUNTS.forEach(a=>{
-          batch.set(doc(thisAccCol, a.id), a);
-        });
-        await batch.commit(); // [2]
+    const statusEl = document.getElementById('connection-status');
+    function updateConnectionStatus(connected) {
+      if (connected) {
+        statusEl.className = 'status status-connected';
+        statusEl.innerHTML = '<i class="fas fa-circle-check"></i> Conectado a Firebase Firestore ☁️';
+      } else {
+        statusEl.className = 'status status-disconnected';
+        statusEl.innerHTML = '<i class="fas fa-circle-xmark"></i> Sin conexión a Firebase';
       }
     }
 
-    async function loadMonths(){
-      const snap = await getDocs(monthCol); // [2]
-      months = snap.docs.map(d=> d.id).sort();
-      if (months.length === 0){
-        months = [currentMonthKey];
-        await ensureMonthExists(currentMonthKey);
-      }
-      if (!months.includes(selectedMonth)) selectedMonth = months[months.length-1];
-      renderMonthSelector();
-    }
-
-    async function loadAccounts(){
-      const snap = await getDocs(accColRef(selectedMonth)); // [2]
-      return snap.docs.map(d=> ({ id:d.id, ...d.data() }));
-    }
-
-    async function loadTransactions(){
-      const q = query(txColRef(selectedMonth), orderBy('fecha','desc')); // [2]
-      const snap = await getDocs(q);
-      return snap.docs.map(d=> ({ id:d.id, ...d.data() }));
-    }
-
-    async function fetchState(){
-      await ensureMonthExists(selectedMonth);
-      const [acc, txs] = await Promise.all([loadAccounts(), loadTransactions()]);
-      state.accounts = acc;
-      state.transactions = txs;
-    }
-
     // =========================================
-    // Cómputo de saldos (doble partida)
+    // Cargar datos desde Firebase
     // =========================================
-    function computeBalances(accounts, txs){
-      const bal = {};
-      accounts.forEach(a=> bal[a.id] = Number(a.saldoInicial||0));
-      txs.forEach(tx=>{
-        const amt = Number(tx.monto||0);
-        if(tx.tipo==='ingreso'){
-          bal[tx.cuentaId] = (bal[tx.cuentaId]||0) + amt;
-        }else if(tx.tipo==='gasto'){
-          bal[tx.cuentaId] = (bal[tx.cuentaId]||0) - amt;
-        }else if(tx.tipo==='transferencia'){
-          bal[tx.cuentaId] = (bal[tx.cuentaId]||0) - amt;
-          bal[tx.contracuentaId] = (bal[tx.contracuentaId]||0) + amt;
+    async function loadAccounts(month = selectedMonth) {
+      try {
+        const accountsCol = getAccountsCollection(month);
+        const snapshot = await getDocs(accountsCol);
+        
+        if (snapshot.empty) {
+          // Crear cuentas base si no existen
+          console.log('🏦 Creando cuentas base para el mes', month);
+          for (const baseAccount of BASE_ACCOUNTS) {
+            const accountDoc = doc(accountsCol, baseAccount.id);
+            await setDoc(accountDoc, {
+              ...baseAccount,
+              createdAt: serverTimestamp()
+            });
+          }
+          // Recargar después de crear
+          return loadAccounts(month);
         }
-      });
-      return bal;
+
+        accounts = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+
+        console.log('✅ Cuentas cargadas:', accounts.length);
+        return accounts;
+      } catch (error) {
+        console.error('❌ Error cargando cuentas:', error);
+        showToast('Error cargando cuentas de Firebase', 'error');
+        return [];
+      }
     }
 
-    // Escribe en Firestore los saldos actuales por cuenta (útil tras editar/eliminar)
-    async function recomputeAndWriteAccountSaldos(){
-      const balances = computeBalances(state.accounts, state.transactions);
-      const batch = writeBatch(db);
-      state.accounts.forEach(a=>{
-        const newSaldo = Number(balances[a.id]||0);
-        batch.update(accountDocRef(selectedMonth, a.id), { saldo: newSaldo });
-      });
-      await batch.commit(); // [2]
+    async function loadTransactions(month = selectedMonth) {
+      try {
+        const transactionsCol = getTransactionsCollection(month);
+        const q = query(transactionsCol, orderBy('fecha', 'desc'));
+        const snapshot = await getDocs(q);
+        
+        transactions = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+
+        console.log('✅ Transacciones cargadas:', transactions.length);
+        return transactions;
+      } catch (error) {
+        console.error('❌ Error cargando transacciones:', error);
+        showToast('Error cargando transacciones de Firebase', 'error');
+        return [];
+      }
     }
 
     // =========================================
-    // Render de UI
+    // Descubrir meses disponibles
     // =========================================
-    function accountCssClass(tipo){
-      if(tipo==='nequi') return 'account-nequi';
-      if(tipo==='daviplata') return 'account-daviplata';
-      if(tipo==='ahorro') return 'account-ahorro';
-      if(tipo==='efectivo') return 'account-efectivo';
-      return '';
+    async function discoverAvailableMonths() {
+      try {
+        // En Firestore, las subcolecciones no se pueden enumerar directamente
+        // Simulamos con los meses conocidos, o podrías mantener una colección "months" aparte
+        const months = [];
+        const currentYear = new Date().getFullYear();
+        
+        // Generar últimos 12 meses + próximos 3
+        for (let i = -12; i <= 3; i++) {
+          const date = new Date(currentYear, today.getMonth() + i, 1);
+          const monthKey = `${date.getFullYear()}-${pad(date.getMonth() + 1)}`;
+          months.push(monthKey);
+        }
+        
+        // Verificar cuáles realmente existen (tienen cuentas)
+        const existingMonths = [];
+        for (const month of months) {
+          try {
+            const accountsCol = getAccountsCollection(month);
+            const snapshot = await getDocs(accountsCol);
+            if (!snapshot.empty) {
+              existingMonths.push(month);
+            }
+          } catch (e) {
+            // Mes no existe, continuar
+          }
+        }
+
+        // Asegurar que al menos el mes actual existe
+        if (!existingMonths.includes(currentMonthKey)) {
+          existingMonths.push(currentMonthKey);
+        }
+
+        availableMonths = existingMonths.sort();
+        console.log('📅 Meses disponibles:', availableMonths);
+        return availableMonths;
+      } catch (error) {
+        console.error('❌ Error descubriendo meses:', error);
+        availableMonths = [currentMonthKey];
+        return availableMonths;
+      }
     }
+
+    // =========================================
+    // UI: Selector de mes
+    // =========================================
+    const monthSelector = document.getElementById('month-selector');
+    const newMonthBtn = document.getElementById('new-month-btn');
 
     function renderMonthSelector(){
       monthSelector.innerHTML = '';
-      months.forEach(key=>{
+      availableMonths.forEach(monthKey=>{
         const opt = document.createElement('option');
-        opt.value = key; opt.textContent = key;
+        opt.value = monthKey;
+        const [y,m] = monthKey.split('-');
+        const monthName = new Date(parseInt(y), parseInt(m) - 1).toLocaleDateString('es-CO', { 
+          year: 'numeric', 
+          month: 'long' 
+        });
+        opt.textContent = monthName;
         monthSelector.appendChild(opt);
       });
       monthSelector.value = selectedMonth;
     }
-
-    function renderAccounts(){
-      accountsGrid.innerHTML = '';
-      const balances = computeBalances(state.accounts, state.transactions);
-      state.accounts.forEach(a=>{
-        const div = document.createElement('div');
-        div.className = `account-card ${accountCssClass(a.tipo)}`;
-        div.innerHTML = `
-          <h4>${a.nombre}</h4>
-          <div class="account-meta">Titular: <strong>${a.titular}</strong> • Tipo: <strong>${a.tipo}</strong></div>
-          <div class="account-balance">${toCOP(balances[a.id]||0)}</div>
-          <div class="small muted">Saldo inicial: ${toCOP(a.saldoInicial||0)}</div>
-        `;
-        accountsGrid.appendChild(div);
-      });
-
-      const totalIncome = state.transactions.filter(t=>t.tipo==='ingreso').reduce((s,t)=>s+Number(t.monto||0),0);
-      const totalExpense = state.transactions.filter(t=>t.tipo==='gasto').reduce((s,t)=>s+Number(t.monto||0),0);
-      const savings = totalIncome - totalExpense;
-      const totalBalanceAll = Object.values(balances).reduce((s,v)=>s+Number(v||0),0);
-
-      document.getElementById('total-income').textContent = toCOP(totalIncome);
-      document.getElementById('income-value').textContent = toCOP(totalIncome);
-      document.getElementById('total-expense').textContent = toCOP(totalExpense);
-      document.getElementById('expense-value').textContent = toCOP(totalExpense);
-      document.getElementById('total-savings').textContent = toCOP(savings);
-      document.getElementById('balance-value').textContent = toCOP(savings);
-      document.getElementById('total-balance').textContent = toCOP(totalBalanceAll);
-    }
-
-    function renderInitialBalances(){
-      initialTbody.innerHTML = '';
-      state.accounts.forEach(a=>{
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${a.nombre}</td>
-          <td>${a.titular}</td>
-          <td>${a.tipo}</td>
-          <td>
-            <input type="number" step="1" data-acc-id="${a.id}" value="${Number(a.saldoInicial||0)}" style="width:160px;"/>
-          </td>
-        `;
-        initialTbody.appendChild(tr);
-      });
-    }
-
-    function renderTransactions(){
-      txBody.innerHTML = '';
-      const txs = [...state.transactions].sort((a,b)=> (b.fecha||'').localeCompare(a.fecha||'')); // por fecha desc
-      txs.forEach(tx=>{
-        const tr = document.createElement('tr');
-        const badgeClass = tx.tipo==='ingreso' ? 'badge-income' : (tx.tipo==='gasto' ? 'badge-expense' : 'badge-transfer');
-        const cat = tx.tipo==='transferencia' ? '—' : (tx.categoria||'—');
-        const cuenta = state.accounts.find(a=>a.id===tx.cuentaId)?.nombre || '—';
-        const contracuenta = tx.contracuentaId ? (state.accounts.find(a=>a.id===tx.contracuentaId)?.nombre || '—') : '—';
-        tr.innerHTML = `
-          <td>${tx.fecha||''}</td>
-          <td><span class="badge ${badgeClass}">${tx.tipo}</span></td>
-          <td>${cat}</td>
-          <td>${tx.descripcion||''}</td>
-          <td>${cuenta}</td>
-          <td>${contracuenta}</td>
-          <td><strong>${toCOP(tx.monto||0)}</strong></td>
-          <td>
-            <button class="action-btn" title="Editar" data-action="edit" data-id="${tx.id}"><i class="fas fa-pen"></i></button>
-            <button class="action-btn" title="Eliminar" data-action="delete" data-id="${tx.id}"><i class="fas fa-trash"></i></button>
-          </td>
-        `;
-        txBody.appendChild(tr);
-      });
-    }
-
-    function fillAccountSelect(selectEl){
-      selectEl.innerHTML = '<option value="">Seleccionar...</option>';
-      state.accounts.forEach(a=>{
-        const opt = document.createElement('option');
-        opt.value = a.id; opt.textContent = a.nombre;
-        selectEl.appendChild(opt);
-      });
-    }
-
-    function fillAllAccountSelects(){
-      fillAccountSelect(document.getElementById('income-account'));
-      fillAccountSelect(document.getElementById('expense-paid-with'));
-      fillAccountSelect(document.getElementById('transfer-from'));
-      fillAccountSelect(document.getElementById('transfer-to'));
-    }
-
-    async function refreshAll(){
-      await fetchState();
-      fillAllAccountSelects();
-      renderAccounts();
-      renderInitialBalances();
-      renderTransactions();
-    }
-
-    // =========================================
-    // Acciones: Mes actual / nuevo mes
-    // =========================================
-    document.getElementById('new-month-btn').addEventListener('click', async ()=>{
-      // Calcula saldos de cierre del mes actual
-      const balances = computeBalances(state.accounts, state.transactions);
-      // Crea siguiente mes (YYYY-MM)
-      const [y,m] = selectedMonth.split('-').map(Number);
-      const next = new Date(y, m-1, 1); next.setMonth(next.getMonth()+1);
-      const nextKey = `${next.getFullYear()}-${String(next.getMonth()+1).padStart(2,'0')}`;
-
-      // Crea doc del mes y sus cuentas con saldoInicial = saldo cierre
-      await setDoc(doc(monthCol, nextKey), { createdAt: serverTimestamp() }); // [2]
-      const batch = writeBatch(db);
-      BASE_ACCOUNTS.forEach(a=>{
-        const saldoInicial = Number(balances[a.id]||0);
-        batch.set(doc(accColRef(nextKey), a.id), { ...a, saldoInicial, saldo: saldoInicial });
-      });
-      await batch.commit(); // [2]
-
-      selectedMonth = nextKey;
-      await loadMonths();
-      await refreshAll();
-      showToast('Nuevo mes iniciado con saldos de cierre ✅','success');
-    });
 
     monthSelector.addEventListener('change', async ()=>{
       selectedMonth = monthSelector.value;
@@ -749,179 +685,517 @@
       showToast(`Mes ${selectedMonth} cargado 📅`,'success');
     });
 
-    // =========================================
-    // Guardar saldos iniciales del mes
-    // =========================================
-    document.getElementById('save-initial-balances').addEventListener('click', async ()=>{
-      const inputs = initialTbody.querySelectorAll('input[data-acc-id]');
-      const batch = writeBatch(db);
-      inputs.forEach(inp=>{
-        const accId = inp.dataset.accId;
-        const val = Number(inp.value||0);
-        batch.update(accountDocRef(selectedMonth, accId), { saldoInicial: val });
-      });
-      await batch.commit(); // [2]
-      await refreshAll();
-      showToast('Saldos iniciales actualizados 💾','success');
-    });
+    newMonthBtn.addEventListener('click', async ()=>{
+      newMonthBtn.disabled = true;
+      try {
+        // Crear siguiente mes
+        const [y,m] = selectedMonth.split('-').map(Number);
+        const nextMonth = new Date(y, m, 1); // m es 1-indexado, por eso m sin -1
+        const nextMonthKey = `${nextMonth.getFullYear()}-${pad(nextMonth.getMonth() + 1)}`;
 
-    // =========================================
-    // Formularios: Ingreso, Gasto, Transferencia
-    // =========================================
-    // Por simplicidad de demo, no acumulamos "saldo" en cuentas en ingresos/gastos;
-    // preferimos mantener consistencia recalculando tras cambios o usar transacción.
-    // Aquí usaremos transacción para modificar saldo y registrar la transacción. [3]
+        if (availableMonths.includes(nextMonthKey)) {
+          selectedMonth = nextMonthKey;
+          await refreshAll();
+          showToast(`Mes ${nextMonthKey} ya existe, cambiado 📅`,'success');
+        } else {
+          // Copiar saldos actuales como saldos iniciales del nuevo mes
+          const currentBalances = computeBalances(accounts, transactions);
+          const newAccounts = accounts.map(account => ({
+            ...account,
+            saldo: currentBalances[account.id] || 0
+          }));
 
-    document.getElementById('income-form').addEventListener('submit', async (e)=>{
-      e.preventDefault();
-      const categoria = document.getElementById('income-source').value;
-      const monto = Number(document.getElementById('income-amount').value||0);
-      const fecha = document.getElementById('income-date').value;
-      const descripcion = document.getElementById('income-description').value||'';
-      const cuentaId = document.getElementById('income-account').value;
-      if(!categoria || !monto || !fecha || !cuentaId){ showToast('Completa todos los campos de ingreso','error'); return; }
+          // Crear cuentas en el nuevo mes
+          const newAccountsCol = getAccountsCollection(nextMonthKey);
+          for (const account of newAccounts) {
+            const accountDoc = doc(newAccountsCol, account.id);
+            await setDoc(accountDoc, {
+              ...account,
+              createdAt: serverTimestamp()
+            });
+          }
 
-      await runTransaction(db, async (trx)=>{ // atómico: saldo cuenta + transacción [3]
-        const accRef = accountDocRef(selectedMonth, cuentaId);
-        const accSnap = await trx.get(accRef);
-        if(!accSnap.exists()) throw new Error('Cuenta no existe');
-        const saldo = Number(accSnap.data().saldo||accSnap.data().saldoInicial||0);
-        trx.update(accRef, { saldo: saldo + monto });
-        const newTxRef = doc(txColRef(selectedMonth));
-        trx.set(newTxRef, {
-          tipo:'ingreso', categoria, monto, fecha, descripcion,
-          cuentaId, contracuentaId:null, createdAt: serverTimestamp()
-        });
-      });
-
-      e.target.reset();
-      await refreshAll();
-      showToast('Ingreso registrado ✅','success');
-    });
-
-    document.getElementById('expense-form').addEventListener('submit', async (e)=>{
-      e.preventDefault();
-      const categoria = document.getElementById('expense-category').value;
-      const monto = Number(document.getElementById('expense-amount').value||0);
-      const fecha = document.getElementById('expense-date').value;
-      const descripcion = document.getElementById('expense-description').value||'';
-      const cuentaId = document.getElementById('expense-paid-with').value;
-      if(!categoria || !monto || !fecha || !cuentaId){ showToast('Completa todos los campos de gasto','error'); return; }
-
-      await runTransaction(db, async (trx)=>{ // atómico: saldo cuenta - transacción [3]
-        const accRef = accountDocRef(selectedMonth, cuentaId);
-        const accSnap = await trx.get(accRef);
-        if(!accSnap.exists()) throw new Error('Cuenta no existe');
-        const saldo = Number(accSnap.data().saldo||accSnap.data().saldoInicial||0);
-        if(saldo < monto) throw new Error('Saldo insuficiente');
-        trx.update(accRef, { saldo: saldo - monto });
-        const newTxRef = doc(txColRef(selectedMonth));
-        trx.set(newTxRef, {
-          tipo:'gasto', categoria, monto, fecha, descripcion,
-          cuentaId, contracuentaId:null, createdAt: serverTimestamp()
-        });
-      });
-
-      e.target.reset();
-      await refreshAll();
-      showToast('Gasto registrado ✅','success');
-    });
-
-    document.getElementById('transfer-form').addEventListener('submit', async (e)=>{
-      e.preventDefault();
-      const fromId = document.getElementById('transfer-from').value;
-      const toId = document.getElementById('transfer-to').value;
-      const monto = Number(document.getElementById('transfer-amount').value||0);
-      const fecha = document.getElementById('transfer-date').value;
-      const descripcion = document.getElementById('transfer-description').value||'';
-      if(!fromId || !toId || !monto || !fecha){ showToast('Completa todos los campos de transferencia','error'); return; }
-      if(fromId===toId){ showToast('La cuenta origen y destino no pueden ser iguales','error'); return; }
-
-      // Transacción: baja saldo en origen, sube en destino y registra tx
-      await runTransaction(db, async (trx)=>{ // [3]
-        const fromRef = accountDocRef(selectedMonth, fromId);
-        const toRef   = accountDocRef(selectedMonth, toId);
-
-        const fromSnap = await trx.get(fromRef);
-        const toSnap   = await trx.get(toRef);
-        if(!fromSnap.exists() || !toSnap.exists()) throw new Error('Cuenta inválida');
-
-        const fromSaldo = Number(fromSnap.data().saldo||fromSnap.data().saldoInicial||0);
-        const toSaldo   = Number(toSnap.data().saldo||toSnap.data().saldoInicial||0);
-        if(fromSaldo < monto) throw new Error('Saldo insuficiente');
-
-        trx.update(fromRef, { saldo: fromSaldo - monto });
-        trx.update(toRef,   { saldo: toSaldo + monto });
-
-        const newTxRef = doc(txColRef(selectedMonth));
-        trx.set(newTxRef, {
-          tipo:'transferencia', categoria:null, monto, fecha, descripcion,
-          cuentaId: fromId, contracuentaId: toId, createdAt: serverTimestamp()
-        });
-      });
-
-      e.target.reset();
-      await refreshAll();
-      showToast('Transferencia registrada 🔁','success');
-    });
-
-    // =========================================
-    // Acciones: Editar / Eliminar transacción
-    // =========================================
-    document.getElementById('transactions-table').addEventListener('click', async (e)=>{
-      const btn = e.target.closest('.action-btn');
-      if(!btn) return;
-      const id = btn.dataset.id;
-      const action = btn.dataset.action;
-
-      // Localiza la transacción en memoria
-      const tx = state.transactions.find(t=>t.id===id);
-      if(!tx) return;
-
-      if(action==='delete'){
-        // Eliminar doc y luego recomputar saldos en cuentas
-        await deleteDoc(doc(txColRef(selectedMonth), id)); // [2]
-        await fetchState();
-        await recomputeAndWriteAccountSaldos();
-        await refreshAll();
-        showToast('Transacción eliminada 🗑️','success');
-      }else if(action==='edit'){
-        // Edición básica: monto y descripción
-        const newAmt = Number(prompt('Nuevo monto:', tx.monto));
-        if(!newAmt || newAmt<=0) return;
-        const newDesc = prompt('Nueva descripción:', tx.descripcion||'') || '';
-        await updateDoc(doc(txColRef(selectedMonth), id), { monto: newAmt, descripcion: newDesc }); // [2]
-        await fetchState();
-        await recomputeAndWriteAccountSaldos();
-        await refreshAll();
-        showToast('Transacción actualizada ✏️','success');
+          availableMonths.push(nextMonthKey);
+          availableMonths.sort();
+          selectedMonth = nextMonthKey;
+          
+          renderMonthSelector();
+          await refreshAll();
+          showToast('Nuevo mes creado con saldos de cierre ✅','success');
+        }
+      } catch (error) {
+        console.error('❌ Error creando nuevo mes:', error);
+        showToast('Error creando nuevo mes', 'error');
+      } finally {
+        newMonthBtn.disabled = false;
       }
     });
 
     // =========================================
-    // Sidebar móvil y fechas por defecto
+    // Cálculo de saldos (doble partida)
+    // =========================================
+    function computeBalances(accountsList, transactionsList) {
+      const balances = {};
+      
+      // Inicializar con saldos base de las cuentas
+      accountsList.forEach(account => {
+        balances[account.id] = Number(account.saldo || 0);
+      });
+
+      // Aplicar transacciones
+      transactionsList.forEach(tx => {
+        const amount = Number(tx.monto || 0);
+        
+        if (tx.tipo === 'ingreso') {
+          // Ingreso: aumenta la cuenta destino
+          balances[tx.cuentaId] = (balances[tx.cuentaId] || 0) + amount;
+        } else if (tx.tipo === 'gasto') {
+          // Gasto: disminuye la cuenta de pago
+          balances[tx.cuentaId] = (balances[tx.cuentaId] || 0) - amount;
+        } else if (tx.tipo === 'transferencia') {
+          // Transferencia: disminuye cuenta origen, aumenta cuenta destino
+          balances[tx.cuentaId] = (balances[tx.cuentaId] || 0) - amount;
+          balances[tx.contracuentaId] = (balances[tx.contracuentaId] || 0) + amount;
+        }
+      });
+
+      return balances;
+    }
+
+    // =========================================
+    // UI: Render cuentas y estadísticas
+    // =========================================
+    const accountsGrid = document.getElementById('accounts-grid');
+
+    function accountCssClass(tipo) {
+      const classes = {
+        'nequi': 'account-nequi',
+        'daviplata': 'account-daviplata', 
+        'ahorro': 'account-ahorro',
+        'efectivo': 'account-efectivo'
+      };
+      return classes[tipo] || '';
+    }
+
+    function renderAccounts() {
+      accountsGrid.innerHTML = '';
+      const balances = computeBalances(accounts, transactions);
+      
+      accounts.forEach(account => {
+        const currentBalance = balances[account.id] || 0;
+        const div = document.createElement('div');
+        div.className = `account-card ${accountCssClass(account.tipo)}`;
+        div.innerHTML = `
+          <h4>${account.nombre}</h4>
+          <div class="account-meta">Titular: <strong>${account.titular}</strong> • Tipo: <strong>${account.tipo}</strong></div>
+          <div class="account-balance">${toCOP(currentBalance)}</div>
+          <div class="small muted">Saldo inicial: ${toCOP(account.saldo || 0)}</div>
+        `;
+        accountsGrid.appendChild(div);
+      });
+
+      // Actualizar estadísticas generales
+      const totalIncome = transactions.filter(t => t.tipo === 'ingreso').reduce((sum, t) => sum + Number(t.monto || 0), 0);
+      const totalExpense = transactions.filter(t => t.tipo === 'gasto').reduce((sum, t) => sum + Number(t.monto || 0), 0);
+      const savings = totalIncome - totalExpense;
+      const totalBalance = Object.values(balances).reduce((sum, balance) => sum + Number(balance || 0), 0);
+
+      document.getElementById('total-income').textContent = toCOP(totalIncome);
+      document.getElementById('income-value').textContent = toCOP(totalIncome);
+      document.getElementById('total-expense').textContent = toCOP(totalExpense);
+      document.getElementById('expense-value').textContent = toCOP(totalExpense);
+      document.getElementById('total-savings').textContent = toCOP(savings);
+      document.getElementById('balance-value').textContent = toCOP(savings);
+      document.getElementById('total-balance').textContent = toCOP(totalBalance);
+    }
+
+    // =========================================
+    // UI: Llenar selects de cuentas
+    // =========================================
+    function fillAccountSelects() {
+      const selects = [
+        document.getElementById('income-account'),
+        document.getElementById('expense-paid-with'),
+        document.getElementById('transfer-from'),
+        document.getElementById('transfer-to')
+      ];
+
+      selects.forEach(select => {
+        if (!select) return;
+        const currentValue = select.value;
+        select.innerHTML = '<option value="">Seleccionar...</option>';
+        
+        accounts.forEach(account => {
+          const option = document.createElement('option');
+          option.value = account.id;
+          option.textContent = account.nombre;
+          select.appendChild(option);
+        });
+
+        // Restaurar valor seleccionado si aún existe
+        if (currentValue && accounts.find(a => a.id === currentValue)) {
+          select.value = currentValue;
+        }
+      });
+    }
+
+    // =========================================
+    // UI: Render tabla de transacciones
+    // =========================================
+    const txTable = document.getElementById('transactions-table');
+    const txTBody = document.getElementById('transactions-tbody');
+    const loadingTx = document.getElementById('loading-transactions');
+
+    function renderTransactions() {
+      txTBody.innerHTML = '';
+      
+      transactions.forEach(tx => {
+        const tr = document.createElement('tr');
+        const badgeClass = {
+          'ingreso': 'badge-income',
+          'gasto': 'badge-expense', 
+          'transferencia': 'badge-transfer'
+        }[tx.tipo] || 'badge-transfer';
+
+        const categoria = tx.categoria || '—';
+        const cuenta = accounts.find(a => a.id === tx.cuentaId)?.nombre || '—';
+        const contracuenta = tx.contracuentaId 
+          ? (accounts.find(a => a.id === tx.contracuentaId)?.nombre || '—')
+          : '—';
+
+        tr.innerHTML = `
+          <td>${tx.fecha || ''}</td>
+          <td><span class="badge ${badgeClass}">${tx.tipo}</span></td>
+          <td>${categoria}</td>
+          <td>${tx.descripcion || ''}</td>
+          <td>${cuenta}</td>
+          <td>${contracuenta}</td>
+          <td><strong>${toCOP(tx.monto || 0)}</strong></td>
+          <td>
+            <button class="action-btn" title="Eliminar" onclick="deleteTransaction('${tx.id}')">
+              <i class="fas fa-trash"></i>
+            </button>
+          </td>
+        `;
+        txTBody.appendChild(tr);
+      });
+
+      // Mostrar/ocultar tabla vs loading
+      if (transactions.length > 0) {
+        loadingTx.style.display = 'none';
+        txTable.style.display = 'table';
+      } else {
+        loadingTx.innerHTML = '<p style="text-align:center; color:var(--gray);">No hay transacciones registradas para este mes</p>';
+        txTable.style.display = 'none';
+      }
+    }
+
+    // =========================================
+    // CRUD: Eliminar transacción
+    // =========================================
+    window.deleteTransaction = async function(txId) {
+      if (!confirm('¿Eliminar esta transacción?')) return;
+      
+      try {
+        const txDoc = doc(getTransactionsCollection(), txId);
+        await deleteDoc(txDoc);
+        
+        // Actualizar estado local
+        transactions = transactions.filter(t => t.id !== txId);
+        renderTransactions();
+        renderAccounts();
+        
+        showToast('Transacción eliminada ✅', 'success');
+      } catch (error) {
+        console.error('❌ Error eliminando transacción:', error);
+        showToast('Error eliminando transacción', 'error');
+      }
+    };
+
+    // =========================================
+    // CRUD: Registrar ingreso
+    // =========================================
+    document.getElementById('income-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const submitBtn = document.getElementById('income-submit-btn');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
+
+      try {
+        const transactionData = {
+          tipo: 'ingreso',
+          categoria: document.getElementById('income-source').value,
+          monto: Number(document.getElementById('income-amount').value || 0),
+          fecha: document.getElementById('income-date').value,
+          descripcion: document.getElementById('income-description').value.trim(),
+          cuentaId: document.getElementById('income-account').value,
+          contracuentaId: null,
+          createdAt: serverTimestamp()
+        };
+
+        // Validación
+        if (!transactionData.cuentaId || !transactionData.monto || !transactionData.fecha || !transactionData.categoria) {
+          throw new Error('Completa todos los campos obligatorios');
+        }
+
+        // Guardar en Firestore
+        const transactionsCol = getTransactionsCollection();
+        const docRef = await addDoc(transactionsCol, transactionData);
+        
+        // Actualizar estado local
+        transactions.unshift({ ...transactionData, id: docRef.id });
+        
+        // Refrescar UI
+        renderTransactions();
+        renderAccounts();
+        
+        // Limpiar formulario
+        e.target.reset();
+        document.getElementById('income-date').value = `${yyyy}-${mm}-${dd}`;
+        
+        showToast('Ingreso registrado ✅', 'success');
+      } catch (error) {
+        console.error('❌ Error registrando ingreso:', error);
+        showToast('Error: ' + error.message, 'error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<span class="btn-text"><i class="fas fa-plus-circle"></i> Registrar Ingreso</span>';
+      }
+    });
+
+    // =========================================
+    // CRUD: Registrar gasto
+    // =========================================
+    document.getElementById('expense-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const submitBtn = document.getElementById('expense-submit-btn');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
+
+      try {
+        const transactionData = {
+          tipo: 'gasto',
+          categoria: document.getElementById('expense-category').value,
+          monto: Number(document.getElementById('expense-amount').value || 0),
+          fecha: document.getElementById('expense-date').value,
+          descripcion: document.getElementById('expense-description').value.trim(),
+          cuentaId: document.getElementById('expense-paid-with').value,
+          contracuentaId: null,
+          createdAt: serverTimestamp()
+        };
+
+        // Validación
+        if (!transactionData.cuentaId || !transactionData.monto || !transactionData.fecha || !transactionData.categoria) {
+          throw new Error('Completa todos los campos obligatorios');
+        }
+
+        // Guardar en Firestore
+        const transactionsCol = getTransactionsCollection();
+        const docRef = await addDoc(transactionsCol, transactionData);
+        
+        // Actualizar estado local
+        transactions.unshift({ ...transactionData, id: docRef.id });
+        
+        // Refrescar UI
+        renderTransactions();
+        renderAccounts();
+        
+        // Limpiar formulario
+        e.target.reset();
+        document.getElementById('expense-date').value = `${yyyy}-${mm}-${dd}`;
+        
+        showToast('Gasto registrado ✅', 'success');
+      } catch (error) {
+        console.error('❌ Error registrando gasto:', error);
+        showToast('Error: ' + error.message, 'error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<span class="btn-text"><i class="fas fa-plus-circle"></i> Registrar Gasto</span>';
+      }
+    });
+
+    // =========================================
+    // CRUD: Registrar transferencia (atómica)
+    // =========================================
+    document.getElementById('transfer-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const fromId = document.getElementById('transfer-from').value;
+      const toId = document.getElementById('transfer-to').value;
+      const amount = Number(document.getElementById('transfer-amount').value || 0);
+      const fecha = document.getElementById('transfer-date').value;
+      const descripcion = document.getElementById('transfer-description').value.trim();
+
+      // Validaciones
+      if (!fromId || !toId || !amount || !fecha) {
+        showToast('Completa todos los campos obligatorios', 'error');
+        return;
+      }
+      if (fromId === toId) {
+        showToast('Las cuentas origen y destino deben ser diferentes', 'error');
+        return;
+      }
+
+      try {
+        // Usar runTransaction para operación atómica
+        await runTransaction(db, async (transaction) => {
+          // Leer cuentas actuales
+          const fromAccountRef = getAccountDoc(fromId);
+          const toAccountRef = getAccountDoc(toId);
+          const fromAccountSnap = await transaction.get(fromAccountRef);
+          const toAccountSnap = await transaction.get(toAccountRef);
+
+          if (!fromAccountSnap.exists() || !toAccountSnap.exists()) {
+            throw new Error('Una de las cuentas no existe');
+          }
+
+          // Verificar saldo suficiente (calculando saldo actual)
+          const currentBalances = computeBalances(accounts, transactions);
+          const currentFromBalance = currentBalances[fromId] || 0;
+          
+          if (currentFromBalance < amount) {
+            throw new Error(`Saldo insuficiente. Disponible: ${toCOP(currentFromBalance)}`);
+          }
+
+          // Registrar la transacción
+          const transactionsCol = getTransactionsCollection();
+          const transferRef = doc(transactionsCol);
+          transaction.set(transferRef, {
+            tipo: 'transferencia',
+            categoria: null,
+            monto: amount,
+            fecha,
+            descripcion,
+            cuentaId: fromId,
+            contracuentaId: toId,
+            createdAt: serverTimestamp()
+          });
+
+          // Actualizar estado local con nueva transacción
+          const newTransaction = {
+            id: transferRef.id,
+            tipo: 'transferencia',
+            categoria: null,
+            monto: amount,
+            fecha,
+            descripcion,
+            cuentaId: fromId,
+            contracuentaId: toId
+          };
+
+          return newTransaction;
+        });
+
+        // Si llegamos aquí, la transacción fue exitosa
+        // Recargar datos para asegurar consistencia
+        await loadTransactions();
+        renderTransactions();
+        renderAccounts();
+        
+        // Limpiar formulario
+        e.target.reset();
+        document.getElementById('transfer-date').value = `${yyyy}-${mm}-${dd}`;
+        
+        showToast('Transferencia realizada ✅', 'success');
+      } catch (error) {
+        console.error('❌ Error en transferencia:', error);
+        showToast('Error: ' + error.message, 'error');
+      }
+    });
+
+    // =========================================
+    // UI: Sidebar móvil
     // =========================================
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('sidebar-overlay');
     const menuBtn = document.getElementById('menu-toggle');
+
     menuBtn?.addEventListener('click', ()=>{
-      sidebar.classList.toggle('active'); overlay.classList.toggle('active');
+      sidebar.classList.toggle('active');
+      overlay.classList.toggle('active');
     });
+
     overlay?.addEventListener('click', ()=>{
-      sidebar.classList.remove('active'); overlay.classList.remove('active');
+      sidebar.classList.remove('active');
+      overlay.classList.remove('active');
     });
 
-    document.getElementById('income-date').value = `${yyyy}-${mm}-${dd}`;
-    document.getElementById('expense-date').value = `${yyyy}-${mm}-${dd}`;
-    document.getElementById('transfer-date').value = `${yyyy}-${mm}-${dd}`;
+    // =========================================
+    // Función principal: cargar todo
+    // =========================================
+    async function refreshAll() {
+      try {
+        loadingTx.style.display = 'block';
+        txTable.style.display = 'none';
+        
+        // Cargar datos en paralelo
+        const [accountsData, transactionsData] = await Promise.all([
+          loadAccounts(selectedMonth),
+          loadTransactions(selectedMonth)
+        ]);
+        
+        // Actualizar UI
+        fillAccountSelects();
+        renderAccounts();
+        renderTransactions();
+        renderMonthSelector();
+        
+        updateConnectionStatus(true);
+      } catch (error) {
+        console.error('❌ Error refrescando datos:', error);
+        updateConnectionStatus(false);
+        showToast('Error cargando datos de Firebase', 'error');
+      }
+    }
 
     // =========================================
-    // Inicialización: cargar meses y refrescar
+    // Inicialización
     // =========================================
-    (async function init(){
-      await loadMonths();
-      await refreshAll();
-    })();
+    async function initializeApp() {
+      try {
+        console.log('🚀 Inicializando CRM Familiar...');
+        
+        // Establecer fechas por defecto
+        document.getElementById('income-date').value = `${yyyy}-${mm}-${dd}`;
+        document.getElementById('expense-date').value = `${yyyy}-${mm}-${dd}`;
+        document.getElementById('transfer-date').value = `${yyyy}-${mm}-${dd}`;
+        
+        // Cargar meses disponibles
+        await discoverAvailableMonths();
+        
+        // Asegurar que selectedMonth existe en la lista
+        if (!availableMonths.includes(selectedMonth)) {
+          selectedMonth = availableMonths[availableMonths.length - 1] || currentMonthKey;
+        }
+        
+        // Cargar datos iniciales
+        await refreshAll();
+        
+        // Habilitar botón de nuevo mes
+        newMonthBtn.disabled = false;
+        
+        console.log('✅ CRM Familiar inicializado correctamente');
+        showToast('CRM Familiar conectado a Firebase ✅', 'success');
+        
+      } catch (error) {
+        console.error('❌ Error inicializando aplicación:', error);
+        updateConnectionStatus(false);
+        showToast('Error inicializando la aplicación', 'error');
+        
+        // Habilitar funcionalidad básica aunque falle
+        fillAccountSelects();
+        renderAccounts();
+        renderTransactions();
+      }
+    }
+
+    // =========================================
+    // Iniciar la aplicación
+    // =========================================
+    initializeApp();
+
   </script>
 </body>
 </html>
