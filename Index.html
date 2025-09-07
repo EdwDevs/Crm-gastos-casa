@@ -7,9 +7,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* ========================================
-           🎨 VARIABLES CSS Y CONFIGURACIÓN BASE
-        ======================================== */
         * {
             margin: 0;
             padding: 0;
@@ -18,13 +15,10 @@
         }
         
         :root {
-            /* Colores principales */
             --primary: #667eea;
             --primary-dark: #5a67d8;
             --secondary: #764ba2;
             --accent: #f093fb;
-            
-            /* Colores de estado */
             --success: #48bb78;
             --success-light: #68d391;
             --danger: #f56565;
@@ -33,20 +27,14 @@
             --warning-light: #f6ad55;
             --info: #4299e1;
             --info-light: #63b3ed;
-            
-            /* Colores base */
             --dark: #2d3748;
             --light: #f7fafc;
             --gray: #718096;
             --gray-light: #e2e8f0;
             --white: #ffffff;
-            
-            /* Fondos con transparencia */
             --card-bg: rgba(255, 255, 255, 0.9);
             --sidebar-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             --header-bg: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            
-            /* Sombras */
             --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
             --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
@@ -62,9 +50,7 @@
             line-height: 1.6;
         }
         
-        /* ========================================
-           🎨 SIDEBAR Y NAVEGACIÓN
-        ======================================== */
+        /* 🎨 MEJORA: Sidebar más bonito */
         .sidebar-overlay {
             display: none;
             position: fixed;
@@ -174,9 +160,7 @@
             text-align: center;
         }
         
-        /* ========================================
-           🎨 CONTENIDO PRINCIPAL
-        ======================================== */
+        /* 🎨 MEJORA: Main content más bonito */
         .main-content {
             flex: 1;
             margin-left: 280px;
@@ -244,101 +228,7 @@
             font-weight: 600;
         }
         
-        /* ========================================
-           🏦 NUEVA SECCIÓN: CUENTAS Y SALDOS
-        ======================================== */
-        .accounts-section {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: var(--shadow-md);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.5);
-        }
-        
-        .accounts-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-        
-        .account-card {
-            background: white;
-            border-radius: 16px;
-            padding: 24px;
-            text-align: center;
-            box-shadow: var(--shadow-sm);
-            transition: all 0.3s ease;
-            border-left: 4px solid var(--primary);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .account-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-        }
-        
-        .account-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-md);
-        }
-        
-        /* Colores específicos para cada cuenta */
-        .account-card[data-account="nequi"]::before { 
-            background: linear-gradient(90deg, #8B5CF6, #A855F7); 
-        }
-        .account-card[data-account="daviplata-esposa"]::before { 
-            background: linear-gradient(90deg, #EC4899, #F472B6); 
-        }
-        .account-card[data-account="daviplata-mio"]::before { 
-            background: linear-gradient(90deg, #3B82F6, #60A5FA); 
-        }
-        .account-card[data-account="ahorros-esposa"]::before { 
-            background: linear-gradient(90deg, #10B981, #34D399); 
-        }
-        .account-card[data-account="ahorros-mio"]::before { 
-            background: linear-gradient(90deg, #F59E0B, #FBBF24); 
-        }
-        .account-card[data-account="efectivo"]::before { 
-            background: linear-gradient(90deg, #6B7280, #9CA3AF); 
-        }
-        
-        .account-header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 16px;
-        }
-        
-        .account-header i {
-            font-size: 1.5rem;
-            color: var(--primary);
-        }
-        
-        .account-header h4 {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--dark);
-        }
-        
-        .account-balance {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: var(--success);
-        }
-        
-        /* ========================================
-           🎨 CARDS DE RESUMEN
-        ======================================== */
+        /* 🎨 MEJORA: Cards más bonitas */
         .summary-cards {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -407,9 +297,7 @@
             font-weight: 500;
         }
         
-        /* ========================================
-           🎨 DASHBOARD Y CARDS PRINCIPALES
-        ======================================== */
+        /* Dashboard */
         .dashboard {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -497,9 +385,7 @@
             font-weight: 500;
         }
         
-        /* ========================================
-           🎨 FORMULARIOS MEJORADOS
-        ======================================== */
+        /* 🎨 MEJORA: Forms más bonitos */
         .form-section {
             background: var(--card-bg);
             border-radius: 20px;
@@ -564,9 +450,7 @@
             background: white;
         }
         
-        /* ========================================
-           🎨 BOTONES MEJORADOS
-        ======================================== */
+        /* 🎨 MEJORA: Botones más bonitos */
         .btn {
             padding: 16px 32px;
             border: none;
@@ -630,9 +514,7 @@
             display: inline-block;
         }
         
-        /* ========================================
-           🎨 TABLAS Y COMPONENTES ADICIONALES
-        ======================================== */
+        /* Tables */
         .table-container {
             background: var(--card-bg);
             border-radius: 20px;
@@ -686,11 +568,6 @@
             color: white;
             box-shadow: 0 4px 12px rgba(245, 101, 101, 0.3);
         }
-        .badge-transfer { 
-            background: linear-gradient(135deg, var(--info), var(--info-light)); 
-            color: white;
-            box-shadow: 0 4px 12px rgba(66, 153, 225, 0.3);
-        }
         
         .action-btn {
             background: none;
@@ -714,9 +591,7 @@
             transform: translateY(-2px);
         }
         
-        /* ========================================
-           🎨 CARDS MÓVILES
-        ======================================== */
+        /* 🎨 MEJORA: Cards móviles más bonitas */
         .mobile-transactions {
             display: none;
         }
@@ -743,10 +618,6 @@
         
         .transaction-card.expense {
             border-left-color: var(--danger);
-        }
-        
-        .transaction-card.transfer {
-            border-left-color: var(--info);
         }
         
         .transaction-header {
@@ -810,9 +681,7 @@
             box-shadow: var(--shadow-md);
         }
         
-        /* ========================================
-           🎨 NOTIFICACIONES Y ESTADOS
-        ======================================== */
+        /* 🎨 MEJORA: Toast más bonito */
         .toast-notification {
             position: fixed;
             top: 24px;
@@ -843,6 +712,7 @@
             background: linear-gradient(135deg, var(--warning), var(--warning-light));
         }
         
+        /* Status */
         .status {
             padding: 20px;
             border-radius: 16px;
@@ -865,6 +735,7 @@
             border-color: rgba(245, 101, 101, 0.3);
         }
         
+        /* Loading */
         .loading {
             text-align: center;
             padding: 40px;
@@ -885,9 +756,7 @@
             100% { transform: rotate(360deg); }
         }
         
-        /* ========================================
-           🎨 FILTROS Y COMPONENTES ADICIONALES
-        ======================================== */
+        /* 🎨 MEJORA: Monthly Filter más bonito */
         .monthly-filter {
             display: flex;
             align-items: center;
@@ -921,6 +790,7 @@
             min-height: 52px;
         }
         
+        /* Chart Container */
         .chart-container {
             background: var(--card-bg);
             border-radius: 20px;
@@ -952,9 +822,7 @@
             background-clip: text;
         }
         
-        /* ========================================
-           📱 RESPONSIVE DESIGN
-        ======================================== */
+        /* Responsive */
         @media (max-width: 992px) {
             .sidebar {
                 width: 80px;
@@ -1030,7 +898,7 @@
                 font-size: 1.25rem;
             }
             
-            .summary-cards, .accounts-grid {
+            .summary-cards {
                 display: flex;
                 overflow-x: auto;
                 gap: 20px;
@@ -1038,7 +906,7 @@
                 scroll-snap-type: x mandatory;
             }
             
-            .summary-card, .account-card {
+            .summary-card {
                 min-width: 160px;
                 flex-shrink: 0;
                 scroll-snap-align: start;
@@ -1088,7 +956,7 @@
         }
         
         @media (max-width: 576px) {
-            .summary-card, .account-card {
+            .summary-card {
                 min-width: 140px;
                 padding: 16px;
             }
@@ -1120,40 +988,28 @@
     </style>
 </head>
 <body>
-    <!-- ========================================
-         🎯 OVERLAY Y SIDEBAR NAVIGATION
-    ======================================== -->
     <div class="sidebar-overlay" id="sidebar-overlay"></div>
     
     <div class="sidebar" id="sidebar">
-        <!-- Logo y título de la aplicación -->
         <div class="logo">
             <h1>Familia <span>Serrano</span></h1>
             <div class="subtitle">💰 Control Financiero</div>
         </div>
-        
-        <!-- Navegación principal -->
         <ul class="nav-links">
             <li><a href="#" class="active"><i class="fas fa-home"></i> <span>Dashboard</span></a></li>
             <li><a href="#"><i class="fas fa-wallet"></i> <span>Ingresos</span></a></li>
             <li><a href="#"><i class="fas fa-shopping-cart"></i> <span>Gastos</span></a></li>
-            <li><a href="#"><i class="fas fa-exchange-alt"></i> <span>Transferencias</span></a></li>
             <li><a href="#"><i class="fas fa-chart-pie"></i> <span>Reportes</span></a></li>
             <li><a href="#"><i class="fas fa-history"></i> <span>Historial</span></a></li>
             <li><a href="#"><i class="fas fa-cog"></i> <span>Configuración</span></a></li>
         </ul>
     </div>
     
-    <!-- ========================================
-         🎯 CONTENIDO PRINCIPAL
-    ======================================== -->
     <div class="main-content">
-        <!-- Botón menú móvil -->
         <button class="menu-toggle" id="menu-toggle">
             <i class="fas fa-bars"></i>
         </button>
         
-        <!-- Header principal con información del usuario -->
         <div class="header">
             <h2><i class="fas fa-chart-line"></i> Dashboard Financiero - Familia Serrano</h2>
             <div class="user-info">
@@ -1162,79 +1018,10 @@
             </div>
         </div>
         
-        <!-- Estado de conexión con Firebase -->
         <div id="connection-status" class="status status-disconnected">
             <i class="fas fa-exclamation-circle"></i> Inicializando Firebase...
         </div>
         
-        <!-- ========================================
-             🏦 NUEVA SECCIÓN: ESTADO DE CUENTAS
-        ======================================== -->
-        <div class="accounts-section">
-            <h3 class="section-title">
-                <i class="fas fa-university"></i>
-                Estado de Cuentas
-            </h3>
-            <div class="accounts-grid">
-                <!-- Nequi -->
-                <div class="account-card" data-account="nequi">
-                    <div class="account-header">
-                        <i class="fas fa-mobile-alt"></i>
-                        <h4>Nequi</h4>
-                    </div>
-                    <div class="account-balance" id="nequi-balance">$0</div>
-                </div>
-                
-                <!-- Daviplata Esposa -->
-                <div class="account-card" data-account="daviplata-esposa">
-                    <div class="account-header">
-                        <i class="fas fa-credit-card"></i>
-                        <h4>Daviplata Esposa</h4>
-                    </div>
-                    <div class="account-balance" id="daviplata-esposa-balance">$0</div>
-                </div>
-                
-                <!-- Mi Daviplata -->
-                <div class="account-card" data-account="daviplata-mio">
-                    <div class="account-header">
-                        <i class="fas fa-credit-card"></i>
-                        <h4>Mi Daviplata</h4>
-                    </div>
-                    <div class="account-balance" id="daviplata-mio-balance">$0</div>
-                </div>
-                
-                <!-- Cuenta Ahorros Esposa -->
-                <div class="account-card" data-account="ahorros-esposa">
-                    <div class="account-header">
-                        <i class="fas fa-piggy-bank"></i>
-                        <h4>Ahorros Esposa</h4>
-                    </div>
-                    <div class="account-balance" id="ahorros-esposa-balance">$0</div>
-                </div>
-                
-                <!-- Mi Cuenta Ahorros -->
-                <div class="account-card" data-account="ahorros-mio">
-                    <div class="account-header">
-                        <i class="fas fa-piggy-bank"></i>
-                        <h4>Mis Ahorros</h4>
-                    </div>
-                    <div class="account-balance" id="ahorros-mio-balance">$0</div>
-                </div>
-                
-                <!-- Efectivo -->
-                <div class="account-card" data-account="efectivo">
-                    <div class="account-header">
-                        <i class="fas fa-money-bill-wave"></i>
-                        <h4>Efectivo</h4>
-                    </div>
-                    <div class="account-balance" id="efectivo-balance">$0</div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- ========================================
-             📊 CARDS DE RESUMEN MENSUAL
-        ======================================== -->
         <div class="summary-cards">
             <div class="summary-card">
                 <i class="fas fa-wallet"></i>
@@ -1258,9 +1045,6 @@
             </div>
         </div>
         
-        <!-- ========================================
-             📈 DASHBOARD PRINCIPAL
-        ======================================== -->
         <div class="dashboard">
             <div class="card">
                 <div class="card-header">
@@ -1296,22 +1080,16 @@
             </div>
         </div>
         
-        <!-- ========================================
-             📅 FILTRO MENSUAL
-        ======================================== -->
         <div class="monthly-filter">
             <label for="month-selector"><i class="fas fa-calendar-alt"></i> Filtrar por mes:</label>
             <select id="month-selector">
                 <option value="current">Mes actual</option>
-            </select>
+                </select>
             <button id="new-month-btn" class="btn btn-primary">
                 <i class="fas fa-calendar-plus"></i> Iniciar Nuevo Mes
             </button>
         </div>
         
-        <!-- ========================================
-             📊 GRÁFICO DE HISTORIAL
-        ======================================== -->
         <div class="chart-container">
             <div class="chart-placeholder">
                 <i class="fas fa-chart-bar"></i>
@@ -1319,9 +1097,6 @@
             </div>
         </div>
         
-        <!-- ========================================
-             💰 FORMULARIO DE INGRESOS
-        ======================================== -->
         <div class="form-section">
             <h3 class="section-title">
                 <i class="fas fa-plus-circle"></i>
@@ -1349,21 +1124,6 @@
                         <input type="date" id="income-date" required>
                     </div>
                 </div>
-                <div class="form-row">
-                    <!-- NUEVO CAMPO: Cuenta de destino para ingresos -->
-                    <div class="form-group">
-                        <label for="income-account">🏦 Cuenta de Destino</label>
-                        <select id="income-account" required>
-                            <option value="">Seleccionar cuenta...</option>
-                            <option value="nequi">📱 Nequi</option>
-                            <option value="daviplata-esposa">💳 Daviplata Esposa</option>
-                            <option value="daviplata-mio">💳 Mi Daviplata</option>
-                            <option value="ahorros-esposa">🏦 Ahorros Esposa</option>
-                            <option value="ahorros-mio">🏦 Mis Ahorros</option>
-                            <option value="efectivo">💵 Efectivo</option>
-                        </select>
-                    </div>
-                </div>
                 <div class="form-group">
                     <label for="income-description">📝 Descripción</label>
                     <textarea id="income-description" rows="2" placeholder="Detalles del ingreso..."></textarea>
@@ -1375,9 +1135,6 @@
             </form>
         </div>
         
-        <!-- ========================================
-             💸 FORMULARIO DE GASTOS MEJORADO
-        ======================================== -->
         <div class="form-section">
             <h3 class="section-title">
                 <i class="fas fa-minus-circle"></i>
@@ -1412,21 +1169,6 @@
                         <input type="date" id="expense-date" required>
                     </div>
                 </div>
-                <div class="form-row">
-                    <!-- NUEVO CAMPO: Método de pago -->
-                    <div class="form-group">
-                        <label for="expense-payment-method">💳 Método de Pago</label>
-                        <select id="expense-payment-method" required>
-                            <option value="">Seleccionar...</option>
-                            <option value="efectivo">💵 Efectivo</option>
-                            <option value="nequi">📱 Nequi</option>
-                            <option value="daviplata-esposa">💳 Daviplata Esposa</option>
-                            <option value="daviplata-mio">💳 Mi Daviplata</option>
-                            <option value="ahorros-esposa">🏦 Tarjeta Débito Esposa</option>
-                            <option value="ahorros-mio">🏦 Mi Tarjeta Débito</option>
-                        </select>
-                    </div>
-                </div>
                 <div class="form-group">
                     <label for="expense-description">📝 Descripción</label>
                     <textarea id="expense-description" rows="2" placeholder="Detalles del gasto..."></textarea>
@@ -1438,337 +1180,83 @@
             </form>
         </div>
         
-        <!-- ========================================
-             🔄 NUEVO: FORMULARIO DE TRANSFERENCIAS
-        ======================================== -->
-        <div class="form-section">
-            <h3 class="section-title">
-                <i class="fas fa-exchange-alt"></i>
-                Transferir/Retirar Dinero
-            </h3>
-            <form id="transfer-form">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="transfer-from">🏦 Desde</label>
-                        <select id="transfer-from" required>
-                            <option value="">Seleccionar cuenta origen...</option>
-                            <option value="nequi">📱 Nequi</option>
-                            <option value="daviplata-esposa">💳 Daviplata Esposa</option>
-                            <option value="daviplata-mio">💳 Mi Daviplata</option>
-                            <option value="ahorros-esposa">🏦 Ahorros Esposa</option>
-                            <option value="ahorros-mio">🏦 Mis Ahorros</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="transfer-to">🎯 Hacia</label>
-                        <select id="transfer-to" required>
-                            <option value="">Seleccionar destino...</option>
-                            <option value="efectivo">💵 Efectivo</option>
-                            <option value="nequi">📱 Nequi</option>
-                            <option value="daviplata-esposa">💳 Daviplata Esposa</option>
-                            <option value="daviplata-mio">💳 Mi Daviplata</option>
-                            <option value="ahorros-esposa">🏦 Ahorros Esposa</option>
-                            <option value="ahorros-mio">🏦 Mis Ahorros</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="transfer-amount">💵 Monto</label>
-                        <input type="number" id="transfer-amount" placeholder="0.00" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="transfer-description">📝 Motivo</label>
-                    <textarea id="transfer-description" rows="2" placeholder="Ej: Retiro para gastos diarios..."></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary" id="transfer-submit-btn">
-                    <span class="btn-text"><i class="fas fa-exchange-alt"></i> Realizar Transferencia</span>
-                    <span class="btn-loading"><i class="fas fa-spinner fa-spin"></i> Procesando...</span>
-                </button>
-            </form>
-        </div>
-        
-        <!-- ========================================
-             📋 TABLA DE TRANSACCIONES
-        ======================================== -->
         <div class="table-container">
             <h3 class="section-title">
                 <i class="fas fa-history"></i>
                 Transacciones Recientes
             </h3>
-            
-            <!-- Loading de transacciones -->
             <div id="loading-transactions" class="loading">
                 <div class="spinner"></div>
                 <p>Cargando transacciones...</p>
             </div>
             
-            <!-- Tabla para desktop -->
             <table id="transactions-table" style="display: none;">
                 <thead>
                     <tr>
-                        <th>Fecha</th>
-                        <th>Tipo</th>
-                        <th>Categoría/Fuente</th>
-                        <th>Descripción</th>
-                        <th>Método de Pago</th>
-                        <th>Monto</th>
-                        <th>Acciones</th>
+                        <th>📅 Fecha</th>
+                        <th>📝 Descripción</th>
+                        <th>🏷️ Categoría</th>
+                        <th>💵 Monto</th>
+                        <th>🔖 Tipo</th>
+                        <th>⚡ Acciones</th>
                     </tr>
                 </thead>
                 <tbody id="transactions-body">
-                    <!-- Las transacciones se cargarán dinámicamente aquí -->
-                </tbody>
+                    </tbody>
             </table>
             
-            <!-- Cards para móvil -->
             <div class="mobile-transactions" id="mobile-transactions">
-                <!-- Las transacciones móviles se cargarán dinámicamente aquí -->
-            </div>
+                </div>
         </div>
     </div>
 
-    <!-- ========================================
-         🚀 JAVASCRIPT MEJORADO CON NUEVAS FUNCIONALIDADES
-    ======================================== -->
-    <script>
-        /* ========================================
-           📊 CONFIGURACIÓN Y VARIABLES GLOBALES
-        ======================================== */
-        
-        // Configuración de Firebase (debes reemplazar con tu configuración)
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, onSnapshot, query, orderBy, limit, Timestamp, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        // Your web app's Firebase configuration
         const firebaseConfig = {
-            // Tu configuración de Firebase aquí
-            apiKey: "tu-api-key",
-            authDomain: "tu-project.firebaseapp.com",
-            databaseURL: "https://tu-project.firebaseio.com",
-            projectId: "tu-project-id",
-            storageBucket: "tu-project.appspot.com",
-            messagingSenderId: "123456789",
-            appId: "tu-app-id"
+            apiKey: "AIzaSyA_Zn5FMQVPXCH9cPc0Yqk0O0K96wRdtK0",
+            authDomain: "crm-familiar.firebaseapp.com",
+            projectId: "crm-familiar",
+            storageBucket: "crm-familiar.firebasestorage.app",
+            messagingSenderId: "676787680550",
+            appId: "1:676787680550:web:2a31780e5a0af802d37de7"
         };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
         
-        // Estado global de la aplicación
-        let transactions = [];
-        let currentMonth = new Date().toISOString().slice(0, 7); // Formato: 2025-09
+        // Hacer db global para usar en los scripts
+        window.db = db;
+        window.addDoc = addDoc;
+        window.collection = collection;
+        window.getDocs = getDocs;
+        window.deleteDoc = deleteDoc;
+        window.doc = doc;
+        window.onSnapshot = onSnapshot;
+        window.query = query;
+        window.orderBy = orderBy;
+        window.limit = limit;
+        window.Timestamp = Timestamp;
+        window.where = where;
         
-        // Objeto para manejar los saldos de las cuentas
-        const accountBalances = {
-            'nequi': 0,
-            'daviplata-esposa': 0,
-            'daviplata-mio': 0,
-            'ahorros-esposa': 0,
-            'ahorros-mio': 0,
-            'efectivo': 0
-        };
+        console.log("Firebase inicializado correctamente");
         
-        /* ========================================
-           💰 FUNCIONES DE GESTIÓN DE CUENTAS
-        ======================================== */
+        // Actualizar estado de conexión
+        document.getElementById('connection-status').innerHTML = '<i class="fas fa-check-circle"></i> Conectado a Firebase';
+        document.getElementById('connection-status').className = 'status status-connected';
         
-        // Función para formatear moneda
-        function formatCurrency(amount) {
-            return new Intl.NumberFormat('es-CO', {
-                style: 'currency',
-                currency: 'COP',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0
-            }).format(amount);
-        }
-        
-        // Función para actualizar saldos de cuentas
-        function updateAccountBalance(account, amount, operation = 'add') {
-            const numericAmount = parseFloat(amount);
-            
-            if (operation === 'add') {
-                accountBalances[account] += numericAmount;
-            } else if (operation === 'subtract') {
-                accountBalances[account] -= numericAmount;
-            }
-            
-            // Actualizar en la UI
-            const balanceElement = document.getElementById(account + '-balance');
-            if (balanceElement) {
-                balanceElement.textContent = formatCurrency(accountBalances[account]);
-                
-                // Cambiar color si el saldo es negativo
-                if (accountBalances[account] < 0) {
-                    balanceElement.style.color = 'var(--danger)';
-                } else {
-                    balanceElement.style.color = 'var(--success)';
-                }
-            }
-            
-            // Guardar en Firebase/localStorage
-            saveAccountBalance(account, accountBalances[account]);
-        }
-        
-        // Función para guardar saldo en localStorage (reemplazar con Firebase)
-        function saveAccountBalance(account, balance) {
-            localStorage.setItem(`balance_${account}`, balance.toString());
-        }
-        
-        // Función para cargar saldos desde localStorage (reemplazar con Firebase)
-        function loadAccountBalances() {
-            Object.keys(accountBalances).forEach(account => {
-                const savedBalance = localStorage.getItem(`balance_${account}`);
-                if (savedBalance !== null) {
-                    accountBalances[account] = parseFloat(savedBalance);
-                    updateAccountBalance(account, 0, 'add'); // Solo para actualizar UI
-                }
-            });
-        }
-        
-        /* ========================================
-           🔄 FUNCIONES DE TRANSFERENCIAS
-        ======================================== */
-        
-        // Función para manejar transferencias
-        function handleTransfer(from, to, amount, description) {
-            const numericAmount = parseFloat(amount);
-            
-            // Verificar que no sea la misma cuenta
-            if (from === to) {
-                showToast('No puedes transferir a la misma cuenta', 'error');
-                return false;
-            }
-            
-            // Verificar que hay suficiente saldo
-            if (accountBalances[from] < numericAmount) {
-                showToast(`Saldo insuficiente en ${getAccountDisplayName(from)}`, 'error');
-                return false;
-            }
-            
-            // Realizar la transferencia
-            updateAccountBalance(from, numericAmount, 'subtract');
-            updateAccountBalance(to, numericAmount, 'add');
-            
-            // Registrar la transacción
-            const transferData = {
-                id: Date.now().toString(),
-                type: 'transfer',
-                from: from,
-                to: to,
-                amount: numericAmount,
-                description: description || `Transferencia de ${getAccountDisplayName(from)} a ${getAccountDisplayName(to)}`,
-                date: new Date().toISOString().split('T')[0],
-                timestamp: new Date().toISOString()
-            };
-            
-            saveTransaction(transferData);
-            addTransactionToList(transferData);
-            updateSummaryCards();
-            showToast('Transferencia realizada correctamente ✅', 'success');
-            return true;
-        }
-        
-        // Función para obtener nombre amigable de cuenta
-        function getAccountDisplayName(accountKey) {
-            const names = {
-                'nequi': 'Nequi',
-                'daviplata-esposa': 'Daviplata Esposa',
-                'daviplata-mio': 'Mi Daviplata',
-                'ahorros-esposa': 'Ahorros Esposa',
-                'ahorros-mio': 'Mis Ahorros',
-                'efectivo': 'Efectivo'
-            };
-            return names[accountKey] || accountKey;
-        }
-        
-        /* ========================================
-           💸 FUNCIONES DE GASTOS MEJORADAS
-        ======================================== */
-        
-        // Función mejorada para registrar gastos con método de pago
-        function registerExpenseWithPaymentMethod(category, amount, date, description, paymentMethod) {
-            const numericAmount = parseFloat(amount);
-            
-            // Verificar saldo disponible (excepto si es efectivo)
-            if (paymentMethod !== 'efectivo' && accountBalances[paymentMethod] < numericAmount) {
-                showToast(`Saldo insuficiente en ${getAccountDisplayName(paymentMethod)} 💳`, 'error');
-                return false;
-            }
-            
-            // Descontar del método de pago
-            updateAccountBalance(paymentMethod, numericAmount, 'subtract');
-            
-            // Registrar el gasto
-            const expenseData = {
-                id: Date.now().toString(),
-                type: 'expense',
-                category: category,
-                amount: numericAmount,
-                date: date,
-                description: description,
-                paymentMethod: paymentMethod,
-                timestamp: new Date().toISOString()
-            };
-            
-            saveTransaction(expenseData);
-            addTransactionToList(expenseData);
-            updateSummaryCards();
-            showToast('Gasto registrado correctamente 💸', 'success');
-            return true;
-        }
-        
-        /* ========================================
-           💰 FUNCIONES DE INGRESOS MEJORADAS
-        ======================================== */
-        
-        // Función mejorada para registrar ingresos con cuenta de destino
-        function registerIncomeWithAccount(source, amount, date, description, account) {
-            const numericAmount = parseFloat(amount);
-            
-            // Agregar al saldo de la cuenta
-            updateAccountBalance(account, numericAmount, 'add');
-            
-            // Registrar el ingreso
-            const incomeData = {
-                id: Date.now().toString(),
-                type: 'income',
-                source: source,
-                amount: numericAmount,
-                date: date,
-                description: description,
-                account: account,
-                timestamp: new Date().toISOString()
-            };
-            
-            saveTransaction(incomeData);
-            addTransactionToList(incomeData);
-            updateSummaryCards();
-            showToast('Ingreso registrado correctamente 💰', 'success');
-            return true;
-        }
-        
-        /* ========================================
-           🗄️ FUNCIONES DE ALMACENAMIENTO
-        ======================================== */
-        
-        // Función para guardar transacción (reemplazar con Firebase)
-        function saveTransaction(transaction) {
-            const transactions = getTransactions();
-            transactions.push(transaction);
-            localStorage.setItem('transactions', JSON.stringify(transactions));
-        }
-        
-        // Función para obtener transacciones (reemplazar con Firebase)
-        function getTransactions() {
-            const stored = localStorage.getItem('transactions');
-            return stored ? JSON.parse(stored) : [];
-        }
-        
-        /* ========================================
-           📊 FUNCIONES DE UI Y VISUALIZACIÓN
-        ======================================== */
-        
-        // Función para mostrar notificaciones toast
-        function showToast(message, type = 'info') {
-            // Remover toast anterior si existe
-            const existingToast = document.querySelector('.toast-notification');
-            if (existingToast) {
-                existingToast.remove();
-            }
-            
+        // Cargar datos iniciales
+        loadTransactions();
+        loadSummary();
+    </script>
+    
+    <script>
+        // Sistema de Toast Notifications
+        function showToast(message, type = 'success') {
             const toast = document.createElement('div');
             toast.className = `toast-notification toast-${type}`;
             toast.innerHTML = `
@@ -1782,215 +1270,382 @@
             setTimeout(() => {
                 toast.style.opacity = '0';
                 toast.style.transform = 'translateX(100%)';
-                setTimeout(() => toast.remove(), 300);
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
             }, 4000);
         }
         
-        // Función para actualizar cards de resumen
-        function updateSummaryCards() {
-            const transactions = getTransactions();
-            const currentMonthTransactions = transactions.filter(t => 
-                t.date.startsWith(currentMonth)
-            );
+        // Toggle sidebar móvil
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
             
-            let totalIncome = 0;
-            let totalExpense = 0;
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        });
+        
+        // Cerrar sidebar al hacer clic en overlay
+        document.getElementById('sidebar-overlay').addEventListener('click', function() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
             
-            currentMonthTransactions.forEach(transaction => {
-                if (transaction.type === 'income') {
-                    totalIncome += transaction.amount;
-                } else if (transaction.type === 'expense') {
-                    totalExpense += transaction.amount;
-                }
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+        
+        // Referencias a elementos del DOM
+        const connectionStatus = document.getElementById('connection-status');
+        const incomeValue = document.getElementById('income-value');
+        const expenseValue = document.getElementById('expense-value');
+        const balanceValue = document.getElementById('balance-value');
+        const totalIncome = document.getElementById('total-income');
+        const totalExpense = document.getElementById('total-expense');
+        const totalSavings = document.getElementById('total-savings');
+        const totalDebt = document.getElementById('total-debt');
+        const transactionsBody = document.getElementById('transactions-body');
+        const transactionsTable = document.getElementById('transactions-table');
+        const loadingTransactions = document.getElementById('loading-transactions');
+        const monthSelector = document.getElementById('month-selector');
+        const mobileTransactions = document.getElementById('mobile-transactions');
+        
+        // 🔄 ACTUALIZADO: Cargar transacciones ahora escucha cambios en el selector
+        function loadTransactions() {
+            const selectedMonth = monthSelector.value;
+            if (selectedMonth === 'current') {
+                loadCurrentMonthTransactions();
+            } else {
+                loadArchivedTransactions(selectedMonth);
+            }
+        }
+        
+        // ➕ NUEVO: Función para cargar transacciones del mes actual
+        function loadCurrentMonthTransactions() {
+            transactionsTable.style.display = 'none';
+            mobileTransactions.style.display = 'none';
+            loadingTransactions.style.display = 'block';
+
+            const q = query(collection(window.db, "transactions"), orderBy("date", "desc"));
+            
+            onSnapshot(q, (querySnapshot) => {
+                renderTransactions(querySnapshot, false); // false = no es archivo
+            }, (error) => {
+                console.error("Error cargando transacciones actuales: ", error);
+                showToast('Error al cargar transacciones', 'error');
             });
+        }
+
+        // ➕ NUEVO: Función para cargar transacciones de meses archivados
+        async function loadArchivedTransactions(archiveId) {
+            transactionsTable.style.display = 'none';
+            mobileTransactions.style.display = 'none';
+            loadingTransactions.style.display = 'block';
+
+            const q = query(collection(window.db, "archived_transactions"), where("archiveId", "==", archiveId), orderBy("date", "desc"));
             
-            const totalSavings = totalIncome - totalExpense;
+            try {
+                const querySnapshot = await getDocs(q);
+                renderTransactions(querySnapshot, true); // true = es archivo
+            } catch (error) {
+                console.error("Error cargando transacciones archivadas: ", error);
+                showToast('Error al cargar datos archivados', 'error');
+            }
+        }
+
+        // ➕ NUEVO: Función centralizada para renderizar transacciones
+        function renderTransactions(querySnapshot, isArchived) {
+            transactionsBody.innerHTML = '';
+            mobileTransactions.innerHTML = '';
             
-            // Actualizar elementos del DOM
-            document.getElementById('total-income').textContent = formatCurrency(totalIncome);
-            document.getElementById('total-expense').textContent = formatCurrency(totalExpense);
-            document.getElementById('total-savings').textContent = formatCurrency(totalSavings);
-            document.getElementById('income-value').textContent = formatCurrency(totalIncome);
-            document.getElementById('expense-value').textContent = formatCurrency(totalExpense);
-            document.getElementById('balance-value').textContent = formatCurrency(totalSavings);
+            if (querySnapshot.empty) {
+                transactionsBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No hay transacciones para este período</td></tr>';
+                mobileTransactions.innerHTML = '<div style="text-align: center; padding: 40px; color: #718096;">No hay transacciones para este período</div>';
+            } else {
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const actionsHtml = isArchived ? '' : `
+                        <button class="action-btn edit-btn" data-id="${doc.id}" title="Editar">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn delete-btn" data-id="${doc.id}" title="Eliminar">
+                            <i class="fas fa-trash"></i>
+                        </button>`;
+                    const mobileActionsHtml = isArchived ? '' : `
+                        <div class="transaction-actions">
+                            <button class="btn-edit" data-id="${doc.id}"><i class="fas fa-edit"></i> Editar</button>
+                            <button class="btn-delete" data-id="${doc.id}"><i class="fas fa-trash"></i> Eliminar</button>
+                        </div>`;
+
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${formatDate(data.date)}</td>
+                        <td>${data.description || '-'}</td>
+                        <td>${data.categoryName || data.category || '-'}</td>
+                        <td><strong>$${parseFloat(data.amount).toLocaleString()}</strong></td>
+                        <td><span class="badge ${data.type === 'income' ? 'badge-income' : 'badge-expense'}">${data.type === 'income' ? '💰 Ingreso' : '💸 Gasto'}</span></td>
+                        <td>${actionsHtml}</td>`;
+                    transactionsBody.appendChild(row);
+
+                    const card = document.createElement('div');
+                    card.className = `transaction-card ${data.type}`;
+                    card.innerHTML = `
+                        <div class="transaction-header">
+                            <span class="badge ${data.type === 'income' ? 'badge-income' : 'badge-expense'}">${data.type === 'income' ? '💰 Ingreso' : '💸 Gasto'}</span>
+                            <span class="transaction-amount">$${parseFloat(data.amount).toLocaleString()}</span>
+                        </div>
+                        <div class="transaction-details">
+                            <strong>${data.categoryName || data.category || 'Sin categoría'}</strong>
+                            <small>${formatDate(data.date)} • ${data.description || 'Sin descripción'}</small>
+                        </div>
+                        ${mobileActionsHtml}`;
+                    mobileTransactions.appendChild(card);
+                });
+            }
+
+            loadingTransactions.style.display = 'none';
+            transactionsTable.style.display = 'table';
+            mobileTransactions.style.display = 'block';
+
+            if (!isArchived) {
+                document.querySelectorAll('.edit-btn, .btn-edit').forEach(btn => {
+                    btn.addEventListener('click', () => editTransaction(btn.dataset.id));
+                });
+                document.querySelectorAll('.delete-btn, .btn-delete').forEach(btn => {
+                    btn.addEventListener('click', () => deleteTransaction(btn.dataset.id));
+                });
+            }
         }
         
-        // Función para agregar transacción a la lista
-        function addTransactionToList(transaction) {
-            const tableBody = document.getElementById('transactions-body');
-            const mobileContainer = document.getElementById('mobile-transactions');
-            
-            // Crear fila para tabla desktop
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${new Date(transaction.date).toLocaleDateString('es-CO')}</td>
-                <td><span class="badge badge-${transaction.type}">${transaction.type === 'income' ? 'Ingreso' : transaction.type === 'expense' ? 'Gasto' : 'Transferencia'}</span></td>
-                <td>${transaction.category || transaction.source || `${getAccountDisplayName(transaction.from)} → ${getAccountDisplayName(transaction.to)}`}</td>
-                <td>${transaction.description}</td>
-                <td>${getAccountDisplayName(transaction.paymentMethod || transaction.account || transaction.from)}</td>
-                <td>${formatCurrency(transaction.amount)}</td>
-                <td>
-                    <button class="action-btn" onclick="editTransaction('${transaction.id}')" title="Editar">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="action-btn" onclick="deleteTransaction('${transaction.id}')" title="Eliminar">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </td>
-            `;
-            
-            // Insertar al principio de la tabla
-            tableBody.insertBefore(row, tableBody.firstChild);
-            
-            // Crear card para móvil
-            const mobileCard = document.createElement('div');
-            mobileCard.className = `transaction-card ${transaction.type}`;
-            mobileCard.innerHTML = `
-                <div class="transaction-header">
-                    <span class="badge badge-${transaction.type}">${transaction.type === 'income' ? 'Ingreso' : transaction.type === 'expense' ? 'Gasto' : 'Transferencia'}</span>
-                    <span class="transaction-amount">${formatCurrency(transaction.amount)}</span>
-                </div>
-                <div class="transaction-details">
-                    <strong>${transaction.category || transaction.source || `${getAccountDisplayName(transaction.from)} → ${getAccountDisplayName(transaction.to)}`}</strong>
-                    <small>${transaction.description}</small>
-                </div>
-                <div class="transaction-actions">
-                    <button class="btn-edit" onclick="editTransaction('${transaction.id}')">
-                        <i class="fas fa-edit"></i> Editar
-                    </button>
-                    <button class="btn-delete" onclick="deleteTransaction('${transaction.id}')">
-                        <i class="fas fa-trash"></i> Eliminar
-                    </button>
-                </div>
-            `;
-            
-            // Insertar al principio del container móvil
-            mobileContainer.insertBefore(mobileCard, mobileContainer.firstChild);
-            
-            // Mostrar tabla si estaba oculta
-            document.getElementById('transactions-table').style.display = 'table';
-            document.getElementById('loading-transactions').style.display = 'none';
+        // 🔄 ACTUALIZADO: Cargar resumen ahora diferencia entre actual y archivado
+        function loadSummary() {
+            const selectedMonth = monthSelector.value;
+            if (selectedMonth === 'current') {
+                loadSummaryForCollection("transactions");
+            } else {
+                loadSummaryForCollection("archived_transactions", selectedMonth);
+            }
         }
         
-        /* ========================================
-           📱 EVENT LISTENERS Y INICIALIZACIÓN
-        ======================================== */
+        // 🔄 ACTUALIZADO: Función genérica para cargar resumen
+        async function loadSummaryForCollection(collectionName, archiveId = null) {
+            const values = { income: 0, expense: 0, balance: 0 };
+            
+            let q = collection(window.db, collectionName);
+            if (archiveId) {
+                q = query(q, where("archiveId", "==", archiveId));
+            }
+
+            try {
+                const querySnapshot = await getDocs(q);
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const amount = parseFloat(data.amount) || 0;
+                    if (data.type === 'income') values.income += amount;
+                    else if (data.type === 'expense') values.expense += amount;
+                });
+
+                values.balance = values.income - values.expense;
+                
+                incomeValue.textContent = `$${values.income.toLocaleString()}`;
+                expenseValue.textContent = `$${values.expense.toLocaleString()}`;
+                balanceValue.textContent = `$${values.balance.toLocaleString()}`;
+                totalIncome.textContent = `$${values.income.toLocaleString()}`;
+                totalExpense.textContent = `$${values.expense.toLocaleString()}`;
+                totalSavings.textContent = `$${values.balance.toLocaleString()}`;
+                totalDebt.textContent = '$0'; // Lógica de deuda pendiente
+            } catch (error) {
+                console.error("Error cargando resumen: ", error);
+                showToast('Error al cargar el resumen', 'error');
+            }
+        }
         
-        // Event listeners para formularios
+        // Formatear fecha
+        function formatDate(dateString) {
+            if (!dateString) return '-';
+            if (dateString.toDate) {
+                dateString = dateString.toDate();
+            }
+            const date = new Date(dateString);
+             if (isNaN(date.getTime())) {
+                const parts = dateString.split('-');
+                if(parts.length === 3) {
+                    return new Date(parts[0], parts[1] - 1, parts[2]).toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' });
+                }
+                return '-';
+            }
+            return date.toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' });
+        }
+        
+        // Editar transacción
+        function editTransaction(id) {
+            showToast(`Función de edición en desarrollo para ID: ${id}`, 'warning');
+        }
+        
+        // Eliminar transacción con toast
+        function deleteTransaction(id) {
+            if (confirm('¿Estás seguro de que deseas eliminar esta transacción?')) {
+                deleteDoc(doc(window.db, "transactions", id))
+                    .then(() => {
+                        showToast('✅ Transacción eliminada exitosamente', 'success');
+                    })
+                    .catch((error) => {
+                        console.error("Error eliminando transacción: ", error);
+                        showToast('❌ Error al eliminar la transacción', 'error');
+                    });
+            }
+        }
+        
+        // Registrar ingreso con loading y toast
+        document.getElementById('income-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const submitBtn = document.getElementById('income-submit-btn');
+            submitBtn.classList.add('loading');
+            
+            const sourceSelect = document.getElementById('income-source');
+            
+            addDoc(collection(window.db, "transactions"), {
+                type: 'income',
+                category: sourceSelect.value,
+                categoryName: sourceSelect.options[sourceSelect.selectedIndex].text,
+                amount: parseFloat(document.getElementById('income-amount').value),
+                date: document.getElementById('income-date').value,
+                description: document.getElementById('income-description').value,
+                timestamp: new Date()
+            })
+            .then(() => {
+                this.reset();
+                document.getElementById('income-date').value = new Date().toISOString().split('T')[0];
+                showToast('💰 Ingreso registrado exitosamente', 'success');
+            })
+            .catch((error) => {
+                showToast('❌ Error al registrar el ingreso', 'error');
+            })
+            .finally(() => {
+                submitBtn.classList.remove('loading');
+            });
+        });
+        
+        // Registrar gasto con loading y toast
+        document.getElementById('expense-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const submitBtn = document.getElementById('expense-submit-btn');
+            submitBtn.classList.add('loading');
+            
+            const categorySelect = document.getElementById('expense-category');
+
+            addDoc(collection(window.db, "transactions"), {
+                type: 'expense',
+                category: categorySelect.value,
+                categoryName: categorySelect.options[categorySelect.selectedIndex].text,
+                amount: parseFloat(document.getElementById('expense-amount').value),
+                date: document.getElementById('expense-date').value,
+                description: document.getElementById('expense-description').value,
+                timestamp: new Date()
+            })
+            .then(() => {
+                this.reset();
+                document.getElementById('expense-date').value = new Date().toISOString().split('T')[0];
+                showToast('💸 Gasto registrado exitosamente', 'success');
+            })
+            .catch((error) => {
+                showToast('❌ Error al registrar el gasto', 'error');
+            })
+            .finally(() => {
+                submitBtn.classList.remove('loading');
+            });
+        });
+        
+        // Event listener para el selector de mes
+        monthSelector.addEventListener('change', function() {
+            loadTransactions();
+            loadSummary();
+        });
+        
+        // Inicializar
         document.addEventListener('DOMContentLoaded', function() {
-            // Cargar saldos existentes
-            loadAccountBalances();
-            
-            // Configurar fechas por defecto
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('income-date').value = today;
             document.getElementById('expense-date').value = today;
-            
-            // Event listener para formulario de ingresos
-            document.getElementById('income-form').addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const source = document.getElementById('income-source').value;
-                const amount = document.getElementById('income-amount').value;
-                const date = document.getElementById('income-date').value;
-                const description = document.getElementById('income-description').value;
-                const account = document.getElementById('income-account').value;
-                
-                if (registerIncomeWithAccount(source, amount, date, description, account)) {
-                    this.reset();
-                    document.getElementById('income-date').value = today;
-                }
-            });
-            
-            // Event listener para formulario de gastos
-            document.getElementById('expense-form').addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const category = document.getElementById('expense-category').value;
-                const amount = document.getElementById('expense-amount').value;
-                const date = document.getElementById('expense-date').value;
-                const description = document.getElementById('expense-description').value;
-                const paymentMethod = document.getElementById('expense-payment-method').value;
-                
-                if (registerExpenseWithPaymentMethod(category, amount, date, description, paymentMethod)) {
-                    this.reset();
-                    document.getElementById('expense-date').value = today;
-                }
-            });
-            
-            // Event listener para formulario de transferencias
-            document.getElementById('transfer-form').addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const from = document.getElementById('transfer-from').value;
-                const to = document.getElementById('transfer-to').value;
-                const amount = document.getElementById('transfer-amount').value;
-                const description = document.getElementById('transfer-description').value;
-                
-                if (handleTransfer(from, to, amount, description)) {
-                    this.reset();
-                }
-            });
-            
-            // Configurar navegación móvil
-            const menuToggle = document.getElementById('menu-toggle');
-            const sidebar = document.getElementById('sidebar');
-            const sidebarOverlay = document.getElementById('sidebar-overlay');
-            
-            menuToggle?.addEventListener('click', () => {
-                sidebar.classList.toggle('active');
-                sidebarOverlay.classList.toggle('active');
-            });
-            
-            sidebarOverlay?.addEventListener('click', () => {
-                sidebar.classList.remove('active');
-                sidebarOverlay.classList.remove('active');
-            });
-            
-            // Cargar transacciones existentes
-            loadExistingTransactions();
-            updateSummaryCards();
-            
-            // Simular conexión a Firebase
-            setTimeout(() => {
-                const statusElement = document.getElementById('connection-status');
-                statusElement.className = 'status status-connected';
-                statusElement.innerHTML = '<i class="fas fa-check-circle"></i> Conectado a Firebase ✅';
-            }, 2000);
+            populateArchivedMonths();
         });
-        
-        // Función para cargar transacciones existentes
-        function loadExistingTransactions() {
-            const transactions = getTransactions();
-            const tableBody = document.getElementById('transactions-body');
-            const mobileContainer = document.getElementById('mobile-transactions');
-            
-            // Limpiar contenedores
-            tableBody.innerHTML = '';
-            mobileContainer.innerHTML = '';
-            
-            // Mostrar transacciones más recientes primero
-            transactions.reverse().forEach(transaction => {
-                addTransactionToList(transaction);
-            });
-            
-            if (transactions.length > 0) {
-                document.getElementById('transactions-table').style.display = 'table';
-                document.getElementById('loading-transactions').style.display = 'none';
+
+        // ➕ NUEVO: Poblar el selector con meses archivados
+        async function populateArchivedMonths() {
+            try {
+                const q = query(collection(window.db, "archived_transactions"));
+                const querySnapshot = await getDocs(q);
+                const archiveIds = new Set();
+                querySnapshot.forEach(doc => archiveIds.add(doc.data().archiveId));
+                
+                // Limpiar opciones existentes (excepto "Mes actual")
+                while (monthSelector.options.length > 1) {
+                    monthSelector.remove(1);
+                }
+
+                // Ordenar y agregar los meses archivados
+                Array.from(archiveIds).sort().reverse().forEach(id => {
+                    const [year, month] = id.split('-');
+                    const date = new Date(year, month - 1, 1);
+                    const monthName = date.toLocaleString('es-ES', { month: 'long', year: 'numeric' });
+                    const option = new Option(monthName.charAt(0).toUpperCase() + monthName.slice(1), id);
+                    monthSelector.add(option);
+                });
+            } catch (error) {
+                console.error("Error poblando meses archivados: ", error);
             }
         }
-        
-        // Funciones para editar y eliminar transacciones (a implementar)
-        function editTransaction(id) {
-            showToast('Función de edición en desarrollo 🔧', 'warning');
-        }
-        
-        function deleteTransaction(id) {
-            if (confirm('¿Estás seguro de que quieres eliminar esta transacción?')) {
-                // Implementar lógica de eliminación
-                showToast('Transacción eliminada ❌', 'success');
+
+        // 🔄 ACTUALIZADO: Lógica para archivar el mes actual e iniciar uno nuevo
+        const newMonthBtn = document.getElementById('new-month-btn');
+        newMonthBtn.addEventListener('click', async function() {
+            const now = new Date();
+            const archiveId = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+            const monthName = now.toLocaleString('es-ES', { month: 'long', year: 'numeric' });
+            
+            if (!confirm(`¿Estás seguro de que quieres cerrar el mes actual (${monthName}) y empezar uno nuevo? Todas las transacciones actuales serán archivadas y no se podrán modificar.`)) {
+                return;
             }
-        }
+
+            this.classList.add('loading');
+            showToast('Archivando transacciones del mes actual...', 'info');
+
+            try {
+                const transactionsRef = collection(window.db, "transactions");
+                const snapshot = await getDocs(transactionsRef);
+
+                if (snapshot.empty) {
+                    showToast('No hay transacciones para archivar.', 'warning');
+                    this.classList.remove('loading');
+                    return;
+                }
+
+                // Copiar y luego eliminar cada transacción
+                for (const docSnapshot of snapshot.docs) {
+                    const data = docSnapshot.data();
+                    await addDoc(collection(window.db, "archived_transactions"), {
+                        ...data,
+                        archiveId: archiveId
+                    });
+                    await deleteDoc(doc(window.db, "transactions", docSnapshot.id));
+                }
+                
+                showToast(`✅ Mes de ${monthName} archivado exitosamente.`, 'success');
+                
+                // Actualizar la UI
+                await populateArchivedMonths();
+                monthSelector.value = "current";
+                loadTransactions();
+                loadSummary();
+
+            } catch (error) {
+                console.error("Error al archivar el mes:", error);
+                showToast('❌ Error al archivar el mes.', 'error');
+            } finally {
+                this.classList.remove('loading');
+            }
+        });
     </script>
 </body>
 </html>
